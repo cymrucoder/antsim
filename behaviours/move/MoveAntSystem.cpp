@@ -24,6 +24,7 @@ int MoveAntSystem::generateMove(std::vector<int> *nodesVisited)
         {
             validNodes.push_back(i);
         }
+
     }
 
     std::vector<float> probabilities;
@@ -42,11 +43,11 @@ int MoveAntSystem::generateMove(std::vector<int> *nodesVisited)
     for (unsigned int i = 0; i < probabilities.size(); i++)
     {
         runningCount += probabilities.at(i);
-        if (runningCount > randomNumber)
+        if (runningCount >= randomNumber)
         {
             return validNodes.at(i);
         }
     }
     return -1;
-    // This would probably break if the pheromone to each was 0
+    // This would probably break if the pheromone to each was 0 (checking rC against rN is now >= which I think should at least make it not break, but it's not a proper fix)
 }

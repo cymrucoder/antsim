@@ -20,7 +20,7 @@ void Ant::move()
 
     lengthOfPath += edges->getLength(nodeCurrent, nodeToMoveTo);
 
-    nodeCurrent = moveBeh->generateMove(&nodesVisited);
+    nodeCurrent = nodeToMoveTo;
     nodesVisited.push_back(nodeCurrent);
 }
 
