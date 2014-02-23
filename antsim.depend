@@ -1,0 +1,83 @@
+# depslib dependency file v1.0
+1393109224 source:/home/herb/hb/3yp/dev/antsim/Ant.cpp
+	"Ant.h"
+
+1393107896 /home/herb/hb/3yp/dev/antsim/Ant.h
+	"MoveBehaviour.h"
+	"PheromoneBehaviour.h"
+	<vector>
+	"Node.h"
+
+1392741534 /home/herb/hb/3yp/dev/antsim/MoveBehaviour.h
+	<vector>
+	<algorithm>
+	<math.h>
+	<random>
+	<iostream>
+	"EdgeArray.h"
+
+1392838183 /home/herb/hb/3yp/dev/antsim/EdgeArray.h
+
+1393108190 /home/herb/hb/3yp/dev/antsim/PheromoneBehaviour.h
+	<vector>
+	<algorithm>
+	<math.h>
+	<random>
+	<iostream>
+	"EdgeArray.h"
+
+1392654675 /home/herb/hb/3yp/dev/antsim/Node.h
+	<vector>
+
+1393108973 source:/home/herb/hb/3yp/dev/antsim/AntSim.cpp
+	"Ant.h"
+	"Map.h"
+	<vector>
+	<iostream>
+
+1393114544 /home/herb/hb/3yp/dev/antsim/Map.h
+	<vector>
+	<math.h>
+	<iostream>
+	"Node.h"
+	"Ant.h"
+	"EdgeArray.h"
+	"behaviours/move/MoveAntSystem.h"
+	"behaviours/pheromone/PheromoneAntSystem.h"
+	"behaviours/environment/EnvironmentAntSystem.h"
+
+1393114531 /home/herb/hb/3yp/dev/antsim/behaviours/move/MoveAntSystem.h
+	"../../MoveBehaviour.h"
+
+1393114538 /home/herb/hb/3yp/dev/antsim/behaviours/pheromone/PheromoneAntSystem.h
+	"../../PheromoneBehaviour.h"
+
+1392840840 source:/home/herb/hb/3yp/dev/antsim/EdgeArray.cpp
+	"EdgeArray.h"
+
+1393106796 source:/home/herb/hb/3yp/dev/antsim/EnvironmentBehaviour.cpp
+	"EnvironmentBehaviour.h"
+
+1393107716 /home/herb/hb/3yp/dev/antsim/EnvironmentBehaviour.h
+	<vector>
+	<algorithm>
+	<math.h>
+	<random>
+	<iostream>
+	"EdgeArray.h"
+
+1393109172 source:/home/herb/hb/3yp/dev/antsim/Map.cpp
+	"Map.h"
+
+1392664450 source:/home/herb/hb/3yp/dev/antsim/MoveBehaviour.cpp
+	"MoveBehaviour.h"
+
+1392653198 source:/home/herb/hb/3yp/dev/antsim/Node.cpp
+	"Node.h"
+
+1392829888 source:/home/herb/hb/3yp/dev/antsim/PheromoneBehaviour.cpp
+	"PheromoneBehaviour.h"
+
+1393114550 /home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentAntSystem.h
+	"../../EnvironmentBehaviour.h"
+
