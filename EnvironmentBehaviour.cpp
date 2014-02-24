@@ -5,3 +5,7 @@ EnvironmentBehaviour::~EnvironmentBehaviour()
 
 }
 
+int EnvironmentBehaviour::getHowManyAntsUpdate()
+{
+    return howManyAntsUpdate;
+}

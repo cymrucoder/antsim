@@ -59,7 +59,8 @@ Map::Map(int noOfNodes, EnvironmentBehaviour *enviroBeh)
 
     for (int i = 0; i < noOfNodes; i++)
     {
-        ants.push_back(Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneAntSystem(edges, 100.0f)));
+        //ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneAntSystem(edges, 100.0f)));
+        ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneMaxMinAS(edges, 4.0f)));
     }
 
     enviroBeh->init(edges);// I don't like this way of doing it but it works for now (problem is AntSim doesn't know about *edges[] so can't pass it to PAS())
@@ -73,21 +74,50 @@ void Map::createEdge(int nodeA, int nodeB)
                             pow((nodes.at(nodeA)->getCoord(COORD_Y) - nodes.at(nodeB)->getCoord(COORD_Y)), 2.0f) +
                             pow((nodes.at(nodeA)->getCoord(COORD_Z) - nodes.at(nodeB)->getCoord(COORD_Z)), 2.0f));
 
-    edges->addEdge(nodeA, nodeB, distance, 1.0f);// Last argument needs to be default phero level whenever I add that
+    edges->addEdge(nodeA, nodeB, distance, 4.0f);// Last argument needs to be default phero level whenever I add that
 }
 
 void Map::runIteration()// Runs a single iteration of the search (that is, until each Ant reaches its goal)
 {
     for (unsigned int i = 0; i < ants.size(); i++)
     {
-        ants.at(i).move();
+        ants.at(i)->move();
     }
 
     enviroBeh->updatePheromone();
 
-    for (unsigned int i = 0; i < ants.size(); i++)
+    int howManyAntsUpdate = enviroBeh->getHowManyAntsUpdate();// Could just set this to ants.size() if it returns 0 but might want to add negatives or something for stuff later
+
+    if (howManyAntsUpdate > 0)// Used when the algorithm only lets certain ants update (usually the ants that found the shortest path)
     {
-        ants.at(i).updatePheromone();
+        // Sort list (I don't think it matters if you just reorder the current ants[] order doesn't really matter)
+
+        Ant *antTemp;
+
+        for (unsigned int i = 0; i < ants.size() - 1; i++)// Quicksort, probably better way of doing it
+        {
+            for (unsigned int j = 0; j < ants.size() - 1; j++)
+            {
+                if (ants.at(j)->getLengthOfPath() > ants.at(j + 1)->getLengthOfPath())
+                {
+                    antTemp = ants.at(j);
+                    ants.at(j) = ants.at(j + 1);
+                    ants.at(j + 1) = antTemp;
+                }
+            }
+        }
+
+        for (int i = 0; i < howManyAntsUpdate; i++)
+        {
+            ants.at(i)->updatePheromone();
+        }
+    }
+    else// Used when all ants can update
+    {
+        for (unsigned int i = 0; i < ants.size(); i++)
+        {
+            ants.at(i)->updatePheromone();
+        }
     }
 }
 

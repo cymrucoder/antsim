@@ -49,5 +49,5 @@ int MoveAntSystem::generateMove(std::vector<int> *nodesVisited)
         }
     }
     return -1;
-    // This would probably break if the pheromone to each was 0 (checking rC against rN is now >= which I think should at least make it not break, but it's not a proper fix)
+    // This would probably break if the pheromone to each was 0 (checking rC against rN is now >= which I think should at least make it not break, but it's not a proper fix because each node has the same chance but this always picks the first one)
 }

@@ -18,11 +18,13 @@ public:
 
 	virtual void updatePheromone() = 0;
 
-private:
+    int getHowManyAntsUpdate();
+
+protected:
+
+    int howManyAntsUpdate;
 
 };
 
 
 #endif // _ENVIRONMENTBEHAVIOUR_H_
-
-

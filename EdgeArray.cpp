@@ -46,7 +46,7 @@ float EdgeArray::getPheromone(int nodeA, int nodeB)
     return edgePheromones[nodeA][nodeB];
 }
 
-void EdgeArray::evaporate(float evaporationRate)// Minimum value phero can go to?
+void EdgeArray::evaporate(float evaporationRate, float pheroMin)
 {
     if (evaporationRate > 0.0f && evaporationRate <= 1.0f)
     {
@@ -56,20 +56,44 @@ void EdgeArray::evaporate(float evaporationRate)// Minimum value phero can go to
         {
             for (int j = 0; j < noOfNodes; j++)
             {
-                if (edgePheromones[i][j] > 0.0f)// Only update edges that exist (and aren't zero to save some time) (Could easily check min value here)
+                if (i < j)
                 {
-                    edgePheromones[i][j] *= leftAfterEvaporation;
+                    if (edgeLengths[i][j] > -1.0f)// Only update edges that exist
+                    {
+                        edgePheromones[i][j] *= leftAfterEvaporation;
+
+                        if (edgePheromones[i][j] < pheroMin)
+                        {
+                            edgePheromones[i][j] = pheroMin;
+                        }
+
+                        edgePheromones[j][i] = edgePheromones[i][j];
+                    }
                 }
             }
         }
     }
 }
 
-void EdgeArray::incrementPheromone(int nodeA, int nodeB, float pheromoneIncrease)// Max value phero can go to?
+void EdgeArray::incrementPheromone(int nodeA, int nodeB, float pheromoneIncrease)
 {
     if (pheromoneIncrease > 0.0f)
     {
         edgePheromones[nodeA][nodeB] += pheromoneIncrease;
+        edgePheromones[nodeB][nodeA] = edgePheromones[nodeA][nodeB];
+    }
+}
+
+void EdgeArray::incrementPheromone(int nodeA, int nodeB, float pheromoneIncrease, float pheroMax)
+{
+    if (pheromoneIncrease > 0.0f)
+    {
+        edgePheromones[nodeA][nodeB] += pheromoneIncrease;
+
+        if (edgePheromones[nodeA][nodeB] > pheroMax)
+        {
+            edgePheromones[nodeA][nodeB] = pheroMax;
+        }
         edgePheromones[nodeB][nodeA] = edgePheromones[nodeA][nodeB];
     }
 }

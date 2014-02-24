@@ -41,12 +41,12 @@ int main(void)
         {
             std::cout << "Ant " << i << " took the path:";
 
-            for (unsigned int j = 0; j < map.ants.at(i).nodesVisited.size(); j++)
+            for (unsigned int j = 0; j < map.ants.at(i)->nodesVisited.size(); j++)
             {
-                std::cout << " " << map.ants.at(i).nodesVisited.at(j);
+                std::cout << " " << map.ants.at(i)->nodesVisited.at(j);
             }
 
-            std::cout << " (Length: " << map.ants.at(i).getLengthOfPath() << ")" << std::endl;
+            std::cout << " (Length: " << map.ants.at(i)->getLengthOfPath() << ")" << std::endl;
         }
 
         std::cout << "Printing updated edges" << std::endl;
@@ -64,11 +64,12 @@ int main(void)
 
         for (int i = 0; i < NO_OF_NODES; i++)
         {
-            map.ants.at(i).reset();
+            map.ants.at(i)->reset();
         }
     }*/
 
-    Map map = Map(NO_OF_NODES, new EnvironmentAntSystem());
+    //Map map = Map(NO_OF_NODES, new EnvironmentAntSystem());
+    Map map = Map(NO_OF_NODES, new EnvironmentMaxMinAS(0.5f));
 
     for (int iter = 0; iter < 2500; iter++)
     {
@@ -93,13 +94,13 @@ int main(void)
 
         for (unsigned int i = 0; i < map.ants.size(); i++)
         {
-            float actualLengthA = map.ants.at(i).getLengthOfPath() + (map.edges->getLength(map.ants.at(i).nodesVisited.at(0), map.ants.at(i).nodesVisited.back()));// Move from final node to start node not accounted for ATM,
+            float actualLengthA = map.ants.at(i)->getLengthOfPath() + (map.edges->getLength(map.ants.at(i)->nodesVisited.at(0), map.ants.at(i)->nodesVisited.back()));// Move from final node to start node not accounted for ATM,
 
             /*std::cout << "Ant " << i << " took path:";
 
-            for (unsigned int j = 0; j < map.ants.at(i).nodesVisited.size(); j++)
+            for (unsigned int j = 0; j < map.ants.at(i)->nodesVisited.size(); j++)
             {
-                std::cout << " " << map.ants.at(i).nodesVisited.at(j);
+                std::cout << " " << map.ants.at(i)->nodesVisited.at(j);
             }
 
             std::cout << std::endl;*/
@@ -109,18 +110,18 @@ int main(void)
                 shortestKnownPath = actualLengthA;
                 std::cout << "New shortest path, length: " << shortestKnownPath << " (iteration: " << iter << "):";
 
-                for (unsigned int j = 0; j < map.ants.at(i).nodesVisited.size(); j++)
+                for (unsigned int j = 0; j < map.ants.at(i)->nodesVisited.size(); j++)
                 {
-                    std::cout << " " << map.ants.at(i).nodesVisited.at(j);
+                    std::cout << " " << map.ants.at(i)->nodesVisited.at(j);
                 }
                 std::cout << std::endl;
 
-                for (unsigned int j = 0; j < map.ants.at(i).nodesVisited.size(); j++)
+                for (unsigned int j = 0; j < map.ants.at(i)->nodesVisited.size(); j++)
                 {
 
                 }
             }
-            map.ants.at(i).reset();
+            map.ants.at(i)->reset();
         }
     }
     return 0;

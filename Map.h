@@ -10,6 +10,8 @@
 #include "behaviours/move/MoveAntSystem.h"
 #include "behaviours/pheromone/PheromoneAntSystem.h"
 #include "behaviours/environment/EnvironmentAntSystem.h"
+#include "behaviours/pheromone/PheromoneMaxMinAS.h"
+#include "behaviours/environment/EnvironmentMaxMinAS.h"
 
 class Map
 {
@@ -22,7 +24,7 @@ public:
 
 	void runIteration();
 
-	std::vector<Ant> ants;// Should be in private but here for debug purposes
+	std::vector<Ant*> ants;// Should be in private but here for debug purposes
 	EdgeArray *edges;// Should be in private but here for debug purposes
 
 private:
