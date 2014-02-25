@@ -49,10 +49,14 @@
 		<Unit filename="PheromoneBehaviour.h" />
 		<Unit filename="behaviours/environment/EnvironmentAntSystem.cpp" />
 		<Unit filename="behaviours/environment/EnvironmentAntSystem.h" />
+		<Unit filename="behaviours/environment/EnvironmentMaxMinAS.cpp" />
+		<Unit filename="behaviours/environment/EnvironmentMaxMinAS.h" />
 		<Unit filename="behaviours/move/MoveAntSystem.cpp" />
 		<Unit filename="behaviours/move/MoveAntSystem.h" />
 		<Unit filename="behaviours/pheromone/PheromoneAntSystem.cpp" />
 		<Unit filename="behaviours/pheromone/PheromoneAntSystem.h" />
+		<Unit filename="behaviours/pheromone/PheromoneMaxMinAS.cpp" />
+		<Unit filename="behaviours/pheromone/PheromoneMaxMinAS.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

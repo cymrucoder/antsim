@@ -16,7 +16,7 @@
 	<iostream>
 	"EdgeArray.h"
 
-1392838183 /home/herb/hb/3yp/dev/antsim/EdgeArray.h
+1393269866 /home/herb/hb/3yp/dev/antsim/EdgeArray.h
 
 1393108190 /home/herb/hb/3yp/dev/antsim/PheromoneBehaviour.h
 	<vector>
@@ -52,7 +52,7 @@
 1393114538 /home/herb/hb/3yp/dev/antsim/behaviours/pheromone/PheromoneAntSystem.h
 	"../../PheromoneBehaviour.h"
 
-1392840840 source:/home/herb/hb/3yp/dev/antsim/EdgeArray.cpp
+1393270211 source:/home/herb/hb/3yp/dev/antsim/EdgeArray.cpp
 	"EdgeArray.h"
 
 1393106796 source:/home/herb/hb/3yp/dev/antsim/EnvironmentBehaviour.cpp
@@ -80,4 +80,16 @@
 
 1393114550 /home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentAntSystem.h
 	"../../EnvironmentBehaviour.h"
+
+1393268767 source:/home/herb/hb/3yp/dev/antsim/behaviours/move/MoveAntSystem.cpp
+	"MoveAntSystem.h"
+
+1393108689 source:/home/herb/hb/3yp/dev/antsim/behaviours/pheromone/PheromoneAntSystem.cpp
+	"PheromoneAntSystem.h"
+
+1393270429 source:/home/herb/hb/3yp/dev/antsim/behaviours/pheromone/PheromoneMaxMinAS.cpp
+	"PheromoneMaxMinAS.h"
+
+1393270396 /home/herb/hb/3yp/dev/antsim/behaviours/pheromone/PheromoneMaxMinAS.h
+	"../../PheromoneBehaviour.h"
 
