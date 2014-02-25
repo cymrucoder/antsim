@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 
-#define NO_OF_NODES 30
+#define NO_OF_NODES 31
 
 int main(void)
 {
