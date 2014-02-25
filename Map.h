@@ -12,6 +12,7 @@
 #include "behaviours/environment/EnvironmentAntSystem.h"
 #include "behaviours/pheromone/PheromoneMaxMinAS.h"
 #include "behaviours/environment/EnvironmentMaxMinAS.h"
+#include "behaviours/environment/EnvironmentRankBasedAS.h"
 
 class Map
 {
@@ -32,6 +33,8 @@ private:
     std::vector<Node*> nodes;
 
     EnvironmentBehaviour *enviroBeh;
+
+    std::vector<Ant*> processedAnts;
 };
 
 #endif // _MAP_H_

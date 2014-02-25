@@ -91,8 +91,8 @@ Map::Map(int noOfNodes, EnvironmentBehaviour *enviroBeh)
 
     for (int i = 0; i < noOfNodes; i++)
     {
-        //ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneAntSystem(edges, 100.0f)));
-        ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneMaxMinAS(edges, 4.0f)));
+        ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneAntSystem(edges, 100.0f)));
+        //ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneMaxMinAS(edges, 4.0f)));
     }
 
     enviroBeh->init(edges);// I don't like this way of doing it but it works for now (problem is AntSim doesn't know about *edges[] so can't pass it to PAS())
@@ -118,7 +118,9 @@ void Map::runIteration()// Runs a single iteration of the search (that is, until
 
     enviroBeh->updatePheromone();
 
-    int howManyAntsUpdate = enviroBeh->getHowManyAntsUpdate();// Could just set this to ants.size() if it returns 0 but might want to add negatives or something for stuff later
+    /*//int howManyAntsUpdate = enviroBeh->getHowManyAntsUpdate();// Could just set this to ants.size() if it returns 0 but might want to add negatives or something for stuff later
+
+    int howManyAntsUpdate = 1;
 
     if (howManyAntsUpdate > 0)// Used when the algorithm only lets certain ants update (usually the ants that found the shortest path)
     {
@@ -150,6 +152,15 @@ void Map::runIteration()// Runs a single iteration of the search (that is, until
         {
             ants.at(i)->updatePheromone();
         }
+    }*/
+
+    enviroBeh->processAntList(&ants, &processedAnts);
+
+    for (unsigned int i = 0; i < processedAnts.size(); i++)
+    {
+        processedAnts.at(i)->updatePheromone();
     }
+
+    processedAnts.clear();
 }
 

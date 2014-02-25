@@ -24,6 +24,8 @@ public:
     void reset();
     void reset(int nodeNew);
 
+    std::vector<int> getNodesVisited();
+
 private:
 
     MoveBehaviour *moveBeh;

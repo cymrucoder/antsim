@@ -2,7 +2,7 @@
 
 EnvironmentAntSystem::EnvironmentAntSystem()
 {
-
+    howManyAntsUpdate = 0;
 }
 
 void EnvironmentAntSystem::init(EdgeArray* edges)
@@ -12,5 +12,5 @@ void EnvironmentAntSystem::init(EdgeArray* edges)
 
 void EnvironmentAntSystem::updatePheromone()
 {
-    edges->evaporate(0.01f);// evaporationRate needs to be set somewhere (pass in value in constructor?)
+    edges->evaporate(0.7f);// evaporationRate needs to be set somewhere (pass in value in constructor?)
 }

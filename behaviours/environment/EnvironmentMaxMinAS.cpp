@@ -3,8 +3,6 @@
 EnvironmentMaxMinAS::EnvironmentMaxMinAS(float pheroMin)
 {
     this->pheroMin = pheroMin;
-
-    howManyAntsUpdate = 1;// If you put this bool elsewhere you could probably wouldn't need this class
 }
 
 void EnvironmentMaxMinAS::init(EdgeArray* edges)
@@ -15,4 +13,23 @@ void EnvironmentMaxMinAS::init(EdgeArray* edges)
 void EnvironmentMaxMinAS::updatePheromone()
 {
     edges->evaporate(0.7f, pheroMin);
+}
+
+void EnvironmentMaxMinAS::processAntList(std::vector<Ant*> *ants, std::vector<Ant*> *processedAnts)
+{
+    //Ant *antWithShortestPath = ants->at(0);
+
+    int indexOfBestAnt = 0;
+    float lengthOfBestPathThisIter = INFINITY;
+
+    for (unsigned int i = 0; i < ants->size(); i++)
+    {
+        if (ants->at(i)->getLengthOfPath() < lengthOfBestPathThisIter)
+        {
+            indexOfBestAnt = i;
+            lengthOfBestPathThisIter = ants->at(i)->getLengthOfPath();
+        }
+    }
+
+    processedAnts->push_back(ants->at(indexOfBestAnt));
 }

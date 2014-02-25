@@ -69,7 +69,8 @@ int main(void)
     }*/
 
     //Map map = Map(NO_OF_NODES, new EnvironmentAntSystem());
-    Map map = Map(NO_OF_NODES, new EnvironmentMaxMinAS(0.5f));
+    //Map map = Map(NO_OF_NODES, new EnvironmentMaxMinAS(0.5f));
+    Map map = Map(NO_OF_NODES, new EnvironmentRankBasedAS(14, 1));
 
     for (int iter = 0; iter < 2500; iter++)
     {
