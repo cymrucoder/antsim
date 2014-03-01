@@ -69,8 +69,8 @@ int main(void)
     }*/
 
     //Map map = Map(NO_OF_NODES, new EnvironmentAntSystem());
-    //Map map = Map(NO_OF_NODES, new EnvironmentMaxMinAS(0.5f));
-    Map map = Map(NO_OF_NODES, new EnvironmentRankBasedAS(14, 1));
+    Map map = Map(NO_OF_NODES, new EnvironmentMaxMinAS(0.5f));
+    //Map map = Map(NO_OF_NODES, new EnvironmentRankBasedAS(14, 1));
 
     for (int iter = 0; iter < 2500; iter++)
     {
@@ -109,13 +109,13 @@ int main(void)
             if (actualLengthA < shortestKnownPath)
             {
                 shortestKnownPath = actualLengthA;
-                std::cout << "New shortest path, length: " << shortestKnownPath << " (iteration: " << iter << "):";
+                std::cout << "New shortest path, length: " << shortestKnownPath << " (iteration: " << iter << ")" << std::endl;
 
                 for (unsigned int j = 0; j < map.ants.at(i)->nodesVisited.size(); j++)
                 {
-                    std::cout << " " << map.ants.at(i)->nodesVisited.at(j);
+                    std::cout << map.names.at(map.ants.at(i)->nodesVisited.at(j)) << std::endl;
                 }
-                std::cout << std::endl;
+                //std::cout << std::endl;
 
                 for (unsigned int j = 0; j < map.ants.at(i)->nodesVisited.size(); j++)
                 {

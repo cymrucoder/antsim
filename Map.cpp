@@ -46,37 +46,68 @@ Map::Map(int noOfNodes, EnvironmentBehaviour *enviroBeh)
     nodes.push_back(new Node(71.0f, 71.0f, 0.0f));
     nodes.push_back(new Node(58.0f, 69.0f, 0.0f));*/
 
-    nodes.push_back(new Node(37.950f, 27.364f, 0.0f));// 1 - Temple of Artemis, Greece
-    nodes.push_back(new Node(29.979f, 31.134f, 0.0f));// 2 - Pyramids, Egypt
-    nodes.push_back(new Node(37.177f, -3.591f, 0.0f));// 3 - Alhambra, Spain
-    nodes.push_back(new Node(15.073f, 102.219f, 0.0f));// 4 - Great Wall of China, China
-    nodes.push_back(new Node(-13.166f, -72.544f, 0.0f));// 5 - Machu Pichu, Peru
-    nodes.push_back(new Node(40.800f, -73.968f, 0.0f));// 6 - Broadway, USA
-    nodes.push_back(new Node(43.643f, -79.387f, 0.0f));// 7 - CN Tower, Canada
-    nodes.push_back(new Node(-33.858f, 151.215f, 0.0f));// 8 - SOH, Straya
-    nodes.push_back(new Node(52.516f, 13.178f, 0.0f));// 9 - Brandenburg Gate, Germany
-    nodes.push_back(new Node(-7.603f, 110.204f, 0.0f));// 10 - bhruveiuebiuriuer, Java
-    nodes.push_back(new Node(41.008f, 28.976f, 0.0f));// 11 - Hagia Sophia, Turkey
-    nodes.push_back(new Node(38.871f, -77.056f, 0.0f));// 12 - The Pentagon, USA
-    nodes.push_back(new Node(51.508f, -0.097f, 0.0f));// 13 - Globe Theatre, UK
-    nodes.push_back(new Node(39.916f, 116.397f, 0.0f));// 14 - The Forbidden Palace, China
-    nodes.push_back(new Node(34.849f, 134.694f, 0.0f));// 15 - Himji Castle, Japan
-    nodes.push_back(new Node(47.558f, 10.750f, 0.0f));// 16 - Castell Nwchy, Germany
-    nodes.push_back(new Node(54.439f, 13.757f, 0.0f));// 17 - Prora, Germany
-    nodes.push_back(new Node(28.656f, 77.242f, 0.0f));// 18 - Red Fort, India
-    nodes.push_back(new Node(55.752f, 37.618f, 0.0f));// 19 - The Kremlin, Russia
-    nodes.push_back(new Node(13.426f, 103.860f, 0.0f));// 20 - Ankor Wat, Cambodia
-    nodes.push_back(new Node(43.768f, 11.255f, 0.0f));// 21 - Uffizi, Italy
-    nodes.push_back(new Node(49.043f, 2.506f, 0.0f));// 22 - The Louvre, France
-    nodes.push_back(new Node(13.905f, -4.556f, 0.0f));// 23 - Great Mosque of Dijenne, Mali
-    nodes.push_back(new Node(27.173f, 78.042f, 0.0f));// 24 - Taj Mahal, India
-    nodes.push_back(new Node(20.684f, -88.568f, 0.0f));// 25 - Chitzen Itza, Mexico
-    nodes.push_back(new Node(48.853f, 2.350f, 0.0f));// 26 - Notre Dame, France
-    nodes.push_back(new Node(41.903f, 12.454f, 0.0f));// 27 - Sistine Chapel, Italy
-    nodes.push_back(new Node(43.723f, 10.397f, 0.0f));// 28 - Leaning Tower, Italy
-    nodes.push_back(new Node(-22.952f, -43.210f, 0.0f));// 29 - Christo Redendor, Brazil
-    nodes.push_back(new Node(34.384f, 109.278f, 0.0f));// 30 - Terracota Army, China
-    nodes.push_back(new Node(37.970f, 23.722f, 0.0f));// 31 - The Parthanon, Greece
+    nodes.push_back(new Node(37.950f, 27.364f, 0.0f));
+    names.push_back("Temple of Artemis, Greece");
+    nodes.push_back(new Node(29.979f, 31.134f, 0.0f));
+    names.push_back("Pyramids, Egypt");
+    nodes.push_back(new Node(37.177f, -3.591f, 0.0f));
+    names.push_back("Alhambra, Spain");
+    nodes.push_back(new Node(15.073f, 102.219f, 0.0f));
+    names.push_back("Great Wall of China, China");
+    nodes.push_back(new Node(-13.166f, -72.544f, 0.0f));
+    names.push_back("Machu Pichu, Peru");
+    nodes.push_back(new Node(40.800f, -73.968f, 0.0f));
+    names.push_back("Broadway, USA");
+    nodes.push_back(new Node(43.643f, -79.387f, 0.0f));
+    names.push_back("CN Tower, Canada");
+    nodes.push_back(new Node(-33.858f, 151.215f, 0.0f));
+    names.push_back("SOH, Straya");
+    nodes.push_back(new Node(52.516f, 13.178f, 0.0f));
+    names.push_back("Brandenburg Gate, Germany");
+    nodes.push_back(new Node(-7.603f, 110.204f, 0.0f));
+    names.push_back("bhruveiuebiuriuer, Java");
+    nodes.push_back(new Node(41.008f, 28.976f, 0.0f));
+    names.push_back("Hagia Sophia, Turkey");
+    nodes.push_back(new Node(38.871f, -77.056f, 0.0f));
+    names.push_back("The Pentagon, USA");
+    nodes.push_back(new Node(51.508f, -0.097f, 0.0f));
+    names.push_back("Globe Theatre, UK");
+    nodes.push_back(new Node(39.916f, 116.397f, 0.0f));
+    names.push_back("The Forbidden Palace, China");
+    nodes.push_back(new Node(34.849f, 134.694f, 0.0f));
+    names.push_back("Himji Castle, Japan");
+    nodes.push_back(new Node(47.558f, 10.750f, 0.0f));
+    names.push_back("Castell Nwchy, Germany");
+    nodes.push_back(new Node(54.439f, 13.757f, 0.0f));
+    names.push_back("Prora, Germany");
+    nodes.push_back(new Node(28.656f, 77.242f, 0.0f));
+    names.push_back("Red Fort, India");
+    nodes.push_back(new Node(55.752f, 37.618f, 0.0f));
+    names.push_back("The Kremlin, Russia");
+    nodes.push_back(new Node(13.426f, 103.860f, 0.0f));
+    names.push_back("Ankor Wat, Cambodia");
+    nodes.push_back(new Node(43.768f, 11.255f, 0.0f));
+    names.push_back("Uffizi, Italy");
+    nodes.push_back(new Node(49.043f, 2.506f, 0.0f));
+    names.push_back("The Louvre, France");
+    nodes.push_back(new Node(13.905f, -4.556f, 0.0f));
+    names.push_back("Great Mosque of Dijenne, Mali");
+    nodes.push_back(new Node(27.173f, 78.042f, 0.0f));
+    names.push_back("Taj Mahal, India");
+    nodes.push_back(new Node(20.684f, -88.568f, 0.0f));
+    names.push_back("Chitzen Itza, Mexico");
+    nodes.push_back(new Node(48.853f, 2.350f, 0.0f));
+    names.push_back("Notre Dame, France");
+    nodes.push_back(new Node(41.903f, 12.454f, 0.0f));
+    names.push_back("Sistine Chapel, Italy");
+    nodes.push_back(new Node(43.723f, 10.397f, 0.0f));
+    names.push_back("Leaning Tower, Italy");
+    nodes.push_back(new Node(-22.952f, -43.210f, 0.0f));
+    names.push_back("Christo Redendor, Brazil");
+    nodes.push_back(new Node(34.384f, 109.278f, 0.0f));
+    names.push_back("Terracota Army, China");
+    nodes.push_back(new Node(37.970f, 23.722f, 0.0f));
+    names.push_back("The Parthanon, Greece");
 
     for (int i = 0; i < noOfNodes; i++)
     {
@@ -91,8 +122,8 @@ Map::Map(int noOfNodes, EnvironmentBehaviour *enviroBeh)
 
     for (int i = 0; i < noOfNodes; i++)
     {
-        ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneAntSystem(edges, 100.0f)));
-        //ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneMaxMinAS(edges, 4.0f)));
+        //ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneAntSystem(edges, 100.0f)));
+        ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneMaxMinAS(edges, 4.0f)));
     }
 
     enviroBeh->init(edges);// I don't like this way of doing it but it works for now (problem is AntSim doesn't know about *edges[] so can't pass it to PAS())

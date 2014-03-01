@@ -28,6 +28,8 @@ public:
 	std::vector<Ant*> ants;// Should be in private but here for debug purposes
 	EdgeArray *edges;// Should be in private but here for debug purposes
 
+	std::vector<std::string> names;
+
 private:
 
     std::vector<Node*> nodes;
