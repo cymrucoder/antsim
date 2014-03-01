@@ -17,21 +17,21 @@ class Map
 {
 public:
 
-	Map(int noOfNodes, EnvironmentBehaviour *enviroBehh);// Maybe have another parameter for type (has dead ends or doesn't for TSP), and option param for random seed
+	Map(int noOfNodes, EnvironmentBehaviour *enviroBeh);// Maybe have another parameter for type (has dead ends or doesn't for TSP), and option param for random seed
 	//~Map();
 
     void createEdge(int nodeA, int nodeB);
 
-	void runIteration();
-
 	std::vector<Ant*> ants;// Should be in private but here for debug purposes
 	EdgeArray *edges;// Should be in private but here for debug purposes
+
+	EnvironmentBehaviour *enviroBeh;
 
 private:
 
     std::vector<Node*> nodes;
 
-    EnvironmentBehaviour *enviroBeh;
+
 };
 
 #endif // _MAP_H_

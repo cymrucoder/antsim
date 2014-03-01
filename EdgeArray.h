@@ -1,7 +1,9 @@
 #ifndef _EDGEARRAY_H_
 #define _EDGEARRAY_H_
 
-class EdgeArray
+#include "Renderable.h"
+
+class EdgeArray : public Renderable
 {
 public:
 
@@ -18,6 +20,8 @@ public:
 	void evaporate(float evaporationRate, float pheroMin = 0.0f);
 	void incrementPheromone(int nodeA, int nodeB, float pheromoneIncrease);
 	void incrementPheromone(int nodeA, int nodeB, float pheromoneIncrease, float pheroMax);// Should I do these as one function with = INFINITY?  Means an extra if in the shorter function if I do that
+
+    void render();
 
 private:
 

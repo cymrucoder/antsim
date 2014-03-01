@@ -15,6 +15,12 @@
 					<Add option="-std=c++0x" />
 					<Add option="-g" />
 				</Compiler>
+				<Linker>
+					<Add option="-lSDL2" />
+					<Add option="-lGLEW" />
+					<Add option="-lGL" />
+					<Add option="-lSOIL" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/antsim" prefix_auto="1" extension_auto="1" />
@@ -35,6 +41,9 @@
 		<Unit filename="Ant.cpp" />
 		<Unit filename="Ant.h" />
 		<Unit filename="AntSim.cpp" />
+		<Unit filename="AntSim.h" />
+		<Unit filename="Controller.cpp" />
+		<Unit filename="Controller.h" />
 		<Unit filename="EdgeArray.cpp" />
 		<Unit filename="EdgeArray.h" />
 		<Unit filename="EnvironmentBehaviour.cpp" />
@@ -47,6 +56,10 @@
 		<Unit filename="Node.h" />
 		<Unit filename="PheromoneBehaviour.cpp" />
 		<Unit filename="PheromoneBehaviour.h" />
+		<Unit filename="Renderable.cpp" />
+		<Unit filename="Renderable.h" />
+		<Unit filename="antsimshader.fs" />
+		<Unit filename="antsimshader.vs" />
 		<Unit filename="behaviours/environment/EnvironmentAntSystem.cpp" />
 		<Unit filename="behaviours/environment/EnvironmentAntSystem.h" />
 		<Unit filename="behaviours/environment/EnvironmentMaxMinAS.cpp" />

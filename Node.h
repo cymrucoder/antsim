@@ -6,8 +6,9 @@
 #define COORD_Z 2
 
 #include <vector>
+#include "Renderable.h"
 
-class Node
+class Node : public Renderable
 {
 public:
 
@@ -15,6 +16,8 @@ public:
 	//~Node();
 
 	float getCoord(int coord);
+
+	void render();
 
 private:
 

@@ -5,8 +5,9 @@
 #include "PheromoneBehaviour.h"
 #include <vector>
 #include "Node.h"
+#include "Renderable.h"
 
-class Ant
+class Ant : public Renderable
 {
 public:
 
@@ -23,6 +24,8 @@ public:
 
     void reset();
     void reset(int nodeNew);
+
+    void render();
 
 private:
 

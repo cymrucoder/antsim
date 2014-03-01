@@ -51,3 +51,8 @@ void Ant::reset(int nodeNew)// Reset to a specified node
     nodesVisited.clear();
     nodesVisited.push_back(nodeCurrent);
 }
+
+void Ant::render()
+{
+
+}

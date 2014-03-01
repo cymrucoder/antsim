@@ -18,3 +18,8 @@ float Node::getCoord(int coord)
         return 0.0f;// This is technically a valid coord but I'm not sure what else to return.  NaN?
     }
 }
+
+void Node::render()
+{
+
+}

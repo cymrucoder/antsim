@@ -1,128 +1,308 @@
-#include "Ant.h"
-#include "Map.h"
-#include <vector>
-#include <iostream>
+#include "AntSim.h"
 
-#define NO_OF_NODES 31
+AntSim::AntSim()
+{
+	window = NULL;
+
+    programID = 0;
+    VAO = 0;
+    VBOvec = 0;
+    VBOtex = 0;
+    IBO = 0;
+
+}
+
+bool AntSim::init()
+{
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+
+        std::cout << "SDL failed to initialse, error: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
+
+    window = SDL_CreateWindow("AntSim", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+
+    if (window == NULL) {
+
+        std::cout << "Window could not be created, error: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    context = SDL_GL_CreateContext(window);
+
+    if (context == NULL) {
+
+        std::cout << "OpenGL context could not be created, error: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    glewExperimental = GL_TRUE;
+    GLenum glewError = glewInit();
+
+    if (glewError != GLEW_OK) {
+
+        std::cout << "GLEW could not be initialised, error : " << glewGetErrorString(glewError) << std::endl;
+    }
+
+    if (SDL_GL_SetSwapInterval(1) < 0) {
+
+        std::cout << "Unable to set vsync, error: " << SDL_GetError() << std::endl;
+    }
+
+    /*glEnable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    glFrontFace(GL_CCW);
+    glCullFace(GL_BACK);*/
+
+    programID = glCreateProgram();
+
+    GLuint vertexShader = shaderLoadFromFile("antsimshader.vs", GL_VERTEX_SHADER);
+
+    if (vertexShader == 0)
+    {
+        glDeleteProgram(programID);
+        programID = 0;
+        return false;
+    }
+
+    glAttachShader(programID, vertexShader);
+
+    GLuint fragmentShader = shaderLoadFromFile("antsimshader.fs", GL_FRAGMENT_SHADER);
+
+    if (fragmentShader == 0)
+    {
+        glDeleteProgram(programID);
+        return false;
+    }
+
+    glAttachShader(programID, fragmentShader);
+    glLinkProgram(programID);
+
+    GLint linked;
+    glGetProgramiv(programID, GL_LINK_STATUS, &linked);
+
+    GLint programSuccess = GL_TRUE;
+    glGetProgramiv(programID, GL_LINK_STATUS, &programSuccess);
+
+    if (programSuccess != GL_TRUE) {
+
+        std::cout << "Could not link program" << std::endl;
+        printProgramLog(programID);
+        return false;
+    }
+
+    glViewport(0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
+    /*GLenum error = glGetError();
+    if (error != GL_NO_ERROR) {
+
+        std::cout << "Failed to initialise OpenGL, error - " << gluErrorString(error);
+    }*/
+
+    projectionMatrix = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+    viewMatrix = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.1f), glm::vec3(0, 1, 0));// Look from, look to
+    //modelMatrix = glm::translate<GLfloat>(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0.0f);
+    modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+
+    mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
+
+    uniformMatrix = glGetUniformLocation(programID, "matrixTransform");
+    if (uniformMatrix  == -1) {
+
+        std::cout << "Could not bind uniform " << uniformMatrix << std::endl;
+        return false;
+    }
+
+    //glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_BLEND);
+    //glDisable(GL_DEPTH_TEST);
+    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // This is where you set up arrays of vertex data and stuff
+
+    /*glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
+    glGenBuffers(1, &VBOvec);
+    glBindBuffer(GL_ARRAY_BUFFER, VBOvec);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPositions), vertexPositions, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0);
+    glEnableVertexAttribArray(0);
+
+    glGenBuffers(1, &VBOtex);
+    glBindBuffer(GL_ARRAY_BUFFER, VBOtex);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0);
+    glEnableVertexAttribArray(1);
+
+    glGenBuffers(1, &IBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(faceIndices), faceIndices, GL_STATIC_DRAW);
+
+    glBindVertexArray(0);*/
+
+    glUseProgram(programID);
+
+    glUniformMatrix4fv(uniformMatrix, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
+
+    glUseProgram(0);
+
+    return true;
+}
+
+void AntSim::handleKeys(unsigned char key, int x, int y)
+{
+    if (key == 'q')
+    {
+        //
+    }
+    if (key == 'm')
+    {
+        //
+    }
+}
+
+void AntSim::update()
+{
+
+}
+
+void AntSim::render()
+{
+    /*glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glBindBuffer(GL_UNIFORM_BUFFER, uniformDataUBO);
+    glUseProgram(programID);
+
+    glBindVertexArray(VAO);
+
+    glDrawElements(GL_TRIANGLES, NO_OF_DRAWING_INDICES, GL_UNSIGNED_INT, (const GLvoid*)0);
+
+    glBindVertexArray(0);
+    glUseProgram(0);*/
+}
+
+void AntSim::close()
+{
+    glDeleteProgram(programID);
+
+    SDL_DestroyWindow(window);
+    window = NULL;
+
+    SDL_Quit();
+}
+
+int AntSim::run()
+{
+    if (init() == false)
+    {
+        std::cout << "Initialisation failed" << std::endl;
+        close();
+        return 1;
+    }
+
+    bool running = true;
+
+    SDL_Event e;
+    SDL_StartTextInput();
+
+    while (running)
+    {
+        while (SDL_PollEvent(&e) != 0)
+        {
+            if (e.type == SDL_QUIT)
+            {
+                running = false;
+            }
+            else if (e.type == SDL_TEXTINPUT)
+            {
+                int x = 0, y = 0;
+                SDL_GetMouseState(&x, &y);
+                handleKeys(e.text.text[0], x, y);
+            }
+        }
+        render();
+        SDL_GL_SwapWindow(window);
+    }
+
+    SDL_StopTextInput();
+    close();
+
+    return 0;
+}
+
+GLuint AntSim::shaderLoadFromFile(std::string path, GLenum shaderType)
+{
+    std::string stringShader;
+    std::ifstream fileShader(path.c_str());
+
+    if (fileShader)
+    {
+        stringShader.assign((std::istreambuf_iterator<char>(fileShader)), std::istreambuf_iterator<char>());
+
+        GLuint shader = glCreateShader(shaderType);
+
+        const GLchar* pntStringSource = stringShader.c_str();
+
+        glShaderSource(shader, 1, static_cast<const GLchar**>(&pntStringSource), 0);
+        glCompileShader(shader);
+
+        GLint shaderCompiled = GL_FALSE;
+        glGetShaderiv(shader, GL_COMPILE_STATUS, &shaderCompiled);
+
+        if (shaderCompiled != GL_TRUE)
+        {
+            std::cout << "Unable to compile shader " << shader << " (path: " << path << ")" << std::endl;
+            printShaderLog(shader);
+            glDeleteShader(shader);
+            return 0;
+        }
+        return shader;
+    }
+    else
+    {
+        std::cout << "Could not open file " << path.c_str() << std::endl;
+        return 0;
+    }
+}
+
+void AntSim::printProgramLog(GLuint program)
+{
+    // Nothing right now
+}
+
+void AntSim::printShaderLog(GLuint shader)
+{
+    if (glIsShader(shader))
+    {
+        int infoLogLength = 0;
+        int maxLength = infoLogLength;
+
+        glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &maxLength);
+
+        char* infoLog = new char[maxLength];
+
+        glGetShaderInfoLog(shader, maxLength, &infoLogLength, infoLog);
+
+        if (infoLogLength > 0)
+        {
+            std::cout << infoLog << std::endl;
+        }
+
+        delete[] infoLog;
+    }
+}
 
 int main(void)
 {
-    float shortestKnownPath = INFINITY;
-
-    /*std::cout << "Generating map" << std::endl;
-
-    Map map = Map(NO_OF_NODES, new PheromoneAntSystem());
-
-    std::cout << "Map generation finished, printing edges" << std::endl;
-
-    for (int i = 0; i < NO_OF_NODES; i++)
-    {
-        for (int j = 0; j < NO_OF_NODES; j++)
-        {
-            if (i < j)
-            {
-                std::cout << "Edge from node " << i << " to node " << j << " with pheromone level: " << map.edges->getPheromone(i, j) << std::endl;
-            }
-        }
-    }
-
-    for (int iter = 0; iter < 10; iter++) {
-
-        std::cout << "Running iteration" << std::endl;
-
-        for (int i = 0; i < (NO_OF_NODES - 1); i++)
-        {
-            map.runIteration();// NO_OF_NODES nodes, (NO_OF_NODES - 1) moves
-        }
-
-        std::cout << "Printing ant paths" << std::endl;
-
-        for (int i = 0; i < NO_OF_NODES; i++)
-        {
-            std::cout << "Ant " << i << " took the path:";
-
-            for (unsigned int j = 0; j < map.ants.at(i)->nodesVisited.size(); j++)
-            {
-                std::cout << " " << map.ants.at(i)->nodesVisited.at(j);
-            }
-
-            std::cout << " (Length: " << map.ants.at(i)->getLengthOfPath() << ")" << std::endl;
-        }
-
-        std::cout << "Printing updated edges" << std::endl;
-
-        for (int i = 0; i < NO_OF_NODES; i++)
-        {
-            for (int j = 0; j < NO_OF_NODES; j++)
-            {
-                if (i < j)
-                {
-                    std::cout << "Edge from node " << i << " to node " << j << " with pheromone level: " << map.edges->getPheromone(i, j) << std::endl;
-                }
-            }
-        }
-
-        for (int i = 0; i < NO_OF_NODES; i++)
-        {
-            map.ants.at(i)->reset();
-        }
-    }*/
-
-    //Map map = Map(NO_OF_NODES, new EnvironmentAntSystem());
-    Map map = Map(NO_OF_NODES, new EnvironmentMaxMinAS(0.5f));
-
-    for (int iter = 0; iter < 2500; iter++)
-    {
-        /*std::cout << "Iteration " << iter << std::endl;
-
-        for (int i = 0; i < NO_OF_NODES; i++)
-        {
-            for (int j = 0; j < NO_OF_NODES; j++)
-            {
-                if (i < j)
-                {
-                    std::cout << "Edge from node " << i << " to node " << j << " with pheromone level: " << map.edges->getPheromone(i, j) << std::endl;
-                }
-            }
-        }
-        */
-
-        for (int i = 0; i < (NO_OF_NODES - 1); i++)
-        {
-            map.runIteration();// NO_OF_NODES nodes, (NO_OF_NODES - 1) moves
-        }
-
-        for (unsigned int i = 0; i < map.ants.size(); i++)
-        {
-            float actualLengthA = map.ants.at(i)->getLengthOfPath() + (map.edges->getLength(map.ants.at(i)->nodesVisited.at(0), map.ants.at(i)->nodesVisited.back()));// Move from final node to start node not accounted for ATM,
-
-            /*std::cout << "Ant " << i << " took path:";
-
-            for (unsigned int j = 0; j < map.ants.at(i)->nodesVisited.size(); j++)
-            {
-                std::cout << " " << map.ants.at(i)->nodesVisited.at(j);
-            }
-
-            std::cout << std::endl;*/
-
-            if (actualLengthA < shortestKnownPath)
-            {
-                shortestKnownPath = actualLengthA;
-                std::cout << "New shortest path, length: " << shortestKnownPath << " (iteration: " << iter << "):";
-
-                for (unsigned int j = 0; j < map.ants.at(i)->nodesVisited.size(); j++)
-                {
-                    std::cout << " " << map.ants.at(i)->nodesVisited.at(j);
-                }
-                std::cout << std::endl;
-
-                for (unsigned int j = 0; j < map.ants.at(i)->nodesVisited.size(); j++)
-                {
-
-                }
-            }
-            map.ants.at(i)->reset();
-        }
-    }
-    return 0;
+    AntSim antsim;
+    return antsim.run();
 }

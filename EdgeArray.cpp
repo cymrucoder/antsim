@@ -97,3 +97,8 @@ void EdgeArray::incrementPheromone(int nodeA, int nodeB, float pheromoneIncrease
         edgePheromones[nodeB][nodeA] = edgePheromones[nodeA][nodeB];
     }
 }
+
+void EdgeArray::render()
+{
+
+}
