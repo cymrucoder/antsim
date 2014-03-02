@@ -15,6 +15,8 @@
 #include <vector>
 #include <iostream>
 
+#include "Controller.h"
+
 #define NO_OF_NODES 31
 
 #define SCREEN_WIDTH 800
@@ -43,12 +45,7 @@ private:
     SDL_Window* window;
     SDL_GLContext context;
 
-    GLuint programID ;
-
-    GLuint VAO;
-    GLuint VBOvec;
-    GLuint VBOtex;
-    GLuint IBO;
+    GLuint programID;
 
     glm::mat4 projectionMatrix;
     glm::mat4 viewMatrix;
@@ -56,6 +53,8 @@ private:
     glm::mat4 mvpMatrix;
 
     GLint uniformMatrix;
+
+    Controller *controller;
 };
 
 #endif // _ANTSIM_H_

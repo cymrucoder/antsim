@@ -46,7 +46,8 @@ Map::Map(int noOfNodes, EnvironmentBehaviour *enviroBeh)
     nodes.push_back(new Node(71.0f, 71.0f, 0.0f));
     nodes.push_back(new Node(58.0f, 69.0f, 0.0f));*/
 
-    nodes.push_back(new Node(37.950f, 27.364f, 0.0f));// 1 - Temple of Artemis, Greece
+    nodes.push_back(new Node(0.950f, 0.364f, 0.0f));// 1 - Temple of Artemis, Greece
+    //nodes.push_back(new Node(37.950f, 27.364f, 0.0f));// 1 - Temple of Artemis, Greece
     nodes.push_back(new Node(29.979f, 31.134f, 0.0f));// 2 - Pyramids, Egypt
     nodes.push_back(new Node(37.177f, -3.591f, 0.0f));// 3 - Alhambra, Spain
     nodes.push_back(new Node(15.073f, 102.219f, 0.0f));// 4 - Great Wall of China, China
@@ -107,4 +108,12 @@ void Map::createEdge(int nodeA, int nodeB)
                             pow((nodes.at(nodeA)->getCoord(COORD_Z) - nodes.at(nodeB)->getCoord(COORD_Z)), 2.0f));
 
     edges->addEdge(nodeA, nodeB, distance, 10.0f);// Last argument needs to be default phero level whenever I add that
+}
+
+void Map::render()
+{
+    for (unsigned int i = 0; i < nodes.size(); i++)
+    {
+        nodes.at(i)->render();
+    }
 }

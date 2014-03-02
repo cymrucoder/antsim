@@ -17,6 +17,8 @@ public:
 
 	Map* generateMap(int noOfNodes);
 
+	void render();
+
 private:
 
     Map *map;

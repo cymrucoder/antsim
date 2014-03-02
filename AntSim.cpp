@@ -5,11 +5,6 @@ AntSim::AntSim()
 	window = NULL;
 
     programID = 0;
-    VAO = 0;
-    VBOvec = 0;
-    VBOtex = 0;
-    IBO = 0;
-
 }
 
 bool AntSim::init()
@@ -107,7 +102,7 @@ bool AntSim::init()
     }*/
 
     projectionMatrix = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
-    viewMatrix = glm::lookAt(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 0.0f, 0.1f), glm::vec3(0, 1, 0));// Look from, look to
+    viewMatrix = glm::lookAt(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.1f), glm::vec3(0, 1, 0));// Look from, look to
     //modelMatrix = glm::translate<GLfloat>(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0.0f);
     modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -125,34 +120,13 @@ bool AntSim::init()
     //glDisable(GL_DEPTH_TEST);
     //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // This is where you set up arrays of vertex data and stuff
-
-    /*glGenVertexArrays(1, &VAO);
-    glBindVertexArray(VAO);
-
-    glGenBuffers(1, &VBOvec);
-    glBindBuffer(GL_ARRAY_BUFFER, VBOvec);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexPositions), vertexPositions, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0);
-    glEnableVertexAttribArray(0);
-
-    glGenBuffers(1, &VBOtex);
-    glBindBuffer(GL_ARRAY_BUFFER, VBOtex);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(texCoords), texCoords, GL_STATIC_DRAW);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (const GLvoid*)0);
-    glEnableVertexAttribArray(1);
-
-    glGenBuffers(1, &IBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(faceIndices), faceIndices, GL_STATIC_DRAW);
-
-    glBindVertexArray(0);*/
-
     glUseProgram(programID);
 
     glUniformMatrix4fv(uniformMatrix, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
 
     glUseProgram(0);
+
+    controller = new Controller(31);
 
     return true;
 }
@@ -188,6 +162,15 @@ void AntSim::render()
 
     glBindVertexArray(0);
     glUseProgram(0);*/
+
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glUseProgram(programID);
+
+    controller->render();
+
+    glUseProgram(0);
 }
 
 void AntSim::close()

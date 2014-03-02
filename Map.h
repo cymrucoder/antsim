@@ -27,6 +27,8 @@ public:
 
 	EnvironmentBehaviour *enviroBeh;
 
+	void render();
+
 private:
 
     std::vector<Node*> nodes;

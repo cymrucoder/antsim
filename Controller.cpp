@@ -99,3 +99,8 @@ Map* Controller::generateMap(int noOfNodes)
 
     return mapTemp;
 }
+
+void Controller::render()
+{
+    map->render();
+}
