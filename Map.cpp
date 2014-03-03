@@ -6,14 +6,14 @@ Map::Map(int noOfNodes, EnvironmentBehaviour *enviroBeh)
 
     // Need to separate the map generation code into another class
 
-    /*std::random_device rd;
+    std::random_device rd;
     std::mt19937 mt = std::mt19937(rd());
-    std::uniform_real_distribution<float> randCoord(0.0f, 100.f);// Assuming the screen is 100px wide and high, works for now
+    std::uniform_real_distribution<float> randCoord(-5.0f, 5.0f);// Assuming the screen is 100px wide and high, works for now
 
     for (int i = 0; i < noOfNodes; i++)
     {
-        nodes.push_back(new Node(randCoord(mt), randCoord(mt), 0.0f));
-    }*/
+        nodes.push_back(new Node(randCoord(mt), 0.0f, randCoord(mt)));
+    }
 
     /*nodes.push_back(new Node(54.0f, 67.0f, 0.0f));
     nodes.push_back(new Node(54.0f, 62.0f, 0.0f));
@@ -46,8 +46,8 @@ Map::Map(int noOfNodes, EnvironmentBehaviour *enviroBeh)
     nodes.push_back(new Node(71.0f, 71.0f, 0.0f));
     nodes.push_back(new Node(58.0f, 69.0f, 0.0f));*/
 
-    nodes.push_back(new Node(0.950f, 0.364f, 0.0f));// 1 - Temple of Artemis, Greece
-    //nodes.push_back(new Node(37.950f, 27.364f, 0.0f));// 1 - Temple of Artemis, Greece
+    //nodes.push_back(new Node(0.950f, 0.364f, 0.0f));// 1 - Temple of Artemis, Greece
+    /*nodes.push_back(new Node(37.950f, 27.364f, 0.0f));// 1 - Temple of Artemis, Greece
     nodes.push_back(new Node(29.979f, 31.134f, 0.0f));// 2 - Pyramids, Egypt
     nodes.push_back(new Node(37.177f, -3.591f, 0.0f));// 3 - Alhambra, Spain
     nodes.push_back(new Node(15.073f, 102.219f, 0.0f));// 4 - Great Wall of China, China
@@ -77,7 +77,39 @@ Map::Map(int noOfNodes, EnvironmentBehaviour *enviroBeh)
     nodes.push_back(new Node(43.723f, 10.397f, 0.0f));// 28 - Leaning Tower, Italy
     nodes.push_back(new Node(-22.952f, -43.210f, 0.0f));// 29 - Christo Redendor, Brazil
     nodes.push_back(new Node(34.384f, 109.278f, 0.0f));// 30 - Terracota Army, China
-    nodes.push_back(new Node(37.970f, 23.722f, 0.0f));// 31 - The Parthanon, Greece
+    nodes.push_back(new Node(37.970f, 23.722f, 0.0f));// 31 - The Parthanon, Greece*/
+
+    /*nodes.push_back(new Node(37.950f, 0.0f, 27.364f));// 1 - Temple of Artemis, Greece
+    nodes.push_back(new Node(29.979f, 0.0f, 31.134f));// 2 - Pyramids, 0.0f, Egypt
+    nodes.push_back(new Node(37.177f, 0.0f, -3.591f));// 3 - Alhambra, 0.0f, Spain
+    nodes.push_back(new Node(15.073f, 0.0f, 102.219f));// 4 - Great Wall of China, 0.0f, China
+    nodes.push_back(new Node(-13.166f, 0.0f, -72.544f));// 5 - Machu Pichu, 0.0f, Peru
+    nodes.push_back(new Node(40.800f, 0.0f, -73.968f));// 6 - Broadway, 0.0f, USA
+    nodes.push_back(new Node(43.643f, 0.0f, -79.387f));// 7 - CN Tower, 0.0f, Canada
+    nodes.push_back(new Node(-33.858f, 0.0f, 151.215f));// 8 - SOH, 0.0f, Straya
+    nodes.push_back(new Node(52.516f, 0.0f, 13.178f));// 9 - Brandenburg Gate, 0.0f, Germany
+    nodes.push_back(new Node(-7.603f, 0.0f, 110.204f));// 10 - bhruveiuebiuriuer, 0.0f, Java
+    nodes.push_back(new Node(41.008f, 0.0f, 28.976f));// 11 - Hagia Sophia, 0.0f, Turkey
+    nodes.push_back(new Node(38.871f, 0.0f, -77.056f));// 12 - The Pentagon, 0.0f, USA
+    nodes.push_back(new Node(51.508f, 0.0f, -0.097f));// 13 - Globe Theatre, 0.0f, UK
+    nodes.push_back(new Node(39.916f, 0.0f, 116.397f));// 14 - The Forbidden Palace, 0.0f, China
+    nodes.push_back(new Node(34.849f, 0.0f, 134.694f));// 15 - Himji Castle, 0.0f, Japan
+    nodes.push_back(new Node(47.558f, 0.0f, 10.750f));// 16 - Castell Nwchy, 0.0f, Germany
+    nodes.push_back(new Node(54.439f, 0.0f, 13.757f));// 17 - Prora, 0.0f, Germany
+    nodes.push_back(new Node(28.656f, 0.0f, 77.242f));// 18 - Red Fort, 0.0f, India
+    nodes.push_back(new Node(55.752f, 0.0f, 37.618f));// 19 - The Kremlin, 0.0f, Russia
+    nodes.push_back(new Node(13.426f, 0.0f, 103.860f));// 20 - Ankor Wat, 0.0f, Cambodia
+    nodes.push_back(new Node(43.768f, 0.0f, 11.255f));// 21 - Uffizi, 0.0f, Italy
+    nodes.push_back(new Node(49.043f, 0.0f, 2.506f));// 22 - The Louvre, 0.0f, France
+    nodes.push_back(new Node(13.905f, 0.0f, -4.556f));// 23 - Great Mosque of Dijenne, 0.0f, Mali
+    nodes.push_back(new Node(27.173f, 0.0f, 78.042f));// 24 - Taj Mahal, 0.0f, India
+    nodes.push_back(new Node(20.684f, 0.0f, -88.568f));// 25 - Chitzen Itza, 0.0f, Mexico
+    nodes.push_back(new Node(48.853f, 0.0f, 2.350f));// 26 - Notre Dame, 0.0f, France
+    nodes.push_back(new Node(41.903f, 0.0f, 12.454f));// 27 - Sistine Chapel, 0.0f, Italy
+    nodes.push_back(new Node(43.723f, 0.0f, 10.397f));// 28 - Leaning Tower, 0.0f, Italy
+    nodes.push_back(new Node(-22.952f, 0.0f, -43.210f));// 29 - Christo Redendor, 0.0f, Brazil
+    nodes.push_back(new Node(34.384f, 0.0f, 109.278f));// 30 - Terracota Army, 0.0f, China
+    nodes.push_back(new Node(37.970f, 0.0f, 23.722f));// 31 - The Parthanon, Greece*/
 
     for (int i = 0; i < noOfNodes; i++)
     {
@@ -107,7 +139,79 @@ void Map::createEdge(int nodeA, int nodeB)
                             pow((nodes.at(nodeA)->getCoord(COORD_Y) - nodes.at(nodeB)->getCoord(COORD_Y)), 2.0f) +
                             pow((nodes.at(nodeA)->getCoord(COORD_Z) - nodes.at(nodeB)->getCoord(COORD_Z)), 2.0f));
 
-    edges->addEdge(nodeA, nodeB, distance, 10.0f);// Last argument needs to be default phero level whenever I add that
+    if (edges->addEdge(nodeA, nodeB, distance, 10.0f) == true)// Last argument needs to be default phero level whenever I add that
+    {
+        // If the edge is added, create an Edge to store its graphical data
+
+        /*float angle = (atan2(nodes.at(nodeB)->getCoord(COORD_Z) - nodes.at(nodeA)->getCoord(COORD_Z),
+                             nodes.at(nodeB)->getCoord(COORD_X) - nodes.at(nodeA)->getCoord(COORD_X))
+                       * (180.0f / 3.1415926535897));// Get math.h PI
+
+       float halfsize = 0.5f;
+
+        Vector4 *edgeVertices = new Vector4[4];
+
+        // Work out the coordinates of each vertex.  Not sure if this is faster or if doing the trig for each would be faster, test if get a chance (or just use ratio between coords to work it out?)
+        // Going to use all trig to make it work properly for now
+
+        edgeVertices[0] = Vector4(nodes.at(nodeA)->getCoord(COORD_X) - (halfsize * sin(90.0f - angle)), nodes.at(nodeA)->getCoord(COORD_Y), nodes.at(nodeA)->getCoord(COORD_Z) + (halfsize * sin(angle)));
+        //edgeVertices[3] = Vector4(nodes.at(nodeA)->getCoord(COORD_X) - edgeVertices[0].x, nodes.at(nodeA)->getCoord(COORD_Y), nodes.at(nodeA)->getCoord(COORD_Z) - edgeVertices[0].z);
+
+        //edgeVertices[1] = Vector4(edgeVertices[0].x + (nodes.at(nodeB)->getCoord(COORD_X) - nodes.at(nodeA)->getCoord(COORD_X)), nodes.at(nodeB)->getCoord(COORD_Y), edgeVertices[0].z + (nodes.at(nodeB)->getCoord(COORD_Z) - nodes.at(nodeA)->getCoord(COORD_Z)));
+        //edgeVertices[2] = Vector4(nodes.at(nodeB)->getCoord(COORD_X) - edgeVertices[1].x, nodes.at(nodeB)->getCoord(COORD_Y), nodes.at(nodeB)->getCoord(COORD_Z) - edgeVertices[1].z);
+
+        edgeVertices[3] = Vector4(nodes.at(nodeA)->getCoord(COORD_X) + (halfsize * sin(90.0f - angle)), nodes.at(nodeA)->getCoord(COORD_Y), nodes.at(nodeA)->getCoord(COORD_Z) - (halfsize * sin(angle)));
+
+        edgeVertices[1] = Vector4(nodes.at(nodeB)->getCoord(COORD_X) + (halfsize * sin(90.0f - angle)), nodes.at(nodeB)->getCoord(COORD_Y), nodes.at(nodeB)->getCoord(COORD_Z) + (halfsize * sin(angle)));
+        edgeVertices[2] = Vector4(nodes.at(nodeB)->getCoord(COORD_X) - (halfsize * sin(90.0f - angle)), nodes.at(nodeB)->getCoord(COORD_Y), nodes.at(nodeB)->getCoord(COORD_Z) - (halfsize * sin(angle)));
+        */
+
+        Vector4 *edgeVertices = new Vector4[4];
+
+        //char sideA, sideB;// Which side of nodes A and B should the edge stick to (R - 0, U - 1, L - 2, D - 3, looking from above, U is negative Z) (maybe B should just be -A)
+
+        if (abs(nodes.at(nodeB)->getCoord(COORD_X) - nodes.at(nodeA)->getCoord(COORD_X)) >=  abs(nodes.at(nodeB)->getCoord(COORD_Z) - nodes.at(nodeA)->getCoord(COORD_Z)))// L and R take points on the line between directions
+        {
+            // The eV[n] = Vec... bit could be shortened, there's a pattern.  Works for now though
+            if ((nodes.at(nodeB)->getCoord(COORD_X) - nodes.at(nodeA)->getCoord(COORD_X)) >= 0.0f)// R, on line between L and R => R
+            {
+                //sideA = 0;
+                edgeVertices[0] = Vector4(nodes.at(nodeA)->getCoord(COORD_X) + Node::halfsize, nodes.at(nodeA)->getCoord(COORD_Y), nodes.at(nodeA)->getCoord(COORD_Z) + Node::halfsize);
+                edgeVertices[1] = Vector4(nodes.at(nodeB)->getCoord(COORD_X) - Node::halfsize, nodes.at(nodeB)->getCoord(COORD_Y), nodes.at(nodeB)->getCoord(COORD_Z) + Node::halfsize);
+                edgeVertices[2] = Vector4(nodes.at(nodeB)->getCoord(COORD_X) - Node::halfsize, nodes.at(nodeB)->getCoord(COORD_Y), nodes.at(nodeB)->getCoord(COORD_Z) - Node::halfsize);
+                edgeVertices[3] = Vector4(nodes.at(nodeA)->getCoord(COORD_X) + Node::halfsize, nodes.at(nodeA)->getCoord(COORD_Y), nodes.at(nodeA)->getCoord(COORD_Z) - Node::halfsize);
+            }
+            else// L
+            {
+                //sideA = 2;
+                edgeVertices[0] = Vector4(nodes.at(nodeA)->getCoord(COORD_X) - Node::halfsize, nodes.at(nodeA)->getCoord(COORD_Y), nodes.at(nodeA)->getCoord(COORD_Z) - Node::halfsize);
+                edgeVertices[1] = Vector4(nodes.at(nodeB)->getCoord(COORD_X) + Node::halfsize, nodes.at(nodeB)->getCoord(COORD_Y), nodes.at(nodeB)->getCoord(COORD_Z) - Node::halfsize);
+                edgeVertices[2] = Vector4(nodes.at(nodeB)->getCoord(COORD_X) + Node::halfsize, nodes.at(nodeB)->getCoord(COORD_Y), nodes.at(nodeB)->getCoord(COORD_Z) + Node::halfsize);
+                edgeVertices[3] = Vector4(nodes.at(nodeA)->getCoord(COORD_X) - Node::halfsize, nodes.at(nodeA)->getCoord(COORD_Y), nodes.at(nodeA)->getCoord(COORD_Z) + Node::halfsize);
+            }
+        }
+        else
+        {
+            if ((nodes.at(nodeB)->getCoord(COORD_Z) - nodes.at(nodeA)->getCoord(COORD_Z)) >= 0.0f)// D, On line between U and D => D
+            {
+                //sideA = 3;
+                edgeVertices[0] = Vector4(nodes.at(nodeA)->getCoord(COORD_X) - Node::halfsize, nodes.at(nodeA)->getCoord(COORD_Y), nodes.at(nodeA)->getCoord(COORD_Z) + Node::halfsize);
+                edgeVertices[1] = Vector4(nodes.at(nodeB)->getCoord(COORD_X) - Node::halfsize, nodes.at(nodeB)->getCoord(COORD_Y), nodes.at(nodeB)->getCoord(COORD_Z) - Node::halfsize);
+                edgeVertices[2] = Vector4(nodes.at(nodeB)->getCoord(COORD_X) + Node::halfsize, nodes.at(nodeB)->getCoord(COORD_Y), nodes.at(nodeB)->getCoord(COORD_Z) - Node::halfsize);
+                edgeVertices[3] = Vector4(nodes.at(nodeA)->getCoord(COORD_X) + Node::halfsize, nodes.at(nodeA)->getCoord(COORD_Y), nodes.at(nodeA)->getCoord(COORD_Z) + Node::halfsize);
+            }
+            else// U
+            {
+                //sideA = 1;
+                edgeVertices[0] = Vector4(nodes.at(nodeA)->getCoord(COORD_X) + Node::halfsize, nodes.at(nodeA)->getCoord(COORD_Y), nodes.at(nodeA)->getCoord(COORD_Z) - Node::halfsize);
+                edgeVertices[1] = Vector4(nodes.at(nodeB)->getCoord(COORD_X) + Node::halfsize, nodes.at(nodeB)->getCoord(COORD_Y), nodes.at(nodeB)->getCoord(COORD_Z) + Node::halfsize);
+                edgeVertices[2] = Vector4(nodes.at(nodeB)->getCoord(COORD_X) - Node::halfsize, nodes.at(nodeB)->getCoord(COORD_Y), nodes.at(nodeB)->getCoord(COORD_Z) + Node::halfsize);
+                edgeVertices[3] = Vector4(nodes.at(nodeA)->getCoord(COORD_X) - Node::halfsize, nodes.at(nodeA)->getCoord(COORD_Y), nodes.at(nodeA)->getCoord(COORD_Z) - Node::halfsize);
+            }
+        }
+
+        renderableEdges.push_back(new Edge(edgeVertices));
+    }
 }
 
 void Map::render()
@@ -115,5 +219,9 @@ void Map::render()
     for (unsigned int i = 0; i < nodes.size(); i++)
     {
         nodes.at(i)->render();
+    }
+    for (unsigned int i = 0; i < renderableEdges.size(); i++)
+    {
+        renderableEdges.at(i)->render();
     }
 }

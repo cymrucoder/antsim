@@ -17,8 +17,7 @@
 	<iostream>
 	"EdgeArray.h"
 
-1393710123 /home/herb/hb/3yp/dev/antsim/EdgeArray.h
-	"Renderable.h"
+1393866995 /home/herb/hb/3yp/dev/antsim/EdgeArray.h
 
 1393108190 /home/herb/hb/3yp/dev/antsim/PheromoneBehaviour.h
 	<vector>
@@ -28,20 +27,21 @@
 	<iostream>
 	"EdgeArray.h"
 
-1393710084 /home/herb/hb/3yp/dev/antsim/Node.h
+1393872378 /home/herb/hb/3yp/dev/antsim/Node.h
 	<vector>
 	"Renderable.h"
 
-1393791773 source:/home/herb/hb/3yp/dev/antsim/AntSim.cpp
+1393869680 source:/home/herb/hb/3yp/dev/antsim/AntSim.cpp
 	"AntSim.h"
 
-1393786291 /home/herb/hb/3yp/dev/antsim/Map.h
+1393866913 /home/herb/hb/3yp/dev/antsim/Map.h
 	<vector>
 	<math.h>
 	<iostream>
 	"Node.h"
 	"Ant.h"
 	"EdgeArray.h"
+	"Edge.h"
 	"behaviours/move/MoveAntSystem.h"
 	"behaviours/pheromone/PheromoneAntSystem.h"
 	"behaviours/environment/EnvironmentAntSystem.h"
@@ -54,7 +54,7 @@
 1393114538 /home/herb/hb/3yp/dev/antsim/behaviours/pheromone/PheromoneAntSystem.h
 	"../../PheromoneBehaviour.h"
 
-1393710135 source:/home/herb/hb/3yp/dev/antsim/EdgeArray.cpp
+1393867002 source:/home/herb/hb/3yp/dev/antsim/EdgeArray.cpp
 	"EdgeArray.h"
 
 1393705274 source:/home/herb/hb/3yp/dev/antsim/EnvironmentBehaviour.cpp
@@ -68,13 +68,13 @@
 	<iostream>
 	"EdgeArray.h"
 
-1393788770 source:/home/herb/hb/3yp/dev/antsim/Map.cpp
+1393879549 source:/home/herb/hb/3yp/dev/antsim/Map.cpp
 	"Map.h"
 
 1392664450 source:/home/herb/hb/3yp/dev/antsim/MoveBehaviour.cpp
 	"MoveBehaviour.h"
 
-1393789856 source:/home/herb/hb/3yp/dev/antsim/Node.cpp
+1393872408 source:/home/herb/hb/3yp/dev/antsim/Node.cpp
 	"Node.h"
 
 1392829888 source:/home/herb/hb/3yp/dev/antsim/PheromoneBehaviour.cpp
@@ -110,7 +110,7 @@
 1393786281 /home/herb/hb/3yp/dev/antsim/Controller.h
 	"Map.h"
 
-1393786538 /home/herb/hb/3yp/dev/antsim/AntSim.h
+1393879579 /home/herb/hb/3yp/dev/antsim/AntSim.h
 	"SDL2/SDL.h"
 	<GL/glew.h>
 	"SDL2/SDL_opengl.h"
@@ -125,10 +125,21 @@
 	<iostream>
 	"Controller.h"
 
-1393788244 /home/herb/hb/3yp/dev/antsim/Renderable.h
+1393866727 /home/herb/hb/3yp/dev/antsim/Renderable.h
 	<GL/glew.h>
 	"SDL2/SDL_opengl.h"
+	"Vector4.h"
 
-1393789758 source:/home/herb/hb/3yp/dev/antsim/Renderable.cpp
+1393871690 source:/home/herb/hb/3yp/dev/antsim/Renderable.cpp
 	"Renderable.h"
+
+1393866589 /home/herb/hb/3yp/dev/antsim/Edge.h
+	"Renderable.h"
+
+1393866649 /home/herb/hb/3yp/dev/antsim/Vector.h
+
+1393866723 /home/herb/hb/3yp/dev/antsim/Vector4.h
+
+1393871674 source:/home/herb/hb/3yp/dev/antsim/Edge.cpp
+	"Edge.h"
 

@@ -17,7 +17,7 @@
 
 #include "Controller.h"
 
-#define NO_OF_NODES 31
+#define NO_OF_NODES 2
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600

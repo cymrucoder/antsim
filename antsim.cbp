@@ -44,6 +44,8 @@
 		<Unit filename="AntSim.h" />
 		<Unit filename="Controller.cpp" />
 		<Unit filename="Controller.h" />
+		<Unit filename="Edge.cpp" />
+		<Unit filename="Edge.h" />
 		<Unit filename="EdgeArray.cpp" />
 		<Unit filename="EdgeArray.h" />
 		<Unit filename="EnvironmentBehaviour.cpp" />
@@ -58,6 +60,7 @@
 		<Unit filename="PheromoneBehaviour.h" />
 		<Unit filename="Renderable.cpp" />
 		<Unit filename="Renderable.h" />
+		<Unit filename="Vector4.h" />
 		<Unit filename="antsimshader.fs" />
 		<Unit filename="antsimshader.vs" />
 		<Unit filename="behaviours/environment/EnvironmentAntSystem.cpp" />
