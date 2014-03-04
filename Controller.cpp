@@ -93,9 +93,52 @@ void Controller::regenerateMap(int noOfNodes)
 
 }
 
-Map* Controller::generateMap(int noOfNodes)
+Map* Controller::generateMap(int noOfNodes, char type)
 {
-    Map *mapTemp = new Map(noOfNodes, new EnvironmentMaxMinAS(0.5f));
+    EdgeArray *tempEdges = new EdgeArray(noOfNodes);// Would prefer to create this inside Map but if it's here than the behaviours can use it easier
+
+    Map *mapTemp = new Map(noOfNodes, tempEdges, new EnvironmentMaxMinAS(0.5f, tempEdges));
+
+    if (type == MAPTYPE_TSP_RANDOM)// Generate random map for TSP type problem
+    {
+        std::random_device rd;
+        std::mt19937 mt = std::mt19937(rd());
+        std::uniform_real_distribution<float> randCoord(-5.0f, 5.0f);// Assuming the screen is 100px wide and high, works for now
+
+        for (int i = 0; i < noOfNodes; i++)// Create set of random nodes
+        {
+            mapTemp->createNode(randCoord(mt), 0.0f, randCoord(mt));
+        }
+
+        for (int i = 0; i < noOfNodes; i++)// Create edges between all nodes
+        {
+            for (int j = 0; j < noOfNodes; j++)
+            {
+                if (i < j)// Only create one edge for each pair of nodes
+                {
+                    mapTemp->createEdge(i, j);
+                }
+            }
+        }
+
+        for (int i = 0; i < noOfNodes; i++)
+        {
+            //ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneAntSystem(edges, 100.0f)));
+            mapTemp->createAnt(i, new MoveAntSystem(tempEdges, 1.0f, 5.0f), new PheromoneMaxMinAS(tempEdges, 4.0f));
+        }
+    }
+    else if (type == MAPTYPE_TSP_LOADED)// Load nodes for TSP type problem from file
+    {
+        // Load nodes
+    }
+    else if (type == MAPTYPE_MAZE_RANDOM)// Generate random maze
+    {
+        // Generate maze
+    }
+    else if (type == MAPTYPE_MAZE_LOADED)// Load maze from file
+    {
+        // Load maze
+    }
 
     return mapTemp;
 }

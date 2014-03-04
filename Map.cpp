@@ -1,19 +1,8 @@
 #include "Map.h"
 
-Map::Map(int noOfNodes, EnvironmentBehaviour *enviroBeh)
+Map::Map(int noOfNodes, EdgeArray *edges, EnvironmentBehaviour *enviroBeh)
 {
-    edges = new EdgeArray(noOfNodes);
-
-    // Need to separate the map generation code into another class
-
-    std::random_device rd;
-    std::mt19937 mt = std::mt19937(rd());
-    std::uniform_real_distribution<float> randCoord(-5.0f, 5.0f);// Assuming the screen is 100px wide and high, works for now
-
-    for (int i = 0; i < noOfNodes; i++)
-    {
-        nodes.push_back(new Node(randCoord(mt), 0.0f, randCoord(mt)));
-    }
+    this->edges = edges;
 
     /*nodes.push_back(new Node(54.0f, 67.0f, 0.0f));
     nodes.push_back(new Node(54.0f, 62.0f, 0.0f));
@@ -46,7 +35,6 @@ Map::Map(int noOfNodes, EnvironmentBehaviour *enviroBeh)
     nodes.push_back(new Node(71.0f, 71.0f, 0.0f));
     nodes.push_back(new Node(58.0f, 69.0f, 0.0f));*/
 
-    //nodes.push_back(new Node(0.950f, 0.364f, 0.0f));// 1 - Temple of Artemis, Greece
     /*nodes.push_back(new Node(37.950f, 27.364f, 0.0f));// 1 - Temple of Artemis, Greece
     nodes.push_back(new Node(29.979f, 31.134f, 0.0f));// 2 - Pyramids, Egypt
     nodes.push_back(new Node(37.177f, -3.591f, 0.0f));// 3 - Alhambra, Spain
@@ -110,28 +98,13 @@ Map::Map(int noOfNodes, EnvironmentBehaviour *enviroBeh)
     nodes.push_back(new Node(-22.952f, 0.0f, -43.210f));// 29 - Christo Redendor, 0.0f, Brazil
     nodes.push_back(new Node(34.384f, 0.0f, 109.278f));// 30 - Terracota Army, 0.0f, China
     nodes.push_back(new Node(37.970f, 0.0f, 23.722f));// 31 - The Parthanon, Greece*/
-
-    for (int i = 0; i < noOfNodes; i++)
-    {
-        for (int j = 0; j < noOfNodes; j++)
-        {
-            if (i < j)
-            {
-                createEdge(i, j);
-            }
-        }
-    }
-
-    for (int i = 0; i < noOfNodes; i++)
-    {
-        //ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneAntSystem(edges, 100.0f)));
-        ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneMaxMinAS(edges, 4.0f)));
-    }
-
-    enviroBeh->init(edges);// I don't like this way of doing it but it works for now (problem is AntSim doesn't know about *edges[] so can't pass it to PAS())
-    this->enviroBeh = enviroBeh;
-
 }
+
+void Map::createNode(float x, float y, float z)
+{
+    nodes.push_back(new Node(x, y, z));
+}
+
 
 void Map::createEdge(int nodeA, int nodeB)
 {
@@ -212,6 +185,12 @@ void Map::createEdge(int nodeA, int nodeB)
 
         renderableEdges.push_back(new Edge(edgeVertices));
     }
+}
+
+void Map::createAnt(int node, MoveBehaviour *moveBeh, PheromoneBehaviour *pheroBeh)
+{
+    //ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneAntSystem(edges, 100.0f)));
+    ants.push_back(new Ant(node, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneMaxMinAS(edges, 4.0f)));
 }
 
 void Map::render()

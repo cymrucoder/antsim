@@ -1,11 +1,6 @@
 #include "EnvironmentAntSystem.h"
 
-EnvironmentAntSystem::EnvironmentAntSystem()
-{
-
-}
-
-void EnvironmentAntSystem::init(EdgeArray* edges)
+EnvironmentAntSystem::EnvironmentAntSystem(EdgeArray *edges)
 {
     this->edges = edges;
 }

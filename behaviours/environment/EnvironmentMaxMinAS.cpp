@@ -1,15 +1,12 @@
 #include "EnvironmentMaxMinAS.h"
 
-EnvironmentMaxMinAS::EnvironmentMaxMinAS(float pheroMin)
+EnvironmentMaxMinAS::EnvironmentMaxMinAS(float pheroMin, EdgeArray *edges)
 {
     this->pheroMin = pheroMin;
 
-    howManyAntsUpdate = 1;// If you put this bool elsewhere you could probably wouldn't need this class
-}
-
-void EnvironmentMaxMinAS::init(EdgeArray* edges)
-{
     this->edges = edges;
+
+    howManyAntsUpdate = 1;// If you put this bool elsewhere you could probably wouldn't need this class
 }
 
 void EnvironmentMaxMinAS::updatePheromone()

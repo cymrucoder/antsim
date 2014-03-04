@@ -7,9 +7,7 @@ class EnvironmentAntSystem : public EnvironmentBehaviour
 {
 public:
 
-	EnvironmentAntSystem();//float evaporationRate);
-
-	void init(EdgeArray* edges);
+	EnvironmentAntSystem(EdgeArray *edges);//float evaporationRate);
 
 	void updatePheromone();
 

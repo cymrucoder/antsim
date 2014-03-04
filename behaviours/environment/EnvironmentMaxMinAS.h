@@ -7,9 +7,7 @@ class EnvironmentMaxMinAS : public EnvironmentBehaviour
 {
 public:
 
-	EnvironmentMaxMinAS(float pheroMin);//float evaporationRate);
-
-	void init(EdgeArray* edges);
+	EnvironmentMaxMinAS(float pheroMin, EdgeArray *edges);//float evaporationRate);
 
 	void updatePheromone();
 

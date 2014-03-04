@@ -14,8 +14,6 @@ public:
 
 	virtual ~EnvironmentBehaviour();
 
-	virtual void init(EdgeArray *edges) = 0;
-
 	virtual void updatePheromone() = 0;
 
     int getHowManyAntsUpdate();

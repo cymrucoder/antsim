@@ -31,6 +31,7 @@ bool EdgeArray::addEdge(int nodeA, int nodeB, float distance, float pheromoneLev
 
         return true;
     }
+    return false;
 }
 
 int EdgeArray::getNoOfNodes()
