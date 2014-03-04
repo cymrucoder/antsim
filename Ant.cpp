@@ -34,6 +34,11 @@ float Ant::getLengthOfPath()
     return lengthOfPath;
 }
 
+std::vector<int> Ant::getNodesVisited()
+{
+    return nodesVisited;
+}
+
 void Ant::reset()// Reset to original node
 {
     lengthOfPath = 0;

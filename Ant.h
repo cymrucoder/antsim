@@ -18,9 +18,10 @@ public:
     void updatePheromone();
 
     int nodeCurrent;// Should be in private but here for debug purposes
-    std::vector<int> nodesVisited;
+    std::vector<int> nodesVisited;// Same
 
     float getLengthOfPath();
+    std::vector<int> getNodesVisited();
 
     void reset();
     void reset(int nodeNew);

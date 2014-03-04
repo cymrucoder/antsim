@@ -13,6 +13,7 @@
 #include "behaviours/environment/EnvironmentAntSystem.h"
 #include "behaviours/pheromone/PheromoneMaxMinAS.h"
 #include "behaviours/environment/EnvironmentMaxMinAS.h"
+#include "behaviours/environment/EnvironmentRankBasedAS.h"
 
 #define MAPTYPE_TSP_RANDOM 0
 #define MAPTYPE_TSP_LOADED 1
@@ -33,15 +34,17 @@ public:
 	void render();
 
 	std::vector<Ant*> ants;// May move ants, edges and enviroBeh into private and rework access later
+    std::vector<Ant*> processedAnts;// Move this to Controller?
 	EdgeArray *edges;
 
     EnvironmentBehaviour *enviroBeh;
-
 
 private:
 
     std::vector<Node*> nodes;
     std::vector<Edge*> renderableEdges;
+
+
 };
 
 #endif // _MAP_H_

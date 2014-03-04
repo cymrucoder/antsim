@@ -7,6 +7,7 @@
 #include <random>
 #include <iostream>
 #include "EdgeArray.h"
+#include "Ant.h"
 
 class EnvironmentBehaviour
 {
@@ -16,7 +17,9 @@ public:
 
 	virtual void updatePheromone() = 0;
 
-    int getHowManyAntsUpdate();
+    //int getHowManyAntsUpdate();
+
+    virtual void processAntList(std::vector<Ant*> *ants, std::vector<Ant*> *processedAnts);
 
 protected:
 

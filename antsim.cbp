@@ -67,6 +67,8 @@
 		<Unit filename="behaviours/environment/EnvironmentAntSystem.h" />
 		<Unit filename="behaviours/environment/EnvironmentMaxMinAS.cpp" />
 		<Unit filename="behaviours/environment/EnvironmentMaxMinAS.h" />
+		<Unit filename="behaviours/environment/EnvironmentRankBasedAS.cpp" />
+		<Unit filename="behaviours/environment/EnvironmentRankBasedAS.h" />
 		<Unit filename="behaviours/move/MoveAntSystem.cpp" />
 		<Unit filename="behaviours/move/MoveAntSystem.h" />
 		<Unit filename="behaviours/pheromone/PheromoneAntSystem.cpp" />

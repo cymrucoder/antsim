@@ -1,13 +1,45 @@
 # depslib dependency file v1.0
-1393951478 source:/home/herb/hb/3yp/dev/antsim/Ant.cpp
+226973136736 
+
+1393957975 source:/home/herb/hb/3yp/dev/antsim/Ant.cpp
 	"Ant.h"
 
-1393951478 /home/herb/hb/3yp/dev/antsim/Ant.h
+1393957939 /home/herb/hb/3yp/dev/antsim/Ant.h
 	"MoveBehaviour.h"
 	"PheromoneBehaviour.h"
 	<vector>
 	"Node.h"
 	"Renderable.h"
+
+1393512952 ironmentcontrol
+	"MoveBehaviour.h"
+	"PheromoneBehaviour.h"
+	<vector>
+	"Node.h"
+	"Renderable.h"
+	<vector>
+	"Renderable.h"
+	<vector>
+	<math.h>
+	<iostream>
+	"Node.h"
+	"Ant.h"
+	"EdgeArray.h"
+	"Edge.h"
+	"behaviours/move/MoveAntSystem.h"
+	"behaviours/pheromone/PheromoneAntSystem.h"
+	"behaviours/environment/EnvironmentAntSystem.h"
+	"behaviours/pheromone/PheromoneMaxMinAS.h"
+	"behaviours/environment/EnvironmentMaxMinAS.h"
+	<vector>
+	<algorithm>
+	<math.h>
+	<random>
+	<iostream>
+	"EdgeArray.h"
+	"Ant.h"
+	"Map.h"
+	"Node.h"
 
 1392741534 /home/herb/hb/3yp/dev/antsim/MoveBehaviour.h
 	<vector>
@@ -16,6 +48,9 @@
 	<random>
 	<iostream>
 	"EdgeArray.h"
+
+1393270396 D
+	"behaviours/environment/EnvironmentRankBasedAS.h"
 
 1393951478 /home/herb/hb/3yp/dev/antsim/EdgeArray.h
 
@@ -31,10 +66,10 @@
 	<vector>
 	"Renderable.h"
 
-1393951478 source:/home/herb/hb/3yp/dev/antsim/AntSim.cpp
+1393957893 source:/home/herb/hb/3yp/dev/antsim/AntSim.cpp
 	"AntSim.h"
 
-1393953605 /home/herb/hb/3yp/dev/antsim/Map.h
+1393958104 /home/herb/hb/3yp/dev/antsim/Map.h
 	<vector>
 	<math.h>
 	<iostream>
@@ -47,6 +82,7 @@
 	"behaviours/environment/EnvironmentAntSystem.h"
 	"behaviours/pheromone/PheromoneMaxMinAS.h"
 	"behaviours/environment/EnvironmentMaxMinAS.h"
+	"behaviours/environment/EnvironmentRankBasedAS.h"
 
 1393114531 /home/herb/hb/3yp/dev/antsim/behaviours/move/MoveAntSystem.h
 	"../../MoveBehaviour.h"
@@ -57,19 +93,20 @@
 1393951716 source:/home/herb/hb/3yp/dev/antsim/EdgeArray.cpp
 	"EdgeArray.h"
 
-1393705274 source:/home/herb/hb/3yp/dev/antsim/EnvironmentBehaviour.cpp
+1393512952 source:/home/herb/hb/3yp/dev/antsim/EnvironmentBehaviour.cpp
+	"EnvironmentBehaviour.h"
 	"EnvironmentBehaviour.h"
 
-1393953412 /home/herb/hb/3yp/dev/antsim/EnvironmentBehaviour.h
+1393955460 /home/herb/hb/3yp/dev/antsim/EnvironmentBehaviour.h
 	<vector>
 	<algorithm>
 	<math.h>
 	<random>
 	<iostream>
 	"EdgeArray.h"
+	"Ant.h"
 
-1393951478 source:/home/herb/hb/3yp/dev/antsim/Map.cpp
-	"Map.h"
+1393513119 source:/home/herb/hb/3yp/dev/antsim/Map.cpp
 
 1392664450 source:/home/herb/hb/3yp/dev/antsim/MoveBehaviour.cpp
 	"MoveBehaviour.h"
@@ -83,26 +120,28 @@
 1393953391 /home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentAntSystem.h
 	"../../EnvironmentBehaviour.h"
 
+1393705274 source:/home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentAntSystem.cpp
+	"EnvironmentAntSystem.h"
+	"EnvironmentAntSystem.h"
+
 1393268767 source:/home/herb/hb/3yp/dev/antsim/behaviours/move/MoveAntSystem.cpp
 	"MoveAntSystem.h"
 
 1393108689 source:/home/herb/hb/3yp/dev/antsim/behaviours/pheromone/PheromoneAntSystem.cpp
 	"PheromoneAntSystem.h"
 
+1393705274 source:/home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentMaxMinAS.cpp
+	"EnvironmentMaxMinAS.h"
+	"EnvironmentMaxMinAS.h"
+
+1393955460 /home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentMaxMinAS.h
+	"../../EnvironmentBehaviour.h"
+
 1393270429 source:/home/herb/hb/3yp/dev/antsim/behaviours/pheromone/PheromoneMaxMinAS.cpp
 	"PheromoneMaxMinAS.h"
 
 1393270396 /home/herb/hb/3yp/dev/antsim/behaviours/pheromone/PheromoneMaxMinAS.h
 	"../../PheromoneBehaviour.h"
-
-1393953402 /home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentMaxMinAS.h
-	"../../EnvironmentBehaviour.h"
-
-1393705274 source:/home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentAntSystem.cpp
-	"EnvironmentAntSystem.h"
-
-1393705274 source:/home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentMaxMinAS.cpp
-	"EnvironmentMaxMinAS.h"
 
 1393953267 source:/home/herb/hb/3yp/dev/antsim/Controller.cpp
 	"Controller.h"
@@ -142,4 +181,10 @@
 
 1393951478 source:/home/herb/hb/3yp/dev/antsim/Edge.cpp
 	"Edge.h"
+
+1393955895 /home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentRankBasedAS.h
+	"../../EnvironmentBehaviour.h"
+
+1393512952 source:/home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentRankBasedAS.cpp
+	"EnvironmentRankBasedAS.h"
 

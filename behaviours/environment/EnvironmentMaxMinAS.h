@@ -1,5 +1,5 @@
-#ifndef _ENVIRONMENTAMAXMINAS_H_
-#define _ENVIRONMENTAMAXMINAS_H_
+#ifndef _ENVIRONMENTMAXMINAS_H_
+#define _ENVIRONMENTMAXMINAS_H_
 
 #include "../../EnvironmentBehaviour.h"
 
@@ -11,12 +11,13 @@ public:
 
 	void updatePheromone();
 
+	void processAntList(std::vector<Ant*> *ants, std::vector<Ant*> *processedAnts);
+
 private:
 
     EdgeArray* edges;
-    float pheroMax, pheroMin;
+    float pheroMin;
 
 };
 
-#endif // _ENVIRONMENTAMAXMINAS_H_
-
+#endif // _ENVIRONMENTMAXMINAS_H_
