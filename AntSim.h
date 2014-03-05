@@ -1,9 +1,17 @@
 #ifndef _ANTSIM_H_
 #define _ANTSIM_H_
 
-#include "SDL2/SDL.h"
+#include <FL/Fl.h>
+#include <FL/Fl_Window.h>
+#include <FL/Fl_Int_Input.h>
+#include <FL/Fl_Float_Input.h>
+#include <FL/Fl_Box.h>
+#include <FL/Fl_Button.h>
+#include <FL/Fl_Round_Button.h>
+
+//#include "SDL2/SDL.h"
 #include <GL/glew.h>
-#include "SDL2/SDL_opengl.h"
+//#include "SDL2/SDL_opengl.h"
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -15,8 +23,8 @@
 
 #include "Controller.h"
 
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 600
+#define SCREEN_WIDTH 1050
+#define SCREEN_HEIGHT 700
 
 class AntSim
 {
@@ -38,8 +46,32 @@ public:
 
 private:
 
-    SDL_Window* window;
-    SDL_GLContext context;
+    /*SDL_Window* window;
+    SDL_GLContext context;*/
+    Fl_Window *window;
+    Fl_Box *box;
+    Fl_Float_Input *inputAlpha;
+    Fl_Float_Input *inputBeta;
+    Fl_Float_Input *inputEvapRate;
+    Fl_Float_Input *inputPheroNumerator;
+
+    Fl_Int_Input *inputElitistAnts;
+    Fl_Int_Input *inputRankedAnts;
+    Fl_Float_Input *inputMaxPheromone;
+    Fl_Float_Input *inputMinPhermone;
+
+    Fl_Int_Input *inputNoOfNodes;
+
+    Fl_Round_Button *buttonTSP;
+    Fl_Round_Button *buttonMaze;
+    Fl_Button *buttonGenerateMap;
+    Fl_Button *buttonLoadMap;
+
+    Fl_Int_Input *inputIterations;
+
+    Fl_Button *buttonRunIteration;
+    Fl_Button *buttonRun;
+
 
     GLuint programID;
 

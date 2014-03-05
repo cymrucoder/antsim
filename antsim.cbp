@@ -16,10 +16,9 @@
 					<Add option="-g" />
 				</Compiler>
 				<Linker>
-					<Add option="-lSDL2" />
+					<Add option="-lfltk" />
 					<Add option="-lGLEW" />
 					<Add option="-lGL" />
-					<Add option="-lSOIL" />
 				</Linker>
 			</Target>
 			<Target title="Release">

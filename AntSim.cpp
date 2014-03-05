@@ -2,14 +2,16 @@
 
 AntSim::AntSim()
 {
-	window = NULL;
+	//window = NULL;
+	window = 0;
+	inputAlpha = 0;
 
     programID = 0;
 }
 
 bool AntSim::init()
 {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    /*if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 
         std::cout << "SDL failed to initialse, error: " << SDL_GetError() << std::endl;
         return false;
@@ -33,7 +35,54 @@ bool AntSim::init()
 
         std::cout << "OpenGL context could not be created, error: " << SDL_GetError() << std::endl;
         return false;
-    }
+    }*/
+
+    window = new Fl_Window(SCREEN_WIDTH, SCREEN_HEIGHT);
+    /*box = new Fl_Box(20, 40, 300, 100, "Hello world");
+    box->box(FL_UP_BOX);
+    box->labelfont(FL_BOLD+FL_ITALIC);
+    box->labelsize(36);
+    box->labeltype(FL_SHADOW_LABEL);*/
+
+    #define INPUTFIELD_HEIGHT 20
+    #define INPUTFIELD_WIDTH 50
+    #define INPUTFIELD_X (SCREEN_WIDTH - INPUTFIELD_WIDTH - 20)
+
+    inputAlpha = new Fl_Float_Input(INPUTFIELD_X, 30, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone importance");//50, 605, 50, 20
+    inputAlpha->value("1.0");
+    inputBeta = new Fl_Float_Input(INPUTFIELD_X, 60, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Distance importance");
+    inputBeta->value("1.0");
+    inputEvapRate = new Fl_Float_Input(INPUTFIELD_X, 90, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Evaporation rate");
+    inputEvapRate->value("0.5");
+    inputPheroNumerator = new Fl_Float_Input(INPUTFIELD_X, 120, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone numerator");
+    inputPheroNumerator->value("1");
+    inputElitistAnts = new Fl_Int_Input(INPUTFIELD_X, 180, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. elitist ants");
+    inputElitistAnts->value("0");
+    inputRankedAnts = new Fl_Int_Input(INPUTFIELD_X, 210, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. ranked ants");
+    inputRankedAnts->value("0");
+    inputMaxPheromone = new Fl_Float_Input(INPUTFIELD_X, 240, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. pheromone");
+    inputMaxPheromone->value("0.0");
+    inputMinPhermone = new Fl_Float_Input(INPUTFIELD_X, 270, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Min. pheromone");
+    inputMinPhermone->value("0.0");
+    box = new Fl_Box(0, 0, 800, 600, "Where OpenGL will go");
+    box->box(FL_UP_BOX);
+    inputNoOfNodes = new Fl_Int_Input(INPUTFIELD_X, 330, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. nodes");
+    inputNoOfNodes->value("20");
+    buttonMaze = new Fl_Round_Button(INPUTFIELD_X - 70, 395, INPUTFIELD_WIDTH, 10, "Maze type map");
+    buttonMaze->type(FL_RADIO_BUTTON);
+    buttonTSP = new Fl_Round_Button(INPUTFIELD_X - 70, 370, INPUTFIELD_WIDTH, 10, "TSP type map");
+    buttonTSP->type(FL_RADIO_BUTTON);
+    buttonLoadMap = new Fl_Button(INPUTFIELD_X - 70, 420, 120, 30, "Load map");
+    buttonGenerateMap = new Fl_Button(INPUTFIELD_X - 70, 460, 120, 30, "Generate map");
+    inputIterations = new Fl_Int_Input(INPUTFIELD_X, 515, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. iterations");
+    inputIterations->value("1000");
+    buttonRunIteration = new Fl_Button(INPUTFIELD_X - 70, 550, 120, 30, "Run iteration");
+    buttonRunIteration = new Fl_Button(INPUTFIELD_X - 70, 590, 120, 30, "Run");
+    // Current iteration count somewhere?  Along buttom with other results?
+
+    window->end();
+    window->show();
+    Fl::run();
 
     glewExperimental = GL_TRUE;
     GLenum glewError = glewInit();
@@ -43,10 +92,10 @@ bool AntSim::init()
         std::cout << "GLEW could not be initialised, error : " << glewGetErrorString(glewError) << std::endl;
     }
 
-    if (SDL_GL_SetSwapInterval(1) < 0) {
+    /*if (SDL_GL_SetSwapInterval(1) < 0) {
 
         std::cout << "Unable to set vsync, error: " << SDL_GetError() << std::endl;
-    }
+    }*/
 
     /*glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
@@ -178,10 +227,10 @@ void AntSim::close()
 {
     glDeleteProgram(programID);
 
-    SDL_DestroyWindow(window);
+    /*SDL_DestroyWindow(window);
     window = NULL;
 
-    SDL_Quit();
+    SDL_Quit();*/
 }
 
 int AntSim::run()
@@ -195,12 +244,12 @@ int AntSim::run()
 
     bool running = true;
 
-    SDL_Event e;
-    SDL_StartTextInput();
+    //SDL_Event e;
+    //SDL_StartTextInput();
 
     while (running)
     {
-        while (SDL_PollEvent(&e) != 0)
+        /*while (SDL_PollEvent(&e) != 0)
         {
             if (e.type == SDL_QUIT)
             {
@@ -214,10 +263,10 @@ int AntSim::run()
             }
         }
         render();
-        SDL_GL_SwapWindow(window);
+        SDL_GL_SwapWindow(window);*/
     }
 
-    SDL_StopTextInput();
+    //SDL_StopTextInput();
     close();
 
     return 0;
