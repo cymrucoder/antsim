@@ -9,15 +9,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <string>
-#include <fstream>
-#include <SOIL/SOIL.h>
 
 #include <vector>
 #include <iostream>
 
 #include "Controller.h"
-
-#define NO_OF_NODES 2
 
 #define SCREEN_WIDTH 800
 #define SCREEN_HEIGHT 600

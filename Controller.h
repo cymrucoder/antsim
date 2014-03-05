@@ -2,12 +2,15 @@
 #define _CONTROLLER_H_
 
 #include "Map.h"
+#include <fstream>
+#include <string>
+#include <queue>
 
 class Controller
 {
 public:
 
-	Controller(int noOfNodes);
+	Controller(int noOfNodes, char type = MAPTYPE_TSP_RANDOM);
 
 	void run(int maxIterations);
 	void runIteration();

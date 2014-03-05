@@ -66,7 +66,7 @@
 	<vector>
 	"Renderable.h"
 
-1393957893 source:/home/herb/hb/3yp/dev/antsim/AntSim.cpp
+1393983443 source:/home/herb/hb/3yp/dev/antsim/AntSim.cpp
 	"AntSim.h"
 
 1393958104 /home/herb/hb/3yp/dev/antsim/Map.h
@@ -93,8 +93,7 @@
 1393951716 source:/home/herb/hb/3yp/dev/antsim/EdgeArray.cpp
 	"EdgeArray.h"
 
-1393512952 source:/home/herb/hb/3yp/dev/antsim/EnvironmentBehaviour.cpp
-	"EnvironmentBehaviour.h"
+1393955460 source:/home/herb/hb/3yp/dev/antsim/EnvironmentBehaviour.cpp
 	"EnvironmentBehaviour.h"
 
 1393955460 /home/herb/hb/3yp/dev/antsim/EnvironmentBehaviour.h
@@ -106,7 +105,8 @@
 	"EdgeArray.h"
 	"Ant.h"
 
-1393513119 source:/home/herb/hb/3yp/dev/antsim/Map.cpp
+1393983188 source:/home/herb/hb/3yp/dev/antsim/Map.cpp
+	"Map.h"
 
 1392664450 source:/home/herb/hb/3yp/dev/antsim/MoveBehaviour.cpp
 	"MoveBehaviour.h"
@@ -120,8 +120,7 @@
 1393953391 /home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentAntSystem.h
 	"../../EnvironmentBehaviour.h"
 
-1393705274 source:/home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentAntSystem.cpp
-	"EnvironmentAntSystem.h"
+1393956023 source:/home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentAntSystem.cpp
 	"EnvironmentAntSystem.h"
 
 1393268767 source:/home/herb/hb/3yp/dev/antsim/behaviours/move/MoveAntSystem.cpp
@@ -130,8 +129,7 @@
 1393108689 source:/home/herb/hb/3yp/dev/antsim/behaviours/pheromone/PheromoneAntSystem.cpp
 	"PheromoneAntSystem.h"
 
-1393705274 source:/home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentMaxMinAS.cpp
-	"EnvironmentMaxMinAS.h"
+1393955937 source:/home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentMaxMinAS.cpp
 	"EnvironmentMaxMinAS.h"
 
 1393955460 /home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentMaxMinAS.h
@@ -143,13 +141,16 @@
 1393270396 /home/herb/hb/3yp/dev/antsim/behaviours/pheromone/PheromoneMaxMinAS.h
 	"../../PheromoneBehaviour.h"
 
-1393953267 source:/home/herb/hb/3yp/dev/antsim/Controller.cpp
+1393983406 source:/home/herb/hb/3yp/dev/antsim/Controller.cpp
 	"Controller.h"
 
-1393952857 /home/herb/hb/3yp/dev/antsim/Controller.h
+1393971176 /home/herb/hb/3yp/dev/antsim/Controller.h
 	"Map.h"
+	<fstream>
+	<string>
+	<queue>
 
-1393951478 /home/herb/hb/3yp/dev/antsim/AntSim.h
+1393964567 /home/herb/hb/3yp/dev/antsim/AntSim.h
 	"SDL2/SDL.h"
 	<GL/glew.h>
 	"SDL2/SDL_opengl.h"
@@ -158,8 +159,6 @@
 	<glm/gtc/matrix_transform.hpp>
 	<glm/gtc/type_ptr.hpp>
 	<string>
-	<fstream>
-	<SOIL/SOIL.h>
 	<vector>
 	<iostream>
 	"Controller.h"
@@ -185,6 +184,6 @@
 1393955895 /home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentRankBasedAS.h
 	"../../EnvironmentBehaviour.h"
 
-1393512952 source:/home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentRankBasedAS.cpp
+1393955887 source:/home/herb/hb/3yp/dev/antsim/behaviours/environment/EnvironmentRankBasedAS.cpp
 	"EnvironmentRankBasedAS.h"
 

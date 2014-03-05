@@ -102,7 +102,8 @@ bool AntSim::init()
     }*/
 
     projectionMatrix = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
-    viewMatrix = glm::lookAt(glm::vec3(0.0f, 15.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.1f), glm::vec3(0, 1, 0));// Look from, look to (for some reason looking at 0,0,0 means nothing renders)
+    viewMatrix = glm::lookAt(glm::vec3(0.0f, 15.0f, 0.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0, 1, 0));// Look from, look to
+    //(for some reason looking at straight down means nothing renders and looking from 0 to 0.1f makes everything backwards)
     //modelMatrix = glm::translate<GLfloat>(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0.0f);
     modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
@@ -126,7 +127,7 @@ bool AntSim::init()
 
     glUseProgram(0);
 
-    controller = new Controller(NO_OF_NODES);
+    controller = new Controller(3, MAPTYPE_MAZE_RANDOM);
 
     return true;
 }
