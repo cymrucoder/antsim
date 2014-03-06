@@ -64,7 +64,7 @@ bool AntSim::init()
     inputMaxPheromone->value("0.0");
     inputMinPhermone = new Fl_Float_Input(INPUTFIELD_X, 270, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Min. pheromone");
     inputMinPhermone->value("0.0");
-    box = new Fl_Box(0, 0, 800, 600, "Where OpenGL will go");
+    box = new Fl_Box(250, 0, 800, 600, "Where OpenGL will go");
     box->box(FL_UP_BOX);
     inputNoOfNodes = new Fl_Int_Input(INPUTFIELD_X, 330, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. nodes");
     inputNoOfNodes->value("20");
@@ -79,6 +79,15 @@ bool AntSim::init()
     buttonRunIteration = new Fl_Button(INPUTFIELD_X - 70, 550, 120, 30, "Run iteration");
     buttonRunIteration = new Fl_Button(INPUTFIELD_X - 70, 590, 120, 30, "Run");
     // Current iteration count somewhere?  Along buttom with other results?
+    menuAntMoveBeh = new Fl_Choice(90, 30, 120, 30, "Move beh");
+    /*moveBehAS = new Fl_Menu_Item[1];
+    moveBehAS[0] =
+    {"AS", 0, 0, 0}
+    ;*/
+    menuAntMoveBeh->add("AS", 0, 0);
+    menuAntPheroBeh = new Fl_Choice(90, 80, 120, 30, "Phero beh");
+    menuEnviroBeh = new Fl_Choice(90, 130, 120, 30, "Enviro beh");
+    // Fl_File_Browser for loading files
 
     window->end();
     window->show();

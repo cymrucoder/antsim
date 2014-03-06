@@ -8,6 +8,8 @@
 #include <FL/Fl_Box.h>
 #include <FL/Fl_Button.h>
 #include <FL/Fl_Round_Button.h>
+#include <FL/Fl_Choice.h>
+#include <FL/Fl_Menu_Item.h>
 
 //#include "SDL2/SDL.h"
 #include <GL/glew.h>
@@ -23,7 +25,7 @@
 
 #include "Controller.h"
 
-#define SCREEN_WIDTH 1050
+#define SCREEN_WIDTH 1300
 #define SCREEN_HEIGHT 700
 
 class AntSim
@@ -72,6 +74,11 @@ private:
     Fl_Button *buttonRunIteration;
     Fl_Button *buttonRun;
 
+    Fl_Choice *menuAntMoveBeh;
+    Fl_Choice *menuAntPheroBeh;
+    Fl_Choice *menuEnviroBeh;
+
+    Fl_Menu_Item *moveBehAS;
 
     GLuint programID;
 
