@@ -1,23 +1,25 @@
-#ifndef _RENDERABLE_H_
-#define _RENDERABLE_H_
+#ifndef _RENDERER_H_
+#define _RENDERER_H_
 
 #include <GL/glew.h>
 #include "SDL2/SDL_opengl.h"
 #include "Vector4.h"
 
-class Renderable
+class Renderer
 {
 public:
 
-	virtual ~Renderable();
-
-protected:
-
-    virtual void render() = 0;
+	Renderer(int noOfVertices, int noOfIndices, Vector4 *vertPosArray, unsigned int *indexArray);
 
 	void init(int noOfVertices, int noOfIndices, Vector4 *vertPosArray, unsigned int *indexArray);
 
 	void drawElements();
+
+protected:
+
+    //virtual void render() = 0;
+
+
 
 private:
 
@@ -31,4 +33,4 @@ private:
 
 };
 
-#endif // _RENDERABLE_H_
+#endif // _RENDERER_H_

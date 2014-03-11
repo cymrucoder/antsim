@@ -5,9 +5,9 @@
 #include "PheromoneBehaviour.h"
 #include <vector>
 #include "Node.h"
-#include "Renderable.h"
+#include "Renderer.h"
 
-class Ant : public Renderable
+class Ant
 {
 public:
 
@@ -34,6 +34,8 @@ private:
     PheromoneBehaviour *pheroBeh;
     float lengthOfPath;
     EdgeArray *edges;
+
+    Renderer *renderer;
 };
 
 #endif // _ANT_H_

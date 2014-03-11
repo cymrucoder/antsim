@@ -10,6 +10,15 @@ Ant::Ant(int nodeCurrent, EdgeArray *edges, MoveBehaviour *moveBeh, PheromoneBeh
     nodesVisited.push_back(nodeCurrent);
 
     lengthOfPath = 0.0f;
+
+    // Copied from Node just to have something to run
+    int noOfVertices = 4;
+    int noOfElements = 2 * 3;//GL_TRIANGLES (2 triangles with 3 verts each)
+
+    Vector4 *vertPosArray = new Vector4[noOfVertices];
+    unsigned int *indexArray = new unsigned int[noOfElements];
+
+    renderer = new Renderer(noOfVertices, noOfElements, vertPosArray, indexArray);
 }
 
 void Ant::move()
@@ -22,6 +31,8 @@ void Ant::move()
 
     nodeCurrent = nodeToMoveTo;
     nodesVisited.push_back(nodeCurrent);
+
+    // Probably have to update model transform matrix here
 }
 
 void Ant::updatePheromone()
@@ -59,5 +70,5 @@ void Ant::reset(int nodeNew)// Reset to a specified node
 
 void Ant::render()
 {
-
+    renderer->drawElements();
 }

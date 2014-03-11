@@ -1,9 +1,9 @@
 #ifndef _EDGE_H_
 #define _EDGE_H_
 
-#include "Renderable.h"
+#include "Renderer.h"
 
-class Edge : public Renderable
+class Edge
 {
 public:
 
@@ -14,6 +14,8 @@ public:
 protected:
 
 private:
+
+    Renderer *renderer;
 
 };
 

@@ -29,10 +29,12 @@ Edge::Edge(Vector4 *coordData)
     indexArray[4] = 3;
     indexArray[5] = 0;*/
 
-    init(noOfVertices, noOfIndices, vertPosArray, indexArray);
+    //init
+
+    renderer = new Renderer(noOfVertices, noOfIndices, vertPosArray, indexArray);
 }
 
 void Edge::render()
 {
-    drawElements();
+    renderer->drawElements();
 }

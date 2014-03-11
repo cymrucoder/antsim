@@ -26,7 +26,8 @@ Node::Node(float x, float y, float z)
     indexArray[4] = 2;
     indexArray[5] = 3;
 
-    init(noOfVertices, noOfElements, vertPosArray, indexArray);
+    //init(noOfVertices, noOfElements, vertPosArray, indexArray);
+    renderer = new Renderer(noOfVertices, noOfElements, vertPosArray, indexArray);
 }
 
 float Node::getCoord(int coord)
@@ -43,5 +44,5 @@ float Node::getCoord(int coord)
 
 void Node::render()
 {
-    drawElements();
+    renderer->drawElements();
 }
