@@ -14,7 +14,10 @@ Controller::Controller(int noOfNodes, char type)
         }
         fileMap.close();
     }
-    map = generateMap(noOfNodes, type);
+    EdgeArray *edges = new EdgeArray(noOfNodes);// This is messy which I why I liked the old way.  Will decide which to use later
+    //map = generateMap(noOfNodes, type);
+    map = new Map(noOfNodes, edges, new EnvironmentMaxMinAS(0.5f, edges));
+    generateMap(noOfNodes, edges, type);
 
     shortestKnownPath = INFINITY;
 }
@@ -108,11 +111,11 @@ void Controller::regenerateMap(int noOfNodes)
 
 }
 
-Map* Controller::generateMap(int noOfNodes, char type)
+void Controller::generateMap(int noOfNodes, EdgeArray *edges, char type)
 {
-    EdgeArray *tempEdges = new EdgeArray(noOfNodes);// Would prefer to create this inside Map but if it's here than the behaviours can use it easier
+    //EdgeArray *tempEdges = new EdgeArray(noOfNodes);// Would prefer to create this inside Map but if it's here than the behaviours can use it easier
 
-    Map *mapTemp = new Map(noOfNodes, tempEdges, new EnvironmentMaxMinAS(0.5f, tempEdges));
+    //Map *mapTemp = new Map(noOfNodes, tempEdges, new EnvironmentMaxMinAS(0.5f, tempEdges));
 
     if (type == MAPTYPE_TSP_RANDOM)// Generate random map for TSP type problem
     {
@@ -122,7 +125,7 @@ Map* Controller::generateMap(int noOfNodes, char type)
 
         for (int i = 0; i < noOfNodes; i++)// Create set of random nodes
         {
-            mapTemp->createNode(randCoord(mt), 0.0f, randCoord(mt));
+            map->createNode(randCoord(mt), 0.0f, randCoord(mt));
         }
 
         for (int i = 0; i < noOfNodes; i++)// Create edges between all nodes
@@ -131,7 +134,7 @@ Map* Controller::generateMap(int noOfNodes, char type)
             {
                 if (i < j)// Only create one edge for each pair of nodes
                 {
-                    mapTemp->createEdge(i, j);
+                    map->createEdge(i, j);
                 }
             }
         }
@@ -179,7 +182,7 @@ Map* Controller::generateMap(int noOfNodes, char type)
                 pos = line.find(',', pos + 1);
                 y = atof(line.substr(oldPos + 1, pos - oldPos).c_str());
 
-                mapTemp->createNode(x, y, z);
+                map->createNode(x, y, z);
             }
         }
         fileMap.close();
@@ -190,22 +193,16 @@ Map* Controller::generateMap(int noOfNodes, char type)
             {
                 if (i < j)// Only create one edge for each pair of nodes
                 {
-                    mapTemp->createEdge(i, j);
+                    map->createEdge(i, j);
                 }
             }
-        }
-
-        for (int i = 0; i < noOfNodes; i++)
-        {
-            //ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneAntSystem(edges, 100.0f)));
-            mapTemp->createAnt(i, new MoveAntSystem(tempEdges, 1.0f, 5.0f), new PheromoneMaxMinAS(tempEdges, 4.0f));
         }
     }
     else if (type == MAPTYPE_MAZE_RANDOM)// Generate random maze
     {
-        float mapSize = 8.0f;// Size of side of map (assuming it's a square may change later) in OpenGL space (this should be bigger if Node::halfsize is bigger)
-        float mapOrigin[2] = {-2.0f, -2.0f};
-
+        float mapSize = 15.0f;// Size of side of map (assuming it's a square may change later) in OpenGL space (this should be bigger if Node::halfsize is bigger)
+        float mapOrigin[2] = {-5.0f, -5.0f};// These two need some sort of variance based on number of nodes I think
+        // mapOrigin is stupid rework that (half of mapsize etc.)
         // Create a grid to make nodes space out reasonable (less overlaps and edge collisions)
         int gridSquares = ceil((float)noOfNodes / 2.0f);// Guess at how many squares needed to create a reasonale grid
         if (gridSquares < 2)
@@ -233,7 +230,7 @@ Map* Controller::generateMap(int noOfNodes, char type)
 
         int startSquare = (ceil((float)gridSquares / 2.0f) - 1.0f);// Co-ord of first square, roughly central (assuming whole map is sqaure, same value for both)
 
-        mapTemp->createNode((squareSize * startSquare) + randDisplacement(mt) + mapOrigin[0], 0.0f, (squareSize * startSquare) + randDisplacement(mt) + mapOrigin[1]);// Randomly place first node within the bounds of the square
+        map->createNode((squareSize * startSquare) + randDisplacement(mt) + mapOrigin[0], 0.0f, (squareSize * startSquare) + randDisplacement(mt) + mapOrigin[1]);// Randomly place first node within the bounds of the square
         nodeArray[startSquare][startSquare] = 0;
         int noOfNodesCreated = 1;
         nodeCoords[0][0] = startSquare;
@@ -245,7 +242,7 @@ Map* Controller::generateMap(int noOfNodes, char type)
 
         std::queue<int> nextNode;// Queue of nodes to be processed next
 
-        #define CHANCE_OF_NEW_NODE 30
+        #define CHANCE_OF_NEW_NODE 50
 
         while (noOfNodesCreated < noOfNodes)// Need to track new nodes and branch from them
         {
@@ -258,17 +255,17 @@ Map* Controller::generateMap(int noOfNodes, char type)
                     {
                         if (nodeArray[currentSquare[0] + i][currentSquare[1]] == -1)// No node in that square, create one and join with edge
                         {
-                            mapTemp->createNode((squareSize * (currentSquare[0] + i)) + randDisplacement(mt) + mapOrigin[0], 0.0f, (squareSize * (currentSquare[1])) + randDisplacement(mt) + mapOrigin[1]);
+                            map->createNode((squareSize * (currentSquare[0] + i)) + randDisplacement(mt) + mapOrigin[0], 0.0f, (squareSize * (currentSquare[1])) + randDisplacement(mt) + mapOrigin[1]);
                             nodeArray[currentSquare[0] + i][currentSquare[1]] = noOfNodesCreated;
                             nextNode.push(noOfNodesCreated);
                             nodeCoords[noOfNodesCreated][0] = currentSquare[0] + i;
                             nodeCoords[noOfNodesCreated][1] = currentSquare[1];
                             noOfNodesCreated++;
-                            mapTemp->createEdge(nodeArray[currentSquare[0]][currentSquare[1]], nodeArray[currentSquare[0] + i][currentSquare[1]]);
+                            map->createEdge(nodeArray[currentSquare[0]][currentSquare[1]], nodeArray[currentSquare[0] + i][currentSquare[1]]);
                         }
                         else// Node in that square, just join them
                         {
-                            mapTemp->createEdge(nodeArray[currentSquare[0]][currentSquare[1]], nodeArray[currentSquare[0] + i][currentSquare[1]]);
+                            map->createEdge(nodeArray[currentSquare[0]][currentSquare[1]], nodeArray[currentSquare[0] + i][currentSquare[1]]);
                         }
                     }
                 }
@@ -277,19 +274,19 @@ Map* Controller::generateMap(int noOfNodes, char type)
                     int rnd = randNewNode(mt);
                     if (rnd < CHANCE_OF_NEW_NODE)
                     {
-                        if (nodeArray[currentSquare[0] + i][currentSquare[1]] == -1)// No node in that square, create one and join with edge
+                        if (nodeArray[currentSquare[0]][currentSquare[1] + i] == -1)// No node in that square, create one and join with edge
                         {
-                            mapTemp->createNode((squareSize * (currentSquare[0])) + randDisplacement(mt) + mapOrigin[0], 0.0f, (squareSize * (currentSquare[1] + i)) + randDisplacement(mt) + mapOrigin[1]);
+                            map->createNode((squareSize * (currentSquare[0])) + randDisplacement(mt) + mapOrigin[0], 0.0f, (squareSize * (currentSquare[1] + i)) + randDisplacement(mt) + mapOrigin[1]);
                             nodeArray[currentSquare[0]][currentSquare[1] + i] = noOfNodesCreated;
                             nextNode.push(noOfNodesCreated);
                             nodeCoords[noOfNodesCreated][0] = currentSquare[0];
                             nodeCoords[noOfNodesCreated][1] = currentSquare[1] + i;
                             noOfNodesCreated++;
-                            mapTemp->createEdge(nodeArray[currentSquare[0]][currentSquare[1]], nodeArray[currentSquare[0]][currentSquare[1] + i]);
+                            map->createEdge(nodeArray[currentSquare[0]][currentSquare[1]], nodeArray[currentSquare[0]][currentSquare[1] + i]);
                         }
                         else// Node in that square, just join them
                         {
-                            mapTemp->createEdge(nodeArray[currentSquare[0]][currentSquare[1]], nodeArray[currentSquare[0]][currentSquare[1] + i]);
+                            map->createEdge(nodeArray[currentSquare[0]][currentSquare[1]], nodeArray[currentSquare[0]][currentSquare[1] + i]);
                         }
                     }
                 }
@@ -371,7 +368,7 @@ Map* Controller::generateMap(int noOfNodes, char type)
                         pos = line.find(',', pos + 1);
                         y = atof(line.substr(oldPos + 1, pos - oldPos).c_str());
 
-                        mapTemp->createNode(x, y, z);
+                        map->createNode(x, y, z);
                     }
                     else if (mode == 2)// Read edge
                     {
@@ -383,7 +380,7 @@ Map* Controller::generateMap(int noOfNodes, char type)
                         pos = line.find(',', pos + 1);
                         nodeB = atoi(line.substr(oldPos + 1, pos - oldPos).c_str());
 
-                        mapTemp->createEdge(nodeA, nodeB);
+                        map->createEdge(nodeA, nodeB);
                     }
                 }
             }
@@ -394,10 +391,10 @@ Map* Controller::generateMap(int noOfNodes, char type)
     for (int i = 0; i < noOfNodes; i++)// For now, ant on every node.  May change later.
     {
         //ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneAntSystem(edges, 100.0f)));
-        mapTemp->createAnt(i, new MoveAntSystem(tempEdges, 1.0f, 5.0f), new PheromoneMaxMinAS(tempEdges, 4.0f));
+        map->createAnt(i, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneMaxMinAS(edges, 4.0f));
     }
 
-    return mapTemp;
+    //return mapTemp;
 }
 
 void Controller::render()

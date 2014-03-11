@@ -18,7 +18,7 @@ public:
     void regenerateMap();
 	void regenerateMap(int noOfNodes);
 
-	Map* generateMap(int noOfNodes, char type = MAPTYPE_TSP_RANDOM);
+	void generateMap(int noOfNodes, EdgeArray *edges, char type = MAPTYPE_TSP_RANDOM);
 
 	void render();
 

@@ -22,7 +22,7 @@ EdgeArray::EdgeArray(int noOfNodes)
 
 bool EdgeArray::addEdge(int nodeA, int nodeB, float distance, float pheromoneLevel)
 {
-    if (distance >= 0.0f && pheromoneLevel >= 0.0f)// Check if nodeA and nodeB are within the array limits (and not the same node)?
+    if (edgeLengths[nodeA][nodeB] < 0.0f && distance >= 0.0f && pheromoneLevel >= 0.0f)// Check if nodeA and nodeB are within the array limits (and not the same node)? (and don't already have an edge)
     {
         edgeLengths[nodeA][nodeB] = distance;
         edgePheromones[nodeA][nodeB] = pheromoneLevel;

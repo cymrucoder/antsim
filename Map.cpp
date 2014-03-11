@@ -182,7 +182,6 @@ void Map::createEdge(int nodeA, int nodeB)
                 edgeVertices[3] = Vector4(nodes.at(nodeA)->getCoord(COORD_X) - Node::halfsize, nodes.at(nodeA)->getCoord(COORD_Y), nodes.at(nodeA)->getCoord(COORD_Z) - Node::halfsize);
             }
         }
-
         renderableEdges.push_back(new RenderableEdge(edgeVertices));
     }
 }
