@@ -183,7 +183,7 @@ void Map::createEdge(int nodeA, int nodeB)
             }
         }
 
-        renderableEdges.push_back(new Edge(edgeVertices));
+        renderableEdges.push_back(new RenderableEdge(edgeVertices));
     }
 }
 

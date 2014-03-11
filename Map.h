@@ -7,7 +7,7 @@
 #include "Node.h"
 #include "Ant.h"
 #include "EdgeArray.h"
-#include "Edge.h"
+#include "RenderableEdge.h"
 #include "behaviours/move/MoveAntSystem.h"
 #include "behaviours/pheromone/PheromoneAntSystem.h"
 #include "behaviours/environment/EnvironmentAntSystem.h"
@@ -42,7 +42,7 @@ public:
 private:
 
     std::vector<Node*> nodes;
-    std::vector<Edge*> renderableEdges;
+    std::vector<RenderableEdge*> renderableEdges;
 
 
 };

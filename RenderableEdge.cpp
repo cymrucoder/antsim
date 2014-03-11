@@ -1,6 +1,6 @@
-#include "Edge.h"
+#include "RenderableEdge.h"
 
-Edge::Edge(Vector4 *coordData)
+RenderableEdge::RenderableEdge(Vector4 *coordData)
 {
     int noOfVertices = 4;
     int noOfIndices = 2 * 3;
@@ -34,7 +34,7 @@ Edge::Edge(Vector4 *coordData)
     renderer = new Renderer(noOfVertices, noOfIndices, vertPosArray, indexArray);
 }
 
-void Edge::render()
+void RenderableEdge::render()
 {
     renderer->drawElements();
 }

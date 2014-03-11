@@ -1,13 +1,13 @@
-#ifndef _EDGE_H_
-#define _EDGE_H_
+#ifndef _RENDERABLEEDGE_H_
+#define _RENDERABLEEDGE_H_
 
 #include "Renderer.h"
 
-class Edge
+class RenderableEdge
 {
 public:
 
-	Edge(Vector4 *coordArray);
+	RenderableEdge(Vector4 *coordArray);
 
     void render();
 
@@ -19,4 +19,4 @@ private:
 
 };
 
-#endif // _EDGE_H_
+#endif // _RENDERABLEEDGE_H_

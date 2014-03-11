@@ -69,14 +69,14 @@
 1394484065 source:/home/herb/hb/3yp/dev/antsim/AntSim.cpp
 	"AntSim.h"
 
-1393958104 /home/herb/hb/3yp/dev/antsim/Map.h
+1394501160 /home/herb/hb/3yp/dev/antsim/Map.h
 	<vector>
 	<math.h>
 	<iostream>
 	"Node.h"
 	"Ant.h"
 	"EdgeArray.h"
-	"Edge.h"
+	"RenderableEdge.h"
 	"behaviours/move/MoveAntSystem.h"
 	"behaviours/pheromone/PheromoneAntSystem.h"
 	"behaviours/environment/EnvironmentAntSystem.h"
@@ -111,7 +111,7 @@
 1392664450 source:/home/herb/hb/3yp/dev/antsim/MoveBehaviour.cpp
 	"MoveBehaviour.h"
 
-1393951478 source:/home/herb/hb/3yp/dev/antsim/Node.cpp
+1394499710 source:/home/herb/hb/3yp/dev/antsim/Node.cpp
 	"Node.h"
 
 1392829888 source:/home/herb/hb/3yp/dev/antsim/PheromoneBehaviour.cpp
@@ -191,4 +191,10 @@
 	<GL/glew.h>
 	"SDL2/SDL_opengl.h"
 	"Vector4.h"
+
+1394499657 source:/home/herb/hb/3yp/dev/antsim/Renderer.cpp
+	"Renderer.h"
+
+1394501133 /home/herb/hb/3yp/dev/antsim/RenderableEdge.h
+	"Renderer.h"
 
