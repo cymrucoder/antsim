@@ -58,8 +58,8 @@
 		<Unit filename="Node.h" />
 		<Unit filename="PheromoneBehaviour.cpp" />
 		<Unit filename="PheromoneBehaviour.h" />
-		<Unit filename="Renderable.cpp" />
-		<Unit filename="Renderable.h" />
+		<Unit filename="Renderer.cpp" />
+		<Unit filename="Renderer.h" />
 		<Unit filename="Vector4.h" />
 		<Unit filename="antsimshader.fs" />
 		<Unit filename="antsimshader.vs" />
