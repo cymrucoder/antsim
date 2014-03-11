@@ -15,10 +15,13 @@
 #include "behaviours/environment/EnvironmentMaxMinAS.h"
 #include "behaviours/environment/EnvironmentRankBasedAS.h"
 
-#define MAPTYPE_TSP_RANDOM 0
-#define MAPTYPE_TSP_LOADED 1
-#define MAPTYPE_MAZE_RANDOM 2
-#define MAPTYPE_MAZE_LOADED 3
+#define MAP_GENERATE 0
+#define MAP_LOAD 1
+
+#define MAPTYPE_TSP 0
+#define MAPTYPE_MAZE 1
+
+// Maybe move above defs to Controller.h
 
 class Map
 {

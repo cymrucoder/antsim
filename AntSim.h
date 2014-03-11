@@ -46,6 +46,17 @@ public:
     void printProgramLog(GLuint program);// Once the shader definitely works can probably get rid of the two printing bits
     void printShaderLog(GLuint shader);
 
+    //void handle_menu2(Fl_Widget *w, void *v);
+    //void push_cb(Fl_Widget *w, void* v);
+
+    static void push_updateParams(Fl_Widget *w, void *v);
+    void updateParams();
+
+    static void push_updateMap(Fl_Widget *w, void *v);
+
+    static void push_run(Fl_Widget *w, void *v);
+    static void push_runIteration(Fl_Widget *w, void *v);
+
 private:
 
     /*SDL_Window* window;
@@ -61,6 +72,8 @@ private:
     Fl_Int_Input *inputRankedAnts;
     Fl_Float_Input *inputMaxPheromone;
     Fl_Float_Input *inputMinPhermone;
+
+    Fl_Button *buttonUpdateParams;
 
     Fl_Int_Input *inputNoOfNodes;
 

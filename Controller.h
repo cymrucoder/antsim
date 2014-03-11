@@ -6,19 +6,34 @@
 #include <string>
 #include <queue>
 
+struct paramData
+{
+    float importancePhero;
+    float importanceDistance;
+    float evapRate;
+    float pheroNumerator;
+
+    int noOfElitistAnts;
+    int noOfRankedAnts;
+    float pheroMax;
+    float pheroMin;
+};
+
 class Controller
 {
 public:
 
-	Controller(int noOfNodes, char type = MAPTYPE_TSP_RANDOM);
+	Controller(int noOfNodes, bool type = MAPTYPE_TSP, bool load = MAP_GENERATE);
 
 	void run(int maxIterations);
 	void runIteration();
 
-    void regenerateMap();
+	void updateParams(struct paramData *data);
+
+    void regenerateMap(); // Maybe won't need these two
 	void regenerateMap(int noOfNodes);
 
-	Map* generateMap(int noOfNodes, char type = MAPTYPE_TSP_RANDOM);
+	Map* generateMap(int noOfNodes, bool type = MAPTYPE_TSP, bool load = MAP_GENERATE);
 
 	void render();
 

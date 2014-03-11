@@ -9,6 +9,85 @@ AntSim::AntSim()
     programID = 0;
 }
 
+/*void handle_menu2(Fl_Widget *w, void *v)
+{
+    if (!w || !v)
+    {
+        return;
+    }
+    switch(*((int*)v))
+    {
+        case 1:
+            //Fl_Choice("Thing 1", "OK", NULL, NULL);
+            //inputAlpha->value("10.0");
+            std::cout << "Hello" << std::endl;
+            break;
+    }
+}
+
+void push_cb(Fl_Widget *w, void* v)
+{
+    Fl_Menu_Item rclick_menu[] =
+    {
+        { "Do thing 1", 0, handle_menu2, (void*) 1 },
+        { 0 }
+    };
+    const Fl_Menu_Item *m = rclick_menu->popup(Fl::event_x(), Fl::event_y(), 0, 0, 0);
+    if (m)
+    {
+        m->do_callback(w, m->user_data());
+    }
+    return;
+}*/
+
+void AntSim::push_updateParams(Fl_Widget *w, void* v)
+{
+    ((AntSim*)v)->updateParams();
+}
+
+void AntSim::updateParams()
+{
+    paramData *data = new paramData;
+
+    data->importancePhero = atof(inputAlpha->value());
+    // Set other data here
+
+    controller->updateParams(data);
+}
+
+void AntSim::push_updateMap(Fl_Widget *w, void* v)
+{
+    if (w)
+    {
+        AntSim* caller = (AntSim*)v;
+
+        int noOfNodes = atoi(caller->inputNoOfNodes->value());
+
+        bool type = 0;
+
+        if (caller->buttonTSP->value() == 1)
+        {
+            type = MAPTYPE_TSP;
+        }
+        else if (caller->buttonMaze->value() == 1)
+        {
+            type = MAPTYPE_MAZE;
+        }
+
+        bool load = *(bool*)(w->user_data());
+        caller->controller->generateMap(noOfNodes, type, load);
+    }
+}
+
+void AntSim::push_run(Fl_Widget *w, void *v)
+{
+    ((AntSim*)v)->controller->run(atoi(((AntSim*)v)->inputIterations->value()));
+}
+void AntSim::push_runIteration(Fl_Widget *w, void *v)
+{
+    ((AntSim*)v)->controller->runIteration();
+}
+
 bool AntSim::init()
 {
     /*if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -55,7 +134,7 @@ bool AntSim::init()
     inputEvapRate = new Fl_Float_Input(INPUTFIELD_X, 90, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Evaporation rate");
     inputEvapRate->value("0.5");
     inputPheroNumerator = new Fl_Float_Input(INPUTFIELD_X, 120, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone numerator");
-    inputPheroNumerator->value("1");
+    inputPheroNumerator->value("1.0");
     inputElitistAnts = new Fl_Int_Input(INPUTFIELD_X, 180, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. elitist ants");
     inputElitistAnts->value("0");
     inputRankedAnts = new Fl_Int_Input(INPUTFIELD_X, 210, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. ranked ants");
@@ -64,20 +143,44 @@ bool AntSim::init()
     inputMaxPheromone->value("0.0");
     inputMinPhermone = new Fl_Float_Input(INPUTFIELD_X, 270, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Min. pheromone");
     inputMinPhermone->value("0.0");
+    buttonUpdateParams = new Fl_Button(INPUTFIELD_X - 70, 300, 120, 30, "Update");
+
+    buttonUpdateParams->callback((Fl_Callback *) push_updateParams, this);
+
     box = new Fl_Box(250, 0, 800, 600, "Where OpenGL will go");
     box->box(FL_UP_BOX);
-    inputNoOfNodes = new Fl_Int_Input(INPUTFIELD_X, 330, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. nodes");
+    inputNoOfNodes = new Fl_Int_Input(INPUTFIELD_X, 340, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. nodes");
     inputNoOfNodes->value("20");
-    buttonMaze = new Fl_Round_Button(INPUTFIELD_X - 70, 395, INPUTFIELD_WIDTH, 10, "Maze type map");
+    buttonMaze = new Fl_Round_Button(INPUTFIELD_X - 70, 405, INPUTFIELD_WIDTH, 10, "Maze type map");
     buttonMaze->type(FL_RADIO_BUTTON);
-    buttonTSP = new Fl_Round_Button(INPUTFIELD_X - 70, 370, INPUTFIELD_WIDTH, 10, "TSP type map");
+    buttonTSP = new Fl_Round_Button(INPUTFIELD_X - 70, 380, INPUTFIELD_WIDTH, 10, "TSP type map");
     buttonTSP->type(FL_RADIO_BUTTON);
-    buttonLoadMap = new Fl_Button(INPUTFIELD_X - 70, 420, 120, 30, "Load map");
-    buttonGenerateMap = new Fl_Button(INPUTFIELD_X - 70, 460, 120, 30, "Generate map");
-    inputIterations = new Fl_Int_Input(INPUTFIELD_X, 515, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. iterations");
+    buttonTSP->setonly();
+
+    bool mapUserData;
+
+    buttonGenerateMap = new Fl_Button(INPUTFIELD_X - 70, 430, 120, 30, "Generate map");
+    mapUserData = MAP_GENERATE;
+    buttonGenerateMap->user_data(&mapUserData);
+
+    buttonGenerateMap->callback((Fl_Callback *) push_updateMap, this);
+
+    buttonLoadMap = new Fl_Button(INPUTFIELD_X - 70, 470, 120, 30, "Load map");
+    mapUserData = MAP_LOAD;
+    buttonLoadMap->user_data(&mapUserData);
+
+    buttonLoadMap->callback((Fl_Callback *) push_updateMap, this);
+
+    inputIterations = new Fl_Int_Input(INPUTFIELD_X, 525, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. iterations");
     inputIterations->value("1000");
-    buttonRunIteration = new Fl_Button(INPUTFIELD_X - 70, 550, 120, 30, "Run iteration");
-    buttonRunIteration = new Fl_Button(INPUTFIELD_X - 70, 590, 120, 30, "Run");
+    buttonRunIteration = new Fl_Button(INPUTFIELD_X - 70, 560, 120, 30, "Run iteration");
+
+    buttonRunIteration->callback((Fl_Callback *) push_runIteration, this);
+
+    buttonRun = new Fl_Button(INPUTFIELD_X - 70, 600, 120, 30, "Run");
+
+    buttonRun->callback((Fl_Callback *) push_run, this);
+
     // Current iteration count somewhere?  Along buttom with other results?
     menuAntMoveBeh = new Fl_Choice(90, 30, 120, 30, "Move beh");
     /*moveBehAS = new Fl_Menu_Item[1];
@@ -185,7 +288,7 @@ bool AntSim::init()
 
     glUseProgram(0);
 
-    controller = new Controller(3, MAPTYPE_MAZE_RANDOM);
+    controller = new Controller(3, MAPTYPE_MAZE, MAP_GENERATE);
 
     return true;
 }
