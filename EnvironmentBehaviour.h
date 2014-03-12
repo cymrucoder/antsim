@@ -21,9 +21,9 @@ public:
 
     virtual void processAntList(std::vector<Ant*> *ants, std::vector<Ant*> *processedAnts);
 
-protected:
+//protected:
 
-    int howManyAntsUpdate;
+    //int howManyAntsUpdate;
 
 };
 

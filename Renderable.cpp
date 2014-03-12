@@ -10,7 +10,7 @@ void Renderable::init(int noOfVertices, int noOfIndices, Vector4 *vertPosArray, 
     this->noOfVertices = noOfVertices;
     this->noOfIndices = noOfIndices;
 
-    glGenVertexArrays(1, &VAO);
+    /*glGenVertexArrays(1, &VAO);
     glBindVertexArray(VAO);
 
     glGenBuffers(1, &VBO);
@@ -23,7 +23,7 @@ void Renderable::init(int noOfVertices, int noOfIndices, Vector4 *vertPosArray, 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, noOfIndices * sizeof(unsigned int), indexArray, GL_STATIC_DRAW);
 
-    glBindVertexArray(0);
+    glBindVertexArray(0);*/
 
     delete vertPosArray;
     delete indexArray;

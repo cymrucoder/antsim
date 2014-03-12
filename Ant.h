@@ -12,7 +12,7 @@ class Ant : public Renderable
 public:
 
     Ant(int nodeCurrent, EdgeArray *edges, MoveBehaviour *moveBeh, PheromoneBehaviour *pheroBeh);
-    //~Ant();
+    ~Ant();
 
     void move();
     void updatePheromone();

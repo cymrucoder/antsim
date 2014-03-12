@@ -51,6 +51,8 @@
 		<Unit filename="EnvironmentBehaviour.h" />
 		<Unit filename="Map.cpp" />
 		<Unit filename="Map.h" />
+		<Unit filename="MoveBehFactory.cpp" />
+		<Unit filename="MoveBehFactory.h" />
 		<Unit filename="MoveBehaviour.cpp" />
 		<Unit filename="MoveBehaviour.h" />
 		<Unit filename="Node.cpp" />

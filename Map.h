@@ -28,7 +28,7 @@ class Map
 public:
 
 	Map(int noOfNodes, EdgeArray *edges, EnvironmentBehaviour *enviroBeh);
-	//~Map();
+	~Map();
 
     void createNode(float x, float y, float z);
     void createEdge(int nodeA, int nodeB);

@@ -12,6 +12,12 @@ Ant::Ant(int nodeCurrent, EdgeArray *edges, MoveBehaviour *moveBeh, PheromoneBeh
     lengthOfPath = 0.0f;
 }
 
+Ant::~Ant()
+{
+    delete moveBeh;
+    delete pheroBeh;
+}
+
 void Ant::move()
 {
     int nodeToMoveTo = moveBeh->generateMove(&nodesVisited);

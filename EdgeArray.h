@@ -6,7 +6,7 @@ class EdgeArray
 public:
 
 	EdgeArray(int noOfNodes);
-	//~EdgeArray();
+	~EdgeArray();
 
 	bool addEdge(int nodeA, int nodeB, float distance, float pheromoneLevel);
 

@@ -20,6 +20,27 @@ EdgeArray::EdgeArray(int noOfNodes)
 	}
 }
 
+EdgeArray::~EdgeArray()
+{
+    /*for (int i = 0; i < noOfNodes; i++)
+	{
+	    for (int j = 0; j < noOfNodes; j++)
+	    {
+	        delete edgeLengths[i][j];
+	        delete edgePheromones[i][j];
+	    }
+	    delete edgeLengths[i];
+	    delete edgePheromones[i];
+	}*/
+	for (int i = 0; i < noOfNodes; i++)
+	{
+	    delete edgeLengths[i];
+	    delete edgePheromones[i];
+	}
+	delete edgeLengths;
+	delete edgePheromones;
+}
+
 bool EdgeArray::addEdge(int nodeA, int nodeB, float distance, float pheromoneLevel)
 {
     if (distance >= 0.0f && pheromoneLevel >= 0.0f)// Check if nodeA and nodeB are within the array limits (and not the same node)?

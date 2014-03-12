@@ -103,14 +103,23 @@ void Controller::updateParams(struct paramData *data)
     // For each thing that changed, update it in map
 }
 
-void Controller::regenerateMap()
+/*void Controller::regenerateMap()
 {
 
-}
+}*/
 
-void Controller::regenerateMap(int noOfNodes)
+void Controller::regenerateMap(int noOfNodes, bool type, bool load)
 {
+    // Node and Edge are fine
+    // Ant has new(bla) stuff (behaviours)
+    if (map != NULL)
+    {
+        delete map;
+    }
 
+    map = generateMap(noOfNodes, type, load);
+
+    shortestKnownPath = INFINITY;
 }
 
 Map* Controller::generateMap(int noOfNodes, bool type, bool load)
@@ -282,7 +291,7 @@ Map* Controller::generateMap(int noOfNodes, bool type, bool load)
                         int rnd = randNewNode(mt);
                         if (rnd < CHANCE_OF_NEW_NODE)
                         {
-                            if (nodeArray[currentSquare[0] + i][currentSquare[1]] == -1)// No node in that square, create one and join with edge
+                            if (nodeArray[currentSquare[0]][currentSquare[1] + i] == -1)// No node in that square, create one and join with edge
                             {
                                 mapTemp->createNode((squareSize * (currentSquare[0])) + randDisplacement(mt) + mapOrigin[0], 0.0f, (squareSize * (currentSquare[1] + i)) + randDisplacement(mt) + mapOrigin[1]);
                                 nodeArray[currentSquare[0]][currentSquare[1] + i] = noOfNodesCreated;

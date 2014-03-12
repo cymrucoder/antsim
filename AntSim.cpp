@@ -75,7 +75,7 @@ void AntSim::push_updateMap(Fl_Widget *w, void* v)
         }
 
         bool load = *(bool*)(w->user_data());
-        caller->controller->generateMap(noOfNodes, type, load);
+        caller->controller->regenerateMap(noOfNodes, type, load);
     }
 }
 
@@ -83,6 +83,7 @@ void AntSim::push_run(Fl_Widget *w, void *v)
 {
     ((AntSim*)v)->controller->run(atoi(((AntSim*)v)->inputIterations->value()));
 }
+
 void AntSim::push_runIteration(Fl_Widget *w, void *v)
 {
     ((AntSim*)v)->controller->runIteration();
@@ -194,15 +195,15 @@ bool AntSim::init()
 
     window->end();
     window->show();
-    Fl::run();
 
-    glewExperimental = GL_TRUE;
+
+    /*glewExperimental = GL_TRUE;
     GLenum glewError = glewInit();
 
     if (glewError != GLEW_OK) {
 
         std::cout << "GLEW could not be initialised, error : " << glewGetErrorString(glewError) << std::endl;
-    }
+    }*/
 
     /*if (SDL_GL_SetSwapInterval(1) < 0) {
 
@@ -215,7 +216,7 @@ bool AntSim::init()
     glFrontFace(GL_CCW);
     glCullFace(GL_BACK);*/
 
-    programID = glCreateProgram();
+    /*programID = glCreateProgram();
 
     GLuint vertexShader = shaderLoadFromFile("antsimshader.vs", GL_VERTEX_SHADER);
 
@@ -254,15 +255,15 @@ bool AntSim::init()
 
     glViewport(0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);*/
 
     /*GLenum error = glGetError();
     if (error != GL_NO_ERROR) {
 
         std::cout << "Failed to initialise OpenGL, error - " << gluErrorString(error);
-    }*/
+    }*///NOPE
 
-    projectionMatrix = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+    /*projectionMatrix = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
     viewMatrix = glm::lookAt(glm::vec3(0.0f, 15.0f, 0.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0, 1, 0));// Look from, look to
     //(for some reason looking at straight down means nothing renders and looking from 0 to 0.1f makes everything backwards)
     //modelMatrix = glm::translate<GLfloat>(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0.0f);
@@ -286,9 +287,11 @@ bool AntSim::init()
 
     glUniformMatrix4fv(uniformMatrix, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
 
-    glUseProgram(0);
+    glUseProgram(0);*/
 
     controller = new Controller(3, MAPTYPE_MAZE, MAP_GENERATE);
+
+    Fl::run();
 
     return true;
 }
@@ -325,19 +328,19 @@ void AntSim::render()
     glBindVertexArray(0);
     glUseProgram(0);*/
 
-    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    /*glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(programID);
 
     controller->render();
 
-    glUseProgram(0);
+    glUseProgram(0);*/
 }
 
 void AntSim::close()
 {
-    glDeleteProgram(programID);
+    /*glDeleteProgram(programID);*/
 
     /*SDL_DestroyWindow(window);
     window = NULL;

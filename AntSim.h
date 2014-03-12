@@ -57,10 +57,6 @@ public:
     static void push_run(Fl_Widget *w, void *v);
     static void push_runIteration(Fl_Widget *w, void *v);
 
-private:
-
-    /*SDL_Window* window;
-    SDL_GLContext context;*/
     Fl_Window *window;
     Fl_Box *box;
     Fl_Float_Input *inputAlpha;
@@ -93,6 +89,14 @@ private:
 
     Fl_Menu_Item *moveBehAS;
 
+    Controller *controller;
+
+private:
+
+    /*SDL_Window* window;
+    SDL_GLContext context;*/
+
+
     GLuint programID;
 
     glm::mat4 projectionMatrix;
@@ -102,7 +106,7 @@ private:
 
     GLint uniformMatrix;
 
-    Controller *controller;
+
 };
 
 #endif // _ANTSIM_H_

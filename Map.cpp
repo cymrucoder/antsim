@@ -3,6 +3,7 @@
 Map::Map(int noOfNodes, EdgeArray *edges, EnvironmentBehaviour *enviroBeh)
 {
     this->edges = edges;
+    this->enviroBeh = enviroBeh;
 
     /*nodes.push_back(new Node(54.0f, 67.0f, 0.0f));
     nodes.push_back(new Node(54.0f, 62.0f, 0.0f));
@@ -98,6 +99,27 @@ Map::Map(int noOfNodes, EdgeArray *edges, EnvironmentBehaviour *enviroBeh)
     nodes.push_back(new Node(-22.952f, 0.0f, -43.210f));// 29 - Christo Redendor, 0.0f, Brazil
     nodes.push_back(new Node(34.384f, 0.0f, 109.278f));// 30 - Terracota Army, 0.0f, China
     nodes.push_back(new Node(37.970f, 0.0f, 23.722f));// 31 - The Parthanon, Greece*/
+}
+
+Map::~Map()
+{
+    for (unsigned int i = 0; i < nodes.size(); i++)
+    {
+        delete nodes.at(i);
+    }
+    for (unsigned int i = 0; i < renderableEdges.size(); i++)
+    {
+        delete renderableEdges.at(i);
+    }
+
+    for (unsigned int i = 0; i < ants.size(); i++)
+    {
+        delete ants.at(i);
+    }
+
+    delete enviroBeh;
+
+    delete edges;
 }
 
 void Map::createNode(float x, float y, float z)
