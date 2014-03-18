@@ -1,19 +1,20 @@
 #ifndef _ANTSIM_H_
 #define _ANTSIM_H_
 
-#include <FL/Fl.h>
-#include <FL/Fl_Window.h>
-#include <FL/Fl_Int_Input.h>
-#include <FL/Fl_Float_Input.h>
-#include <FL/Fl_Box.h>
-#include <FL/Fl_Button.h>
-#include <FL/Fl_Round_Button.h>
-#include <FL/Fl_Choice.h>
-#include <FL/Fl_Menu_Item.h>
+#include <FL/Fl.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Input.H>
+#include <FL/Fl_Int_Input.H>
+#include <FL/Fl_Float_Input.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl_Button.H>
+#include <FL/Fl_Round_Button.H>
+#include <FL/Fl_Choice.H>
+#include <FL/Fl_Menu_Item.H>
 
-//#include "SDL2/SDL.h"
+#include "SDL2/SDL.h"
 #include <GL/glew.h>
-//#include "SDL2/SDL_opengl.h"
+#include "SDL2/SDL_opengl.h"
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -25,8 +26,8 @@
 
 #include "Controller.h"
 
-#define SCREEN_WIDTH 1300
-#define SCREEN_HEIGHT 700
+#define SCREEN_WIDTH 800
+#define SCREEN_HEIGHT 600
 
 class AntSim
 {
@@ -41,6 +42,7 @@ public:
     void close();
 
     int run();
+    void showMap();
 
     GLuint shaderLoadFromFile(std::string path, GLenum shaderType);
     void printProgramLog(GLuint program);// Once the shader definitely works can probably get rid of the two printing bits
@@ -57,9 +59,12 @@ public:
     static void push_run(Fl_Widget *w, void *v);
     static void push_runIteration(Fl_Widget *w, void *v);
 
-    Fl_Window *window;
-    Fl_Box *box;
-    Fl_Float_Input *inputAlpha;
+    SDL_Window* windowGraphics;
+    SDL_GLContext context;
+
+    Fl_Window *windowUI;
+    //Fl_Box *box;
+    /*Fl_Float_Input *inputAlpha;
     Fl_Float_Input *inputBeta;
     Fl_Float_Input *inputEvapRate;
     Fl_Float_Input *inputPheroNumerator;
@@ -67,18 +72,30 @@ public:
     Fl_Int_Input *inputElitistAnts;
     Fl_Int_Input *inputRankedAnts;
     Fl_Float_Input *inputMaxPheromone;
-    Fl_Float_Input *inputMinPhermone;
+    Fl_Float_Input *inputMinPhermone;*/
+
+    Fl_Input *inputAlpha;
+    Fl_Input *inputBeta;
+    Fl_Input *inputEvapRate;
+    Fl_Input *inputPheroNumerator;
+
+    Fl_Input *inputElitistAnts;
+    Fl_Input *inputRankedAnts;
+    Fl_Input *inputMaxPheromone;
+    Fl_Input *inputMinPhermone;
 
     Fl_Button *buttonUpdateParams;
 
-    Fl_Int_Input *inputNoOfNodes;
+    //Fl_Int_Input *inputNoOfNodes;
+    Fl_Input *inputNoOfNodes;
 
     Fl_Round_Button *buttonTSP;
     Fl_Round_Button *buttonMaze;
     Fl_Button *buttonGenerateMap;
     Fl_Button *buttonLoadMap;
 
-    Fl_Int_Input *inputIterations;
+    //Fl_Int_Input *inputIterations;
+    Fl_Input *inputIterations;
 
     Fl_Button *buttonRunIteration;
     Fl_Button *buttonRun;
@@ -93,10 +110,6 @@ public:
 
 private:
 
-    /*SDL_Window* window;
-    SDL_GLContext context;*/
-
-
     GLuint programID;
 
     glm::mat4 projectionMatrix;
@@ -105,8 +118,6 @@ private:
     glm::mat4 mvpMatrix;
 
     GLint uniformMatrix;
-
-
 };
 
 #endif // _ANTSIM_H_

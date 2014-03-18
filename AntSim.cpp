@@ -2,43 +2,11 @@
 
 AntSim::AntSim()
 {
-	//window = NULL;
-	window = 0;
-	inputAlpha = 0;
+	windowGraphics = 0;
+	windowUI = 0;
 
     programID = 0;
 }
-
-/*void handle_menu2(Fl_Widget *w, void *v)
-{
-    if (!w || !v)
-    {
-        return;
-    }
-    switch(*((int*)v))
-    {
-        case 1:
-            //Fl_Choice("Thing 1", "OK", NULL, NULL);
-            //inputAlpha->value("10.0");
-            std::cout << "Hello" << std::endl;
-            break;
-    }
-}
-
-void push_cb(Fl_Widget *w, void* v)
-{
-    Fl_Menu_Item rclick_menu[] =
-    {
-        { "Do thing 1", 0, handle_menu2, (void*) 1 },
-        { 0 }
-    };
-    const Fl_Menu_Item *m = rclick_menu->popup(Fl::event_x(), Fl::event_y(), 0, 0, 0);
-    if (m)
-    {
-        m->do_callback(w, m->user_data());
-    }
-    return;
-}*/
 
 void AntSim::push_updateParams(Fl_Widget *w, void* v)
 {
@@ -86,12 +54,14 @@ void AntSim::push_run(Fl_Widget *w, void *v)
 
 void AntSim::push_runIteration(Fl_Widget *w, void *v)
 {
+    SDL_ShowWindow(((AntSim*)v)->windowGraphics);
     ((AntSim*)v)->controller->runIteration();
+    ((AntSim*)v)->showMap();
 }
 
 bool AntSim::init()
 {
-    /*if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 
         std::cout << "SDL failed to initialse, error: " << SDL_GetError() << std::endl;
         return false;
@@ -101,34 +71,31 @@ bool AntSim::init()
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
-    window = SDL_CreateWindow("AntSim", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    windowGraphics = SDL_CreateWindow("AntSim", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 
-    if (window == NULL) {
+    if (windowGraphics == NULL) {
 
         std::cout << "Window could not be created, error: " << SDL_GetError() << std::endl;
         return false;
     }
 
-    context = SDL_GL_CreateContext(window);
+    SDL_HideWindow(windowGraphics);
+
+    context = SDL_GL_CreateContext(windowGraphics);
 
     if (context == NULL) {
 
         std::cout << "OpenGL context could not be created, error: " << SDL_GetError() << std::endl;
         return false;
-    }*/
+    }
 
-    window = new Fl_Window(SCREEN_WIDTH, SCREEN_HEIGHT);
-    /*box = new Fl_Box(20, 40, 300, 100, "Hello world");
-    box->box(FL_UP_BOX);
-    box->labelfont(FL_BOLD+FL_ITALIC);
-    box->labelsize(36);
-    box->labeltype(FL_SHADOW_LABEL);*/
+    windowUI = new Fl_Window(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     #define INPUTFIELD_HEIGHT 20
     #define INPUTFIELD_WIDTH 50
     #define INPUTFIELD_X (SCREEN_WIDTH - INPUTFIELD_WIDTH - 20)
 
-    inputAlpha = new Fl_Float_Input(INPUTFIELD_X, 30, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone importance");//50, 605, 50, 20
+    /*inputAlpha = new Fl_Float_Input(INPUTFIELD_X, 30, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone importance");//50, 605, 50, 20
     inputAlpha->value("1.0");
     inputBeta = new Fl_Float_Input(INPUTFIELD_X, 60, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Distance importance");
     inputBeta->value("1.0");
@@ -180,6 +147,60 @@ bool AntSim::init()
 
     buttonRun = new Fl_Button(INPUTFIELD_X - 70, 600, 120, 30, "Run");
 
+    buttonRun->callback((Fl_Callback *) push_run, this);*/
+
+    inputAlpha = new Fl_Input(INPUTFIELD_X, 30, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone importance");//50, 605, 50, 20
+    inputAlpha->value("1.0");
+    inputBeta = new Fl_Input(INPUTFIELD_X, 60, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Distance importance");
+    inputBeta->value("1.0");
+    inputEvapRate = new Fl_Input(INPUTFIELD_X, 90, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Evaporation rate");
+    inputEvapRate->value("0.5");
+    inputPheroNumerator = new Fl_Input(INPUTFIELD_X, 120, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone numerator");
+    inputPheroNumerator->value("1.0");
+    inputElitistAnts = new Fl_Input(INPUTFIELD_X, 180, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. elitist ants");
+    inputElitistAnts->value("0");
+    inputRankedAnts = new Fl_Input(INPUTFIELD_X, 210, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. ranked ants");
+    inputRankedAnts->value("0");
+    inputMaxPheromone = new Fl_Input(INPUTFIELD_X, 240, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. pheromone");
+    inputMaxPheromone->value("0.0");
+    inputMinPhermone = new Fl_Input(INPUTFIELD_X, 270, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Min. pheromone");
+    inputMinPhermone->value("0.0");
+    buttonUpdateParams = new Fl_Button(INPUTFIELD_X - 70, 300, 120, 30, "Update");
+
+    buttonUpdateParams->callback((Fl_Callback *) push_updateParams, this);
+
+    /*box = new Fl_Box(250, 0, 800, 600, "Where OpenGL will go");
+    box->box(FL_UP_BOX);*/
+    inputNoOfNodes = new Fl_Input(INPUTFIELD_X, 340, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. nodes");
+    inputNoOfNodes->value("20");
+    buttonMaze = new Fl_Round_Button(INPUTFIELD_X - 70, 405, INPUTFIELD_WIDTH, 10, "Maze type map");
+    buttonMaze->type(FL_RADIO_BUTTON);
+    buttonTSP = new Fl_Round_Button(INPUTFIELD_X - 70, 380, INPUTFIELD_WIDTH, 10, "TSP type map");
+    buttonTSP->type(FL_RADIO_BUTTON);
+    buttonTSP->setonly();
+
+    bool mapUserData;
+
+    buttonGenerateMap = new Fl_Button(INPUTFIELD_X - 70, 430, 120, 30, "Generate map");
+    mapUserData = MAP_GENERATE;
+    buttonGenerateMap->user_data(&mapUserData);
+
+    buttonGenerateMap->callback((Fl_Callback *) push_updateMap, this);
+
+    buttonLoadMap = new Fl_Button(INPUTFIELD_X - 70, 470, 120, 30, "Load map");
+    mapUserData = MAP_LOAD;
+    buttonLoadMap->user_data(&mapUserData);
+
+    buttonLoadMap->callback((Fl_Callback *) push_updateMap, this);
+
+    inputIterations = new Fl_Input(INPUTFIELD_X, 525, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. iterations");
+    inputIterations->value("1000");
+    buttonRunIteration = new Fl_Button(INPUTFIELD_X - 70, 560, 120, 30, "Run iteration");
+
+    buttonRunIteration->callback((Fl_Callback *) push_runIteration, this);
+
+    buttonRun = new Fl_Button(INPUTFIELD_X - 70, 600, 120, 30, "Run");
+
     buttonRun->callback((Fl_Callback *) push_run, this);
 
     // Current iteration count somewhere?  Along buttom with other results?
@@ -193,22 +214,22 @@ bool AntSim::init()
     menuEnviroBeh = new Fl_Choice(90, 130, 120, 30, "Enviro beh");
     // Fl_File_Browser for loading files
 
-    window->end();
-    window->show();
+    windowUI->end();
+    windowUI->show();
 
 
-    /*glewExperimental = GL_TRUE;
+    glewExperimental = GL_TRUE;
     GLenum glewError = glewInit();
 
     if (glewError != GLEW_OK) {
 
         std::cout << "GLEW could not be initialised, error : " << glewGetErrorString(glewError) << std::endl;
-    }*/
+    }
 
-    /*if (SDL_GL_SetSwapInterval(1) < 0) {
+    if (SDL_GL_SetSwapInterval(1) < 0) {
 
         std::cout << "Unable to set vsync, error: " << SDL_GetError() << std::endl;
-    }*/
+    }
 
     /*glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
@@ -216,7 +237,7 @@ bool AntSim::init()
     glFrontFace(GL_CCW);
     glCullFace(GL_BACK);*/
 
-    /*programID = glCreateProgram();
+    programID = glCreateProgram();
 
     GLuint vertexShader = shaderLoadFromFile("antsimshader.vs", GL_VERTEX_SHADER);
 
@@ -255,7 +276,7 @@ bool AntSim::init()
 
     glViewport(0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT);
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);*/
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     /*GLenum error = glGetError();
     if (error != GL_NO_ERROR) {
@@ -263,7 +284,7 @@ bool AntSim::init()
         std::cout << "Failed to initialise OpenGL, error - " << gluErrorString(error);
     }*///NOPE
 
-    /*projectionMatrix = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+    projectionMatrix = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
     viewMatrix = glm::lookAt(glm::vec3(0.0f, 15.0f, 0.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0, 1, 0));// Look from, look to
     //(for some reason looking at straight down means nothing renders and looking from 0 to 0.1f makes everything backwards)
     //modelMatrix = glm::translate<GLfloat>(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0.0f);
@@ -287,11 +308,9 @@ bool AntSim::init()
 
     glUniformMatrix4fv(uniformMatrix, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
 
-    glUseProgram(0);*/
+    glUseProgram(0);
 
     controller = new Controller(3, MAPTYPE_MAZE, MAP_GENERATE);
-
-    Fl::run();
 
     return true;
 }
@@ -328,14 +347,14 @@ void AntSim::render()
     glBindVertexArray(0);
     glUseProgram(0);*/
 
-    /*glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glUseProgram(programID);
 
     controller->render();
 
-    glUseProgram(0);*/
+    glUseProgram(0);
 }
 
 void AntSim::close()
@@ -346,6 +365,7 @@ void AntSim::close()
     window = NULL;
 
     SDL_Quit();*/
+    SDL_HideWindow(windowGraphics);
 }
 
 int AntSim::run()
@@ -357,14 +377,21 @@ int AntSim::run()
         return 1;
     }
 
+    Fl::run();
+
+    return 0;
+}
+
+void AntSim::showMap()
+{
     bool running = true;
 
-    //SDL_Event e;
-    //SDL_StartTextInput();
+    SDL_Event e;
+    SDL_StartTextInput();
 
     while (running)
     {
-        /*while (SDL_PollEvent(&e) != 0)
+        while (SDL_PollEvent(&e) != 0)
         {
             if (e.type == SDL_QUIT)
             {
@@ -378,13 +405,11 @@ int AntSim::run()
             }
         }
         render();
-        SDL_GL_SwapWindow(window);*/
+        SDL_GL_SwapWindow(windowGraphics);
     }
 
-    //SDL_StopTextInput();
+    SDL_StopTextInput();
     close();
-
-    return 0;
 }
 
 GLuint AntSim::shaderLoadFromFile(std::string path, GLenum shaderType)
