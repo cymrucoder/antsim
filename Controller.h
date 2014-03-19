@@ -2,22 +2,10 @@
 #define _CONTROLLER_H_
 
 #include "Map.h"
+#include "ParamData.h"
 #include <fstream>
 #include <string>
 #include <queue>
-
-struct paramData
-{
-    float importancePhero;
-    float importanceDistance;
-    float evapRate;
-    float pheroNumerator;
-
-    int noOfElitistAnts;
-    int noOfRankedAnts;
-    float pheroMax;
-    float pheroMin;
-};
 
 class Controller
 {

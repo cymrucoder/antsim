@@ -100,7 +100,12 @@ void Controller::runIteration()
 
 void Controller::updateParams(struct paramData *data)
 {
-    // For each thing that changed, update it in map
+    map->enviroBeh->updateParams(data);
+
+    for (unsigned int i = 0; i < map->ants.size(); i++)
+    {
+        map->ants.at(i)->updateParams(data);
+    }
 }
 
 /*void Controller::regenerateMap()
@@ -126,7 +131,7 @@ Map* Controller::generateMap(int noOfNodes, bool type, bool load)
 {
     EdgeArray *tempEdges = new EdgeArray(noOfNodes);// Would prefer to create this inside Map but if it's here than the behaviours can use it easier
 
-    Map *mapTemp = new Map(noOfNodes, tempEdges, new EnvironmentMaxMinAS(0.5f, tempEdges));
+    Map *mapTemp = new Map(noOfNodes, tempEdges, new EnvironmentMaxMinAS(tempEdges, 0.7f, 0.5f));
 
     if (type == MAPTYPE_TSP)// Map for TSP type problem
     {

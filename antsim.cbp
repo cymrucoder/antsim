@@ -56,6 +56,7 @@
 		<Unit filename="MoveBehaviour.h" />
 		<Unit filename="Node.cpp" />
 		<Unit filename="Node.h" />
+		<Unit filename="ParamData.h" />
 		<Unit filename="PheromoneBehaviour.cpp" />
 		<Unit filename="PheromoneBehaviour.h" />
 		<Unit filename="Renderable.cpp" />

@@ -11,9 +11,12 @@ public:
 
 	void updatePheromone(std::vector<int> *nodesVisited, float lengthOfPath);
 
+	void updateParams(struct paramData *data);
+
 private:
 
     EdgeArray* edges;
+
     float pheroMax;
 };
 

@@ -45,6 +45,12 @@ std::vector<int> Ant::getNodesVisited()
     return nodesVisited;
 }
 
+void Ant::updateParams(struct paramData *data)
+{
+    moveBeh->updateParams(data);
+    pheroBeh->updateParams(data);
+}
+
 void Ant::reset()// Reset to original node
 {
     lengthOfPath = 0;

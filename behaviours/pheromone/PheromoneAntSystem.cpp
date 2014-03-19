@@ -13,3 +13,8 @@ void PheromoneAntSystem::updatePheromone(std::vector<int> *nodesVisited, float l
         edges->incrementPheromone(nodesVisited->at(i), nodesVisited->at(i + 1), (constNumerator / lengthOfPath));// Update the pheromone by cN/lOP
     }
 }
+
+void PheromoneAntSystem::updateParams(struct paramData *data)
+{
+    constNumerator = data->pheroNumerator;
+}

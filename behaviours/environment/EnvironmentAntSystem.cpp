@@ -1,11 +1,17 @@
 #include "EnvironmentAntSystem.h"
 
-EnvironmentAntSystem::EnvironmentAntSystem(EdgeArray *edges)
+EnvironmentAntSystem::EnvironmentAntSystem(EdgeArray *edges, float evapRate)
 {
     this->edges = edges;
+    this->evapRate = evapRate;
 }
 
 void EnvironmentAntSystem::updatePheromone()
 {
-    edges->evaporate(0.7f);// evaporationRate needs to be set somewhere (pass in value in constructor?)
+    edges->evaporate(evapRate);
+}
+
+void EnvironmentAntSystem::updateParams(struct paramData *data)
+{
+    evapRate = data->evapRate;
 }

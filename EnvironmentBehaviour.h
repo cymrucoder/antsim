@@ -8,6 +8,7 @@
 #include <iostream>
 #include "EdgeArray.h"
 #include "Ant.h"
+#include "ParamData.h"
 
 class EnvironmentBehaviour
 {
@@ -21,11 +22,12 @@ public:
 
     virtual void processAntList(std::vector<Ant*> *ants, std::vector<Ant*> *processedAnts);
 
+    virtual void updateParams(struct paramData *data) = 0;
+
 //protected:
 
     //int howManyAntsUpdate;
 
 };
-
 
 #endif // _ENVIRONMENTBEHAVIOUR_H_

@@ -13,3 +13,8 @@ void PheromoneMaxMinAS::updatePheromone(std::vector<int> *nodesVisited, float le
         edges->incrementPheromone(nodesVisited->at(i), nodesVisited->at(i + 1), (1.0f / lengthOfPath), pheroMax);// Update the pheromone by 1/lOP
     }
 }
+
+void PheromoneMaxMinAS::updateParams(struct paramData *data)
+{
+    pheroMax = data->pheroMax;
+}

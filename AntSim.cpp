@@ -18,7 +18,14 @@ void AntSim::updateParams()
     paramData *data = new paramData;
 
     data->importancePhero = atof(inputAlpha->value());
-    // Set other data here
+    data->importanceDistance = atof(inputBeta->value());
+    data->evapRate = atof(inputEvapRate->value());
+    data->pheroNumerator = atoi(inputPheroNumerator->value());
+
+    data->noOfElitistAnts = atoi(inputElitistAnts->value());
+    data->noOfRankedAnts = atoi(inputRankedAnts->value());
+    data->pheroMax = atof(inputMaxPheromone->value());
+    data->pheroMin = atof(inputMinPhermone->value());
 
     controller->updateParams(data);
 }

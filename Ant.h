@@ -6,6 +6,7 @@
 #include <vector>
 #include "Node.h"
 #include "Renderable.h"
+#include "ParamData.h"
 
 class Ant : public Renderable
 {
@@ -22,6 +23,8 @@ public:
 
     float getLengthOfPath();
     std::vector<int> getNodesVisited();
+
+    void updateParams(struct paramData *data);
 
     void reset();
     void reset(int nodeNew);

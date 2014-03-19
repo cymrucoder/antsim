@@ -7,17 +7,20 @@ class EnvironmentMaxMinAS : public EnvironmentBehaviour
 {
 public:
 
-	EnvironmentMaxMinAS(float pheroMin, EdgeArray *edges);//float evaporationRate);
+	EnvironmentMaxMinAS(EdgeArray *edges, float evapRate, float pheroMin);
 
 	void updatePheromone();
 
 	void processAntList(std::vector<Ant*> *ants, std::vector<Ant*> *processedAnts);
 
+	void updateParams(struct paramData *data);
+
 private:
 
     EdgeArray* edges;
-    float pheroMin;
 
+    float pheroMin;
+    float evapRate;
 };
 
 #endif // _ENVIRONMENTMAXMINAS_H_

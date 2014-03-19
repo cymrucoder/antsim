@@ -1,16 +1,19 @@
 #include "EnvironmentRankBasedAS.h"
 
-EnvironmentRankBasedAS::EnvironmentRankBasedAS(EdgeArray *edges, int numberOfAntsThatUpdate, int numberOfElitistAnts)
+EnvironmentRankBasedAS::EnvironmentRankBasedAS(EdgeArray *edges, float evapRate, int numberOfAntsThatUpdate, int numberOfElitistAnts)
 {
     this->edges = edges;
+
+    this->evapRate = evapRate;
     this->numberOfAntsThatUpdate = numberOfAntsThatUpdate;
     this->numberOfElitistAnts = numberOfElitistAnts;
+
     lengthOfBestPathSoFar = INFINITY;
 }
 
 void EnvironmentRankBasedAS::updatePheromone()
 {
-    edges->evaporate(0.7f);
+    edges->evaporate(evapRate);
 }
 
 void EnvironmentRankBasedAS::processAntList(std::vector<Ant*> *ants, std::vector<Ant*> *processedAnts)
@@ -56,4 +59,11 @@ void EnvironmentRankBasedAS::processAntList(std::vector<Ant*> *ants, std::vector
     {
         edges->incrementPheromone(nodesOfBestPathSoFar.at(i), nodesOfBestPathSoFar.at(i + 1), 1.0f / lengthOfBestPathSoFar);// Should the numerator be 1 or changable?  Need to double check paper
     }
+}
+
+void EnvironmentRankBasedAS::updateParams(struct paramData *data)
+{
+    evapRate = data->evapRate;
+    numberOfAntsThatUpdate = data->noOfRankedAnts;
+    numberOfElitistAnts = data->noOfElitistAnts;
 }
