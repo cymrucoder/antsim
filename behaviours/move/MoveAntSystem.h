@@ -21,7 +21,7 @@ private:
 
     std::random_device rd;
     std::mt19937 mt;
-    std::uniform_real_distribution<float> distFloat;
+    //std::uniform_real_distribution<float> distFloat;
 };
 
 #endif // _MOVEANTSYSTEM_H_
