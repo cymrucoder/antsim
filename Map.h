@@ -27,7 +27,7 @@ class Map
 {
 public:
 
-	Map(int noOfNodes, EdgeArray *edges, EnvironmentBehaviour *enviroBeh);
+	Map(int noOfNodes, EdgeArray *edges, EnvironmentBehaviour *enviroBeh, bool type);
 	~Map();
 
     void createNode(float x, float y, float z);
@@ -47,7 +47,7 @@ private:
     std::vector<Node*> nodes;
     std::vector<Edge*> renderableEdges;
 
-
+    bool type;
 };
 
 #endif // _MAP_H_

@@ -56,7 +56,9 @@ void AntSim::push_updateMap(Fl_Widget *w, void* v)
 
 void AntSim::push_run(Fl_Widget *w, void *v)
 {
+    SDL_ShowWindow(((AntSim*)v)->windowGraphics);
     ((AntSim*)v)->controller->run(atoi(((AntSim*)v)->inputIterations->value()));
+    ((AntSim*)v)->showMap();
 }
 
 void AntSim::push_runIteration(Fl_Widget *w, void *v)
@@ -156,57 +158,57 @@ bool AntSim::init()
 
     buttonRun->callback((Fl_Callback *) push_run, this);*/
 
-    inputAlpha = new Fl_Input(INPUTFIELD_X, 30, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone importance");//50, 605, 50, 20
+    inputAlpha = new Fl_Input(INPUTFIELD_X, 20, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone importance");//50, 605, 50, 20
     inputAlpha->value("1.0");
-    inputBeta = new Fl_Input(INPUTFIELD_X, 60, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Distance importance");
+    inputBeta = new Fl_Input(INPUTFIELD_X, 50, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Distance importance");
     inputBeta->value("1.0");
-    inputEvapRate = new Fl_Input(INPUTFIELD_X, 90, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Evaporation rate");
+    inputEvapRate = new Fl_Input(INPUTFIELD_X, 80, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Evaporation rate");
     inputEvapRate->value("0.5");
-    inputPheroNumerator = new Fl_Input(INPUTFIELD_X, 120, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone numerator");
+    inputPheroNumerator = new Fl_Input(INPUTFIELD_X, 110, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone numerator");
     inputPheroNumerator->value("1.0");
-    inputElitistAnts = new Fl_Input(INPUTFIELD_X, 180, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. elitist ants");
+    inputElitistAnts = new Fl_Input(INPUTFIELD_X, 150, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. elitist ants");
     inputElitistAnts->value("0");
-    inputRankedAnts = new Fl_Input(INPUTFIELD_X, 210, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. ranked ants");
+    inputRankedAnts = new Fl_Input(INPUTFIELD_X, 180, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. ranked ants");
     inputRankedAnts->value("0");
-    inputMaxPheromone = new Fl_Input(INPUTFIELD_X, 240, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. pheromone");
+    inputMaxPheromone = new Fl_Input(INPUTFIELD_X, 210, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. pheromone");
     inputMaxPheromone->value("0.0");
-    inputMinPhermone = new Fl_Input(INPUTFIELD_X, 270, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Min. pheromone");
+    inputMinPhermone = new Fl_Input(INPUTFIELD_X, 240, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Min. pheromone");
     inputMinPhermone->value("0.0");
-    buttonUpdateParams = new Fl_Button(INPUTFIELD_X - 70, 300, 120, 30, "Update");
+    buttonUpdateParams = new Fl_Button(INPUTFIELD_X - 70, 270, 120, 30, "Update");
 
     buttonUpdateParams->callback((Fl_Callback *) push_updateParams, this);
 
     /*box = new Fl_Box(250, 0, 800, 600, "Where OpenGL will go");
     box->box(FL_UP_BOX);*/
-    inputNoOfNodes = new Fl_Input(INPUTFIELD_X, 340, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. nodes");
+    inputNoOfNodes = new Fl_Input(INPUTFIELD_X, 310, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. nodes");
     inputNoOfNodes->value("20");
-    buttonMaze = new Fl_Round_Button(INPUTFIELD_X - 70, 405, INPUTFIELD_WIDTH, 10, "Maze type map");
-    buttonMaze->type(FL_RADIO_BUTTON);
-    buttonTSP = new Fl_Round_Button(INPUTFIELD_X - 70, 380, INPUTFIELD_WIDTH, 10, "TSP type map");
+    buttonTSP = new Fl_Round_Button(INPUTFIELD_X - 70, 350, INPUTFIELD_WIDTH, 10, "TSP type map");
     buttonTSP->type(FL_RADIO_BUTTON);
+    buttonMaze = new Fl_Round_Button(INPUTFIELD_X - 70, 375, INPUTFIELD_WIDTH, 10, "Maze type map");
+    buttonMaze->type(FL_RADIO_BUTTON);
     buttonTSP->setonly();
 
     bool mapUserData;
 
-    buttonGenerateMap = new Fl_Button(INPUTFIELD_X - 70, 430, 120, 30, "Generate map");
+    buttonGenerateMap = new Fl_Button(INPUTFIELD_X - 70, 400, 120, 30, "Generate map");
     mapUserData = MAP_GENERATE;
     buttonGenerateMap->user_data(&mapUserData);
 
     buttonGenerateMap->callback((Fl_Callback *) push_updateMap, this);
 
-    buttonLoadMap = new Fl_Button(INPUTFIELD_X - 70, 470, 120, 30, "Load map");
+    buttonLoadMap = new Fl_Button(INPUTFIELD_X - 70, 440, 120, 30, "Load map");
     mapUserData = MAP_LOAD;
     buttonLoadMap->user_data(&mapUserData);
 
     buttonLoadMap->callback((Fl_Callback *) push_updateMap, this);
 
-    inputIterations = new Fl_Input(INPUTFIELD_X, 525, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. iterations");
+    inputIterations = new Fl_Input(INPUTFIELD_X, 490, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. iterations");
     inputIterations->value("1000");
-    buttonRunIteration = new Fl_Button(INPUTFIELD_X - 70, 560, 120, 30, "Run iteration");
+    buttonRunIteration = new Fl_Button(INPUTFIELD_X - 70, 525, 120, 30, "Run iteration");
 
     buttonRunIteration->callback((Fl_Callback *) push_runIteration, this);
 
-    buttonRun = new Fl_Button(INPUTFIELD_X - 70, 600, 120, 30, "Run");
+    buttonRun = new Fl_Button(INPUTFIELD_X - 70, 565, 120, 30, "Run");
 
     buttonRun->callback((Fl_Callback *) push_run, this);
 

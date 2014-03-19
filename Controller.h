@@ -18,7 +18,6 @@ public:
 
 	void updateParams(struct paramData *data);
 
-    //void regenerateMap();
 	void regenerateMap(int noOfNodes, bool type, bool load);
 
 	Map* generateMap(int noOfNodes, bool type = MAPTYPE_TSP, bool load = MAP_GENERATE);

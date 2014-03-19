@@ -36,27 +36,6 @@ void Controller::runIteration()
 
     map->enviroBeh->updatePheromone();
 
-    /*int howManyAntsUpdate = map->enviroBeh->getHowManyAntsUpdate();// Could just set this to ants.size() if it returns 0 but might want to add negatives or something for stuff later
-
-    if (howManyAntsUpdate > 0)// Used when the algorithm only lets certain ants update (usually the ants that found the shortest path)
-    {
-        // Sort list (I don't think it matters if you just reorder the current ants[] order doesn't really matter)
-
-        Ant *antTemp;
-
-        for (unsigned int i = 0; i < map->ants.size() - 1; i++)// Quicksort, probably better way of doing it
-        {
-            for (unsigned int j = 0; j < map->ants.size() - 1; j++)
-            {
-                if (map->ants.at(j)->getLengthOfPath() > map->ants.at(j + 1)->getLengthOfPath())
-                {
-                    antTemp = map->ants.at(j);
-                    map->ants.at(j) = map->ants.at(j + 1);
-                    map->ants.at(j + 1) = antTemp;
-                }
-            }
-        }*/
-
     map->enviroBeh->processAntList(&map->ants, &map->processedAnts);// enviroBeh generates new list of ants that are able to update
 
     for (unsigned int i = 0; i < map->processedAnts.size(); i++)
@@ -65,14 +44,6 @@ void Controller::runIteration()
     }
 
     map->processedAnts.clear();
-    //}
-    /*else// Used when all ants can update
-    {
-        for (unsigned int i = 0; i < map->ants.size(); i++)
-        {
-            map->ants.at(i)->updatePheromone();
-        }
-    }*/
 
     for (unsigned int i = 0; i < map->ants.size(); i++)
     {
@@ -108,11 +79,6 @@ void Controller::updateParams(struct paramData *data)
     }
 }
 
-/*void Controller::regenerateMap()
-{
-
-}*/
-
 void Controller::regenerateMap(int noOfNodes, bool type, bool load)
 {
     // Node and Edge are fine
@@ -131,7 +97,7 @@ Map* Controller::generateMap(int noOfNodes, bool type, bool load)
 {
     EdgeArray *tempEdges = new EdgeArray(noOfNodes);// Would prefer to create this inside Map but if it's here than the behaviours can use it easier
 
-    Map *mapTemp = new Map(noOfNodes, tempEdges, new EnvironmentMaxMinAS(tempEdges, 0.7f, 0.5f));
+    Map *mapTemp = new Map(noOfNodes, tempEdges, new EnvironmentMaxMinAS(tempEdges, 0.7f, 0.5f), type);
 
     if (type == MAPTYPE_TSP)// Map for TSP type problem
     {
