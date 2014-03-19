@@ -11,17 +11,17 @@ public:
 
     int generateMove(std::vector<int> *tabuList);
 
-    EdgeArray *edges;
+    void updateParams(struct paramData *data);
 
 private:
 
+    EdgeArray *edges;
 
     float importancePhero, importanceDist;
 
     std::random_device rd;
     std::mt19937 mt;
-    std::uniform_real_distribution<float> distFloat;
+    //std::uniform_real_distribution<float> distFloat;
 };
-
 
 #endif // _MOVEANTSYSTEM_H_

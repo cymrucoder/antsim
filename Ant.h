@@ -6,13 +6,14 @@
 #include <vector>
 #include "Node.h"
 #include "Renderer.h"
+#include "ParamData.h"
 
 class Ant
 {
 public:
 
     Ant(int nodeCurrent, EdgeArray *edges, MoveBehaviour *moveBeh, PheromoneBehaviour *pheroBeh);
-    //~Ant();
+    ~Ant();
 
     void move();
     void updatePheromone();
@@ -22,6 +23,8 @@ public:
 
     float getLengthOfPath();
     std::vector<int> getNodesVisited();
+
+    void updateParams(struct paramData *data);
 
     void reset();
     void reset(int nodeNew);

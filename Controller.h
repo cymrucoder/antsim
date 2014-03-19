@@ -2,6 +2,7 @@
 #define _CONTROLLER_H_
 
 #include "Map.h"
+#include "ParamData.h"
 #include <fstream>
 #include <string>
 #include <queue>
@@ -10,15 +11,15 @@ class Controller
 {
 public:
 
-	Controller(int noOfNodes, char type = MAPTYPE_TSP_RANDOM);
+	Controller(int noOfNodes, bool type = MAPTYPE_TSP, bool load = MAP_GENERATE);
 
 	void run(int maxIterations);
 	void runIteration();
 
-    void regenerateMap();
-	void regenerateMap(int noOfNodes);
+	void updateParams(struct paramData *data);
 
-	void generateMap(int noOfNodes, EdgeArray *edges, char type = MAPTYPE_TSP_RANDOM);
+	void regenerateMap(int noOfNodes, bool type, bool load);
+	Map* generateMap(int noOfNodes, bool type = MAPTYPE_TSP, bool load = MAP_GENERATE);
 
 	void render();
 

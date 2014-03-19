@@ -2,9 +2,70 @@
 
 AntSim::AntSim()
 {
-	window = NULL;
+	windowGraphics = 0;
+	windowUI = 0;
 
     programID = 0;
+}
+
+void AntSim::push_updateParams(Fl_Widget *w, void* v)
+{
+    ((AntSim*)v)->updateParams();
+}
+
+void AntSim::updateParams()
+{
+    paramData *data = new paramData;
+
+    data->importancePhero = atof(inputAlpha->value());
+    data->importanceDistance = atof(inputBeta->value());
+    data->evapRate = atof(inputEvapRate->value());
+    data->pheroNumerator = atoi(inputPheroNumerator->value());
+
+    data->noOfElitistAnts = atoi(inputElitistAnts->value());
+    data->noOfRankedAnts = atoi(inputRankedAnts->value());
+    data->pheroMax = atof(inputMaxPheromone->value());
+    data->pheroMin = atof(inputMinPhermone->value());
+
+    controller->updateParams(data);
+}
+
+void AntSim::push_updateMap(Fl_Widget *w, void* v)
+{
+    if (w)
+    {
+        AntSim* caller = (AntSim*)v;
+
+        int noOfNodes = atoi(caller->inputNoOfNodes->value());
+
+        bool type = 0;
+
+        if (caller->buttonTSP->value() == 1)
+        {
+            type = MAPTYPE_TSP;
+        }
+        else if (caller->buttonMaze->value() == 1)
+        {
+            type = MAPTYPE_MAZE;
+        }
+
+        bool load = *(bool*)(w->user_data());
+        caller->controller->regenerateMap(noOfNodes, type, load);
+    }
+}
+
+void AntSim::push_run(Fl_Widget *w, void *v)
+{
+    SDL_ShowWindow(((AntSim*)v)->windowGraphics);
+    ((AntSim*)v)->controller->run(atoi(((AntSim*)v)->inputIterations->value()));
+    ((AntSim*)v)->showMap();
+}
+
+void AntSim::push_runIteration(Fl_Widget *w, void *v)
+{
+    SDL_ShowWindow(((AntSim*)v)->windowGraphics);
+    ((AntSim*)v)->controller->runIteration();
+    ((AntSim*)v)->showMap();
 }
 
 bool AntSim::init()
@@ -19,21 +80,152 @@ bool AntSim::init()
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
-    window = SDL_CreateWindow("AntSim", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    windowGraphics = SDL_CreateWindow("AntSim", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
 
-    if (window == NULL) {
+    if (windowGraphics == NULL) {
 
         std::cout << "Window could not be created, error: " << SDL_GetError() << std::endl;
         return false;
     }
 
-    context = SDL_GL_CreateContext(window);
+    SDL_HideWindow(windowGraphics);
+
+    context = SDL_GL_CreateContext(windowGraphics);
 
     if (context == NULL) {
 
         std::cout << "OpenGL context could not be created, error: " << SDL_GetError() << std::endl;
         return false;
     }
+
+    windowUI = new Fl_Window(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+    #define INPUTFIELD_HEIGHT 20
+    #define INPUTFIELD_WIDTH 50
+    #define INPUTFIELD_X (SCREEN_WIDTH - INPUTFIELD_WIDTH - 20)
+
+    /*inputAlpha = new Fl_Float_Input(INPUTFIELD_X, 30, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone importance");//50, 605, 50, 20
+    inputAlpha->value("1.0");
+    inputBeta = new Fl_Float_Input(INPUTFIELD_X, 60, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Distance importance");
+    inputBeta->value("1.0");
+    inputEvapRate = new Fl_Float_Input(INPUTFIELD_X, 90, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Evaporation rate");
+    inputEvapRate->value("0.5");
+    inputPheroNumerator = new Fl_Float_Input(INPUTFIELD_X, 120, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone numerator");
+    inputPheroNumerator->value("1.0");
+    inputElitistAnts = new Fl_Int_Input(INPUTFIELD_X, 180, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. elitist ants");
+    inputElitistAnts->value("0");
+    inputRankedAnts = new Fl_Int_Input(INPUTFIELD_X, 210, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. ranked ants");
+    inputRankedAnts->value("0");
+    inputMaxPheromone = new Fl_Float_Input(INPUTFIELD_X, 240, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. pheromone");
+    inputMaxPheromone->value("0.0");
+    inputMinPhermone = new Fl_Float_Input(INPUTFIELD_X, 270, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Min. pheromone");
+    inputMinPhermone->value("0.0");
+    buttonUpdateParams = new Fl_Button(INPUTFIELD_X - 70, 300, 120, 30, "Update");
+
+    buttonUpdateParams->callback((Fl_Callback *) push_updateParams, this);
+
+    box = new Fl_Box(250, 0, 800, 600, "Where OpenGL will go");
+    box->box(FL_UP_BOX);
+    inputNoOfNodes = new Fl_Int_Input(INPUTFIELD_X, 340, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. nodes");
+    inputNoOfNodes->value("20");
+    buttonMaze = new Fl_Round_Button(INPUTFIELD_X - 70, 405, INPUTFIELD_WIDTH, 10, "Maze type map");
+    buttonMaze->type(FL_RADIO_BUTTON);
+    buttonTSP = new Fl_Round_Button(INPUTFIELD_X - 70, 380, INPUTFIELD_WIDTH, 10, "TSP type map");
+    buttonTSP->type(FL_RADIO_BUTTON);
+    buttonTSP->setonly();
+
+    bool mapUserData;
+
+    buttonGenerateMap = new Fl_Button(INPUTFIELD_X - 70, 430, 120, 30, "Generate map");
+    mapUserData = MAP_GENERATE;
+    buttonGenerateMap->user_data(&mapUserData);
+
+    buttonGenerateMap->callback((Fl_Callback *) push_updateMap, this);
+
+    buttonLoadMap = new Fl_Button(INPUTFIELD_X - 70, 470, 120, 30, "Load map");
+    mapUserData = MAP_LOAD;
+    buttonLoadMap->user_data(&mapUserData);
+
+    buttonLoadMap->callback((Fl_Callback *) push_updateMap, this);
+
+    inputIterations = new Fl_Int_Input(INPUTFIELD_X, 525, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. iterations");
+    inputIterations->value("1000");
+    buttonRunIteration = new Fl_Button(INPUTFIELD_X - 70, 560, 120, 30, "Run iteration");
+
+    buttonRunIteration->callback((Fl_Callback *) push_runIteration, this);
+
+    buttonRun = new Fl_Button(INPUTFIELD_X - 70, 600, 120, 30, "Run");
+
+    buttonRun->callback((Fl_Callback *) push_run, this);*/
+
+    inputAlpha = new Fl_Input(INPUTFIELD_X, 20, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone importance");//50, 605, 50, 20
+    inputAlpha->value("1.0");
+    inputBeta = new Fl_Input(INPUTFIELD_X, 50, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Distance importance");
+    inputBeta->value("1.0");
+    inputEvapRate = new Fl_Input(INPUTFIELD_X, 80, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Evaporation rate");
+    inputEvapRate->value("0.5");
+    inputPheroNumerator = new Fl_Input(INPUTFIELD_X, 110, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone numerator");
+    inputPheroNumerator->value("1.0");
+    inputElitistAnts = new Fl_Input(INPUTFIELD_X, 150, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. elitist ants");
+    inputElitistAnts->value("0");
+    inputRankedAnts = new Fl_Input(INPUTFIELD_X, 180, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. ranked ants");
+    inputRankedAnts->value("0");
+    inputMaxPheromone = new Fl_Input(INPUTFIELD_X, 210, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. pheromone");
+    inputMaxPheromone->value("0.0");
+    inputMinPhermone = new Fl_Input(INPUTFIELD_X, 240, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Min. pheromone");
+    inputMinPhermone->value("0.0");
+    buttonUpdateParams = new Fl_Button(INPUTFIELD_X - 70, 270, 120, 30, "Update");
+
+    buttonUpdateParams->callback((Fl_Callback *) push_updateParams, this);
+
+    /*box = new Fl_Box(250, 0, 800, 600, "Where OpenGL will go");
+    box->box(FL_UP_BOX);*/
+    inputNoOfNodes = new Fl_Input(INPUTFIELD_X, 310, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. nodes");
+    inputNoOfNodes->value("20");
+    buttonTSP = new Fl_Round_Button(INPUTFIELD_X - 70, 350, INPUTFIELD_WIDTH, 10, "TSP type map");
+    buttonTSP->type(FL_RADIO_BUTTON);
+    buttonMaze = new Fl_Round_Button(INPUTFIELD_X - 70, 375, INPUTFIELD_WIDTH, 10, "Maze type map");
+    buttonMaze->type(FL_RADIO_BUTTON);
+    buttonTSP->setonly();
+
+    bool mapUserData;
+
+    buttonGenerateMap = new Fl_Button(INPUTFIELD_X - 70, 400, 120, 30, "Generate map");
+    mapUserData = MAP_GENERATE;
+    buttonGenerateMap->user_data(&mapUserData);
+
+    buttonGenerateMap->callback((Fl_Callback *) push_updateMap, this);
+
+    buttonLoadMap = new Fl_Button(INPUTFIELD_X - 70, 440, 120, 30, "Load map");
+    mapUserData = MAP_LOAD;
+    buttonLoadMap->user_data(&mapUserData);
+
+    buttonLoadMap->callback((Fl_Callback *) push_updateMap, this);
+
+    inputIterations = new Fl_Input(INPUTFIELD_X, 490, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. iterations");
+    inputIterations->value("1000");
+    buttonRunIteration = new Fl_Button(INPUTFIELD_X - 70, 525, 120, 30, "Run iteration");
+
+    buttonRunIteration->callback((Fl_Callback *) push_runIteration, this);
+
+    buttonRun = new Fl_Button(INPUTFIELD_X - 70, 565, 120, 30, "Run");
+
+    buttonRun->callback((Fl_Callback *) push_run, this);
+
+    // Current iteration count somewhere?  Along buttom with other results?
+    menuAntMoveBeh = new Fl_Choice(90, 30, 120, 30, "Move beh");
+    /*moveBehAS = new Fl_Menu_Item[1];
+    moveBehAS[0] =
+    {"AS", 0, 0, 0}
+    ;*/
+    menuAntMoveBeh->add("AS", 0, 0);
+    menuAntPheroBeh = new Fl_Choice(90, 80, 120, 30, "Phero beh");
+    menuEnviroBeh = new Fl_Choice(90, 130, 120, 30, "Enviro beh");
+    // Fl_File_Browser for loading files
+
+    windowUI->end();
+    windowUI->show();
+
 
     glewExperimental = GL_TRUE;
     GLenum glewError = glewInit();
@@ -99,7 +291,7 @@ bool AntSim::init()
     if (error != GL_NO_ERROR) {
 
         std::cout << "Failed to initialise OpenGL, error - " << gluErrorString(error);
-    }*/
+    }*///NOPE
 
     projectionMatrix = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
     viewMatrix = glm::lookAt(glm::vec3(0.0f, 20.0f, 0.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0, 1, 0));// Look from, look to
@@ -127,7 +319,7 @@ bool AntSim::init()
 
     glUseProgram(0);
 
-    controller = new Controller(8, MAPTYPE_MAZE_RANDOM);
+    controller = new Controller(3, MAPTYPE_MAZE, MAP_GENERATE);
 
     return true;
 }
@@ -176,12 +368,13 @@ void AntSim::render()
 
 void AntSim::close()
 {
-    glDeleteProgram(programID);
+    /*glDeleteProgram(programID);*/
 
-    SDL_DestroyWindow(window);
+    /*SDL_DestroyWindow(window);
     window = NULL;
 
-    SDL_Quit();
+    SDL_Quit();*/
+    SDL_HideWindow(windowGraphics);
 }
 
 int AntSim::run()
@@ -193,6 +386,13 @@ int AntSim::run()
         return 1;
     }
 
+    Fl::run();
+
+    return 0;
+}
+
+void AntSim::showMap()
+{
     bool running = true;
 
     SDL_Event e;
@@ -214,13 +414,11 @@ int AntSim::run()
             }
         }
         render();
-        SDL_GL_SwapWindow(window);
+        SDL_GL_SwapWindow(windowGraphics);
     }
 
     SDL_StopTextInput();
     close();
-
-    return 0;
 }
 
 GLuint AntSim::shaderLoadFromFile(std::string path, GLenum shaderType)

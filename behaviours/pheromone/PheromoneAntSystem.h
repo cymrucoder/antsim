@@ -11,11 +11,13 @@ public:
 
 	void updatePheromone(std::vector<int> *nodesVisited, float lengthOfPath);
 
+	void updateParams(struct paramData *data);
+
 private:
 
     EdgeArray* edges;
-    float constNumerator;
 
+    float constNumerator;
 };
 
 #endif // _PHEROMONEANTSYSTEM_H_

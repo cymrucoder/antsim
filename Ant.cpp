@@ -21,6 +21,12 @@ Ant::Ant(int nodeCurrent, EdgeArray *edges, MoveBehaviour *moveBeh, PheromoneBeh
     renderer = new Renderer(noOfVertices, noOfElements, vertPosArray, indexArray);
 }
 
+Ant::~Ant()
+{
+    delete moveBeh;
+    delete pheroBeh;
+}
+
 void Ant::move()
 {
     int nodeToMoveTo = moveBeh->generateMove(&nodesVisited);
@@ -48,6 +54,12 @@ float Ant::getLengthOfPath()
 std::vector<int> Ant::getNodesVisited()
 {
     return nodesVisited;
+}
+
+void Ant::updateParams(struct paramData *data)
+{
+    moveBeh->updateParams(data);
+    pheroBeh->updateParams(data);
 }
 
 void Ant::reset()// Reset to original node

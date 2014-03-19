@@ -13,7 +13,7 @@ MoveAntSystem::MoveAntSystem(EdgeArray *edges, float importancePhero, float impo
 
 int MoveAntSystem::generateMove(std::vector<int> *nodesVisited)
 {
-    float denom = 0.0f;
+    float totalProbability = 0.0f;
     int currentNode = nodesVisited->back();
 
     std::vector<int> validNodes;
@@ -24,30 +24,42 @@ int MoveAntSystem::generateMove(std::vector<int> *nodesVisited)
         {
             validNodes.push_back(i);
         }
-
     }
 
     std::vector<float> probabilities;
 
-    for (unsigned int i = 0; i < validNodes.size(); i++)// Loops through non tabu nodes to generate numerators and adds each to the total denominator
+    for (unsigned int i = 0; i < validNodes.size(); i++)// Loops through non tabu nodes to generate numerators and adds each to the total totalProbabilityinator
     {
         probabilities.push_back((pow(edges->getPheromone(currentNode, validNodes.at(i)), importancePhero) * pow((1.0f / edges->getLength(currentNode, validNodes.at(i))), importanceDist)));
-        denom += probabilities.at(i);
+        totalProbability += probabilities.at(i);
     }
 
-    distFloat = std::uniform_real_distribution<float>(0.0f, denom);// Range of [0.0f, denom)
-    float randomNumber = distFloat(mt);
-
-    float runningCount = 0.0f;// Add probabilities to rC, when rC > rN use that node
-
-    for (unsigned int i = 0; i < probabilities.size(); i++)
+    if (totalProbability > 0.0f)// If all pheromone levels are 0, all nodes have 0 probability so need to work around that
     {
-        runningCount += probabilities.at(i);
-        if (runningCount >= randomNumber)
+        std::uniform_real_distribution<float> distFloat = std::uniform_real_distribution<float>(0.0f, totalProbability);// Range of [0.0f, totalProbability)
+        float randomNumber = distFloat(mt);
+
+        float runningCount = 0.0f;// Add probabilities to rC, when rC > rN use that node
+
+        for (unsigned int i = 0; i < probabilities.size(); i++)
         {
-            return validNodes.at(i);
+            runningCount += probabilities.at(i);
+            if (runningCount >= randomNumber)
+            {
+                return validNodes.at(i);
+            }
         }
+        return validNodes.back();// Shouldn't reach here but in case of float inprecision
     }
-    return -1;
-    // This would probably break if the pheromone to each was 0 (checking rC against rN is now >= which I think should at least make it not break, but it's not a proper fix because each node has the same chance but this always picks the first one)
+    else
+    {
+        std::uniform_int_distribution<unsigned int> distInt = std::uniform_int_distribution<unsigned int>(0, validNodes.size() - 1);
+        return validNodes.at(distInt(mt));// Return random node if they all have 0 probability (would always return the first node using the above method)
+    }
+}
+
+void MoveAntSystem::updateParams(struct paramData *data)
+{
+    importancePhero = data->importancePhero;
+    importanceDist = data->importanceDistance;
 }
