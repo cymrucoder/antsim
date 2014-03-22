@@ -223,7 +223,7 @@
 
 1395251141 /home/hb/3yp/dev/antsim/EdgeArray.h
 
-1395252316 /home/hb/3yp/dev/antsim/Ant.h
+1395505858 /home/hb/3yp/dev/antsim/Ant.h
 	"MoveBehaviour.h"
 	"PheromoneBehaviour.h"
 	<vector>
@@ -385,7 +385,7 @@
 	<iostream>
 	"Controller.h"
 
-1395504681 /home/hb/3yp/dev/antsim/Controller.h
+1395505669 /home/hb/3yp/dev/antsim/Controller.h
 	"Map.h"
 	"ParamData.h"
 	<fstream>
@@ -464,4 +464,7 @@
 	"behaviours/environment/EnvironmentAntSystem.h"
 	"behaviours/environment/EnvironmentMaxMinAS.h"
 	"behaviours/environment/EnvironmentRankBasedAS.h"
+
+1395504780 source:/home/hb/3yp/dev/antsim/EnvironmentBehFactory.cpp
+	"EnvironmentBehFactory.h"
 

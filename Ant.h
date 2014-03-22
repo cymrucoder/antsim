@@ -24,6 +24,8 @@ public:
     float getLengthOfPath();
     std::vector<int> getNodesVisited();
 
+    void setMoveBehaviour(MoveBehaviour *moveBeh);
+    void setPheromoneBehaviour(PheromoneBehaviour *pheroBeh);
     void updateParams(struct paramData *data);
 
     void reset();

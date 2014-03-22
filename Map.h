@@ -34,6 +34,8 @@ public:
     void createEdge(int nodeA, int nodeB);
     void createAnt(int node, MoveBehaviour *moveBeh, PheromoneBehaviour *pheroBeh);
 
+    void setEnvironmentBehaviour(EnvironmentBehaviour *enviroBeh);
+
 	void render();
 
 	std::vector<Ant*> ants;// May move ants, edges and enviroBeh and nodes into private and rework access later or make Controller friend

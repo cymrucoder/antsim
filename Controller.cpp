@@ -93,6 +93,27 @@ void Controller::runIteration()
     iteration++;
 }
 
+void Controller::updateMoveBehaviour(int moveBehaviourType)
+{
+    for (unsigned int i = 0; i < map->ants.size(); i++)
+    {
+        map->ants.at(i)->setMoveBehaviour(moveBehFactory.makeMoveBehaviour(moveBehaviourType, map->edges));
+    }
+}
+
+void Controller::updatePheromoneBehaviour(int pheromoneBehaviourType)
+{
+    for (unsigned int i = 0; i < map->ants.size(); i++)
+    {
+        map->ants.at(i)->setPheromoneBehaviour(pheromoneBehFactory.makePheromoneBehaviour(pheromoneBehaviourType, map->edges));
+    }
+}
+
+void Controller::updateEnvironmentBehaviour(int environmentBehaviourType)
+{
+    map->setEnvironmentBehaviour(environmentBehFactory.makeEnvironmentBehaviour(environmentBehaviourType, map->edges));
+}
+
 void Controller::updateParams(struct paramData *data)
 {
     map->enviroBeh->updateParams(data);

@@ -19,6 +19,9 @@ public:
 	void run(int maxIterations);
 	void runIteration();
 
+    void updateMoveBehaviour(int moveBehaviourType);
+    void updatePheromoneBehaviour(int pheromoneBehaviourType);
+    void updateEnvironmentBehaviour(int environmentBehaviourType);
 	void updateParams(struct paramData *data);
 
 	void regenerateMap(int noOfNodes, bool type, bool load);

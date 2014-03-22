@@ -56,6 +56,18 @@ std::vector<int> Ant::getNodesVisited()
     return nodesVisited;
 }
 
+void Ant::setMoveBehaviour(MoveBehaviour *moveBeh)
+{
+    delete this->moveBeh;
+    this->moveBeh = moveBeh;
+}
+
+void Ant::setPheromoneBehaviour(PheromoneBehaviour *pheroBeh)
+{
+    delete this->pheroBeh;
+    this->pheroBeh = pheroBeh;
+}
+
 void Ant::updateParams(struct paramData *data)
 {
     moveBeh->updateParams(data);
