@@ -6,6 +6,9 @@
 #include <fstream>
 #include <string>
 #include <queue>
+#include "MoveBehFactory.h"
+#include "PheromoneBehFactory.h"
+#include "EnvironmentBehFactory.h"
 
 class Controller
 {
@@ -31,6 +34,15 @@ private:
     int maxIterations;
 
     float shortestKnownPath;
+
+    struct timespec spec, specend;
+    unsigned long long int totalTime;
+
+    int iteration;
+
+    MoveBehFactory moveBehFactory;
+    PheromoneBehFactory pheromoneBehFactory;
+    EnvironmentBehFactory environmentBehFactory;
 };
 
 #endif // _CONTROLLER_H_

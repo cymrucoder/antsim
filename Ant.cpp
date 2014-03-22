@@ -64,7 +64,7 @@ void Ant::updateParams(struct paramData *data)
 
 void Ant::reset()// Reset to original node
 {
-    lengthOfPath = 0;
+    lengthOfPath = 0.0f;
     nodeCurrent = nodesVisited.at(0);
 
     nodesVisited.clear();
@@ -73,7 +73,7 @@ void Ant::reset()// Reset to original node
 
 void Ant::reset(int nodeNew)// Reset to a specified node
 {
-    lengthOfPath = 0;
+    lengthOfPath = 0.0f;
     nodeCurrent = nodeNew;
 
     nodesVisited.clear();

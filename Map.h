@@ -36,15 +36,15 @@ public:
 
 	void render();
 
-	std::vector<Ant*> ants;// May move ants, edges and enviroBeh into private and rework access later
+	std::vector<Ant*> ants;// May move ants, edges and enviroBeh and nodes into private and rework access later or make Controller friend
     std::vector<Ant*> processedAnts;// Move this to Controller?
+    std::vector<Node*> nodes;
 	EdgeArray *edges;
 
     EnvironmentBehaviour *enviroBeh;
 
 private:
 
-    std::vector<Node*> nodes;
     std::vector<RenderableEdge*> renderableEdges;
 
     bool type;

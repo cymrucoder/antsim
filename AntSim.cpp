@@ -396,7 +396,7 @@ void AntSim::showMap()
     bool running = true;
 
     SDL_Event e;
-    SDL_StartTextInput();
+    //SDL_StartTextInput();
 
     while (running)
     {
@@ -406,18 +406,18 @@ void AntSim::showMap()
             {
                 running = false;
             }
-            else if (e.type == SDL_TEXTINPUT)
+            /*else if (e.type == SDL_TEXTINPUT)
             {
                 int x = 0, y = 0;
                 SDL_GetMouseState(&x, &y);
                 handleKeys(e.text.text[0], x, y);
-            }
+            }*/
         }
         render();
         SDL_GL_SwapWindow(windowGraphics);
     }
 
-    SDL_StopTextInput();
+    //SDL_StopTextInput();
     close();
 }
 

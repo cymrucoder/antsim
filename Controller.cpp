@@ -20,6 +20,7 @@ Controller::Controller(int noOfNodes, bool type, bool load)
     //generateMap(noOfNodes, edges, type);
 
     shortestKnownPath = INFINITY;
+    iteration = 0;
 }
 
 void Controller::run(int maxIterations)
@@ -32,9 +33,14 @@ void Controller::run(int maxIterations)
 
 void Controller::runIteration()
 {
+    clock_gettime(CLOCK_REALTIME, &spec);// Start timing
+
     for (unsigned int i = 0; i < map->ants.size(); i++)
     {
-        map->ants.at(i)->move();
+        for (unsigned int j = 0; j < map->nodes.size() - 1; j++)
+        {
+            map->ants.at(i)->move();
+        }
     }
 
     map->enviroBeh->updatePheromone();
@@ -48,6 +54,19 @@ void Controller::runIteration()
 
     map->processedAnts.clear();
 
+    // Unsure if I should stop timing here or if a result is found (this isn't technically part of the algorithms so I think here)
+
+    clock_gettime(CLOCK_REALTIME, &specend);// Stop timing and add nanoseconds taken to total time count
+
+    if (spec.tv_sec != specend.tv_sec)// tv_nsec gives nanoseconds since current second started, have to account for a new second starting between timings
+    {
+        totalTime += ((specend.tv_sec - spec.tv_sec) * 1.0e9) + (specend.tv_nsec - spec.tv_nsec);
+    }
+    else
+    {
+        totalTime += (specend.tv_nsec - spec.tv_nsec);
+    }
+
     for (unsigned int i = 0; i < map->ants.size(); i++)
     {
         float actualLengthA = map->ants.at(i)->getLengthOfPath() + (map->edges->getLength(map->ants.at(i)->nodesVisited.at(0), map->ants.at(i)->nodesVisited.back()));// Move from final node to start node not accounted for ATM,
@@ -55,21 +74,23 @@ void Controller::runIteration()
         if (actualLengthA < shortestKnownPath)
         {
             shortestKnownPath = actualLengthA;
+
+            std::cout << "New shortest path found at " << (totalTime / 1.0e6) << "ms (length: " << shortestKnownPath << "), iteration " << iteration << std::endl;
+
+            //std::ifstream fileOutput;
+            //fileOutput.open("map.txt", std::ios::in);
+
             //std::cout << "New shortest path, length: " << shortestKnownPath << " (iteration: " << iter << "):";
 
             for (unsigned int j = 0; j < map->ants.at(i)->nodesVisited.size(); j++)
             {
-                std::cout << " " << map->ants.at(i)->nodesVisited.at(j);
+                //std::cout << " " << map->ants.at(i)->nodesVisited.at(j);
             }
             //std::cout << std::endl;
-
-            for (unsigned int j = 0; j < map->ants.at(i)->nodesVisited.size(); j++)
-            {
-
-            }
         }
         map->ants.at(i)->reset();
     }
+    iteration++;
 }
 
 void Controller::updateParams(struct paramData *data)
@@ -94,14 +115,15 @@ void Controller::regenerateMap(int noOfNodes, bool type, bool load)
     map = generateMap(noOfNodes, type, load);
 
     shortestKnownPath = INFINITY;
+    iteration = 0;
 }
 
 Map* Controller::generateMap(int noOfNodes, bool type, bool load)
 {
     EdgeArray *tempEdges = new EdgeArray(noOfNodes);// Would prefer to create this inside Map but if it's here than the behaviours can use it easier
 
-    Map *mapTemp = new Map(noOfNodes, tempEdges, new EnvironmentMaxMinAS(tempEdges, 0.7f, 0.5f), type);
-
+    //Map *mapTemp = new Map(noOfNodes, tempEdges, new EnvironmentAntSystem(tempEdges, 0.7f), MAPTYPE_TSP);
+    Map *mapTemp = new Map(noOfNodes, tempEdges, environmentBehFactory.makeEnvironmentBehaviour(ENVIRONMENT_BEH_TYPE_AS, tempEdges), MAPTYPE_TSP);
     if (type == MAPTYPE_TSP)// Map for TSP type problem
     {
         if (load == MAP_GENERATE)// Generate randomly
@@ -383,7 +405,8 @@ Map* Controller::generateMap(int noOfNodes, bool type, bool load)
     for (int i = 0; i < noOfNodes; i++)// For now, ant on every node.  May change later.
     {
         //ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneAntSystem(edges, 100.0f)));
-        map->createAnt(i, new MoveAntSystem(tempEdges, 1.0f, 5.0f), new PheromoneMaxMinAS(tempEdges, 4.0f));
+        //mapTemp->createAnt(i, new MoveAntSystem(tempEdges, 1.0f, 5.0f), new PheromoneAntSystem(tempEdges, 1.0f));
+        mapTemp->createAnt(i, moveBehFactory.makeMoveBehaviour(MOVE_BEH_TYPE_AS, tempEdges), pheromoneBehFactory.makePheromoneBehaviour(PHEROMONE_BEH_TYPE_AS, tempEdges));
     }
 
     return mapTemp;
