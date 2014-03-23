@@ -39,7 +39,7 @@ void Map::createEdge(int nodeA, int nodeB)
                             pow((nodes.at(nodeA)->getCoord(COORD_Y) - nodes.at(nodeB)->getCoord(COORD_Y)), 2.0f) +
                             pow((nodes.at(nodeA)->getCoord(COORD_Z) - nodes.at(nodeB)->getCoord(COORD_Z)), 2.0f));
 
-    if (edges->addEdge(nodeA, nodeB, distance, 10.0f) == true)// Last argument needs to be default phero level whenever I add that
+    if (edges->addEdge(nodeA, nodeB, distance) == true)
     {
         // If the edge is added, create an RenderableEdge to store its graphical data
 

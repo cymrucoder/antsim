@@ -33,6 +33,8 @@ void Controller::run(int maxIterations)
     {
         runIteration();
     }
+
+    map->edges->reset();
 }
 
 void Controller::runIteration()
@@ -73,7 +75,12 @@ void Controller::runIteration()
 
     for (unsigned int i = 0; i < map->ants.size(); i++)
     {
-        float actualLengthA = map->ants.at(i)->getLengthOfPath() + (map->edges->getLength(map->ants.at(i)->nodesVisited.at(0), map->ants.at(i)->nodesVisited.back()));// Move from final node to start node not accounted for ATM,
+        float firstbit = map->ants.at(i)->getLengthOfPath();
+        float secondbit = (map->edges->getLength(map->ants.at(i)->nodesVisited.at(0), map->ants.at(i)->nodesVisited.back()));
+
+        //float actualLengthA = map->ants.at(i)->getLengthOfPath() + (map->edges->getLength(map->ants.at(i)->nodesVisited.at(0), map->ants.at(i)->nodesVisited.back()));// Move from final node to start node not accounted for ATM,
+
+        float actualLengthA = firstbit + secondbit;
 
         if (actualLengthA < shortestKnownPath)
         {
@@ -158,7 +165,7 @@ void Controller::regenerateMap(int noOfNodes, bool type, bool load)
 
 Map* Controller::generateMap(int noOfNodes, bool type, bool load)
 {
-    EdgeArray *tempEdges = new EdgeArray(noOfNodes);// Would prefer to create this inside Map but if it's here than the behaviours can use it easier
+    EdgeArray *tempEdges = new EdgeArray(noOfNodes, 10.0f);// Would prefer to create this inside Map but if it's here than the behaviours can use it easier
 
     //Map *mapTemp = new Map(noOfNodes, tempEdges, new EnvironmentAntSystem(tempEdges, 0.7f), MAPTYPE_TSP);
     Map *mapTemp = new Map(noOfNodes, tempEdges, environmentBehFactory.makeEnvironmentBehaviour(ENVIRONMENT_BEH_TYPE_AS, tempEdges), MAPTYPE_TSP);

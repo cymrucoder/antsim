@@ -1,8 +1,9 @@
 #include "EdgeArray.h"
 
-EdgeArray::EdgeArray(int noOfNodes)
+EdgeArray::EdgeArray(int noOfNodes, float initialPheromoneLevel)
 {
     this->noOfNodes = noOfNodes;
+    this->initialPheromoneLevel = initialPheromoneLevel;
 
 	edgeLengths = new float*[noOfNodes];
 	edgePheromones = new float*[noOfNodes];
@@ -41,14 +42,14 @@ EdgeArray::~EdgeArray()
 	delete edgePheromones;
 }
 
-bool EdgeArray::addEdge(int nodeA, int nodeB, float distance, float pheromoneLevel)
+bool EdgeArray::addEdge(int nodeA, int nodeB, float distance)//, float pheromoneLevel)
 {
-    if (edgeLengths[nodeA][nodeB] < 0.0f && distance >= 0.0f && pheromoneLevel >= 0.0f)// Check if nodeA and nodeB are within the array limits (and not the same node)? (and don't already have an edge)
+    if (edgeLengths[nodeA][nodeB] < 0.0f && distance >= 0.0f)// Check if nodeA and nodeB are within the array limits (and not the same node)? (and don't already have an edge)
     {
         edgeLengths[nodeA][nodeB] = distance;
-        edgePheromones[nodeA][nodeB] = pheromoneLevel;
+        edgePheromones[nodeA][nodeB] = initialPheromoneLevel;
         edgeLengths[nodeB][nodeA] = distance;// Have to mirror array so can lookup from either direction
-        edgePheromones[nodeB][nodeA] = pheromoneLevel;
+        edgePheromones[nodeB][nodeA] = initialPheromoneLevel;
 
         return true;
     }
@@ -119,5 +120,20 @@ void EdgeArray::incrementPheromone(int nodeA, int nodeB, float pheromoneIncrease
             edgePheromones[nodeA][nodeB] = pheroMax;
         }
         edgePheromones[nodeB][nodeA] = edgePheromones[nodeA][nodeB];
+    }
+}
+
+void EdgeArray::reset()
+{
+    for (int i = 0; i < noOfNodes; i++)
+    {
+        for (int j = 0; j < noOfNodes; j++)
+        {
+            if (edgeLengths[i][j] > -1.0f)// Only update edges that exist
+            {
+                edgePheromones[i][j] = initialPheromoneLevel;
+            }
+
+        }
     }
 }

@@ -243,56 +243,20 @@ bool AntSim::init()
     buttonMaze->type(FL_RADIO_BUTTON);
     buttonTSP->setonly();
 
-    /*bool mapUserData;
-
     buttonGenerateMap = new Fl_Button(INPUTFIELD_X - 70, 400, 120, 30, "Generate map");
-    mapUserData = MAP_GENERATE;
-    buttonGenerateMap->user_data(&mapUserData);
-
-    buttonGenerateMap->callback((Fl_Callback *) push_updateMap, this);
-
-    buttonLoadMap = new Fl_Button(INPUTFIELD_X - 70, 440, 120, 30, "Load map");
-    mapUserData = MAP_LOAD;
-    buttonLoadMap->user_data(&mapUserData);*/
-
-    /*bool *mapUserDataGen, *mapUserDataLoad;// Unsure if this needs to be done.  Delete them late if needed.
-
-    mapUserDataGen = new bool;
-    mapUserDataLoad = new bool;*/
-
-    buttonGenerateMap = new Fl_Button(INPUTFIELD_X - 70, 400, 120, 30, "Generate map");
-    /*mapUserDataGen = MAP_GENERATE;
-    buttonGenerateMap->user_data(mapUserDataGen);*/
-
     buttonGenerateMap->callback((Fl_Callback *) push_generateMap, this);
 
     buttonLoadMap = new Fl_Button(INPUTFIELD_X - 70, 440, 120, 30, "Load map");
-    /**mapUserDataLoad = MAP_LOAD;
-    buttonLoadMap->user_data(mapUserDataLoad);*/
-
     buttonLoadMap->callback((Fl_Callback *) push_loadMap, this);
 
     inputIterations = new Fl_Input(INPUTFIELD_X, 490, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. iterations");
     inputIterations->value("1000");
-    buttonRunIteration = new Fl_Button(INPUTFIELD_X - 70, 525, 120, 30, "Run iteration");
 
+    buttonRunIteration = new Fl_Button(INPUTFIELD_X - 70, 525, 120, 30, "Run iteration");
     buttonRunIteration->callback((Fl_Callback *) push_runIteration, this);
 
     buttonRun = new Fl_Button(INPUTFIELD_X - 70, 565, 120, 30, "Run");
-
     buttonRun->callback((Fl_Callback *) push_run, this);
-
-    /*int *choice0, *choice1, *choice2, *choice3;// At least make this a loop if you can't do anything else
-
-    choice0 = new int;
-    choice1 = new int;
-    choice2 = new int;
-    choice3 = new int;
-
-    *choice0 = 0;
-    *choice1 = 1;
-    *choice2 = 2;
-    *choice3 = 3;*/
 
     // Current iteration count somewhere?  Along buttom with other results?
     menuAntMoveBeh = new Fl_Choice(90, 30, 120, 30, "Move beh");
@@ -302,8 +266,8 @@ bool AntSim::init()
     {"AS", 0, 0, 0}
     ;*/
     menuAntMoveBeh->add("Ant System", 0, 0);
-
     menuAntMoveBeh->value(0);
+
     menuAntPheroBeh = new Fl_Choice(90, 80, 120, 30, "Phero beh");
     menuAntPheroBeh->callback((Fl_Callback *) push_updatePheromoneBehaviour, this);
     menuAntPheroBeh->add("Ant System", 0, 0);
@@ -320,7 +284,6 @@ bool AntSim::init()
 
     windowUI->end();
     windowUI->show();
-
 
     glewExperimental = GL_TRUE;
     GLenum glewError = glewInit();
