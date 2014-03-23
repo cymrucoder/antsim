@@ -140,7 +140,7 @@ void Map::createAnt(int node, MoveBehaviour *moveBeh, PheromoneBehaviour *pheroB
     ants.push_back(new Ant(node, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneMaxMinAS(edges, 4.0f)));
 }
 
-void setEnvironmentBehaviour(EnvironmentBehaviour *enviroBeh)
+void Map::setEnvironmentBehaviour(EnvironmentBehaviour *enviroBeh)
 {
     delete this->enviroBeh;
     this->enviroBeh = enviroBeh;

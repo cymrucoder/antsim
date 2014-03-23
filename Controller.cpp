@@ -25,6 +25,9 @@ Controller::Controller(int noOfNodes, bool type, bool load)
 
 void Controller::run(int maxIterations)
 {
+    iteration = 0;
+    totalTime = 0;
+    shortestKnownPath = INFINITY;
     for (int i = 0; i < maxIterations; i++)
     {
         runIteration();

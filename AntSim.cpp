@@ -68,6 +68,33 @@ void AntSim::push_runIteration(Fl_Widget *w, void *v)
     ((AntSim*)v)->showMap();
 }
 
+void AntSim::push_updateMoveBehaviour(Fl_Widget *w, void *v)
+{
+    //int choice = *(int*)(w->user_data());
+    ((AntSim*)v)->controller->updateMoveBehaviour(((AntSim*)v)->menuAntMoveBeh->value());
+    ((AntSim*)v)->updateParams();
+}
+
+void AntSim::push_updatePheromoneBehaviour(Fl_Widget *w, void *v)
+{
+    if (w)
+    {
+        //int choice = *(int*)(w->user_data());
+        AntSim* caller = (AntSim*)v;
+        Fl_Choice* choice = caller->menuAntPheroBeh;
+        int value = choice->value();
+        ((AntSim*)v)->controller->updatePheromoneBehaviour(value);
+        ((AntSim*)v)->updateParams();
+    }
+}
+
+void AntSim::push_updateEnvironmentBehaviour(Fl_Widget *w, void *v)
+{
+    //int choice = *(int*)(w->user_data());
+    ((AntSim*)v)->controller->updateEnvironmentBehaviour(((AntSim*)v)->menuEnviroBeh->value());
+    ((AntSim*)v)->updateParams();
+}
+
 bool AntSim::init()
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -188,7 +215,7 @@ bool AntSim::init()
     buttonMaze->type(FL_RADIO_BUTTON);
     buttonTSP->setonly();
 
-    bool mapUserData;
+    /*bool mapUserData;
 
     buttonGenerateMap = new Fl_Button(INPUTFIELD_X - 70, 400, 120, 30, "Generate map");
     mapUserData = MAP_GENERATE;
@@ -198,7 +225,22 @@ bool AntSim::init()
 
     buttonLoadMap = new Fl_Button(INPUTFIELD_X - 70, 440, 120, 30, "Load map");
     mapUserData = MAP_LOAD;
-    buttonLoadMap->user_data(&mapUserData);
+    buttonLoadMap->user_data(&mapUserData);*/
+
+    bool *mapUserDataGen, *mapUserDataLoad;// Unsure if this needs to be done.  Delete them late if needed.
+
+    mapUserDataGen = new bool;
+    mapUserDataLoad = new bool;
+
+    buttonGenerateMap = new Fl_Button(INPUTFIELD_X - 70, 400, 120, 30, "Generate map");
+    *mapUserDataGen = MAP_GENERATE;
+    buttonGenerateMap->user_data(mapUserDataGen);
+
+    buttonGenerateMap->callback((Fl_Callback *) push_updateMap, this);
+
+    buttonLoadMap = new Fl_Button(INPUTFIELD_X - 70, 440, 120, 30, "Load map");
+    *mapUserDataLoad = MAP_LOAD;
+    buttonLoadMap->user_data(mapUserDataLoad);
 
     buttonLoadMap->callback((Fl_Callback *) push_updateMap, this);
 
@@ -212,15 +254,40 @@ bool AntSim::init()
 
     buttonRun->callback((Fl_Callback *) push_run, this);
 
+    /*int *choice0, *choice1, *choice2, *choice3;// At least make this a loop if you can't do anything else
+
+    choice0 = new int;
+    choice1 = new int;
+    choice2 = new int;
+    choice3 = new int;
+
+    *choice0 = 0;
+    *choice1 = 1;
+    *choice2 = 2;
+    *choice3 = 3;*/
+
     // Current iteration count somewhere?  Along buttom with other results?
     menuAntMoveBeh = new Fl_Choice(90, 30, 120, 30, "Move beh");
+    menuAntMoveBeh->callback((Fl_Callback *) push_updateMoveBehaviour, this);
     /*moveBehAS = new Fl_Menu_Item[1];
     moveBehAS[0] =
     {"AS", 0, 0, 0}
     ;*/
-    menuAntMoveBeh->add("AS", 0, 0);
+    menuAntMoveBeh->add("Ant System", 0, 0);
+
+    menuAntMoveBeh->value(0);
     menuAntPheroBeh = new Fl_Choice(90, 80, 120, 30, "Phero beh");
+    menuAntPheroBeh->callback((Fl_Callback *) push_updatePheromoneBehaviour, this);
+    menuAntPheroBeh->add("Ant System", 0, 0);
+    menuAntPheroBeh->add("Max-min AS", 0, 0);
+    menuAntPheroBeh->value(0);
+
     menuEnviroBeh = new Fl_Choice(90, 130, 120, 30, "Enviro beh");
+    menuEnviroBeh->callback((Fl_Callback *) push_updateEnvironmentBehaviour, this);
+    menuEnviroBeh->add("Ant System", 0, 0);
+    menuEnviroBeh->add("Max-min AS", 0, 0);
+    menuEnviroBeh->add("Rank Based AS", 0, 0);
+    menuEnviroBeh->value(0);
     // Fl_File_Browser for loading files
 
     windowUI->end();

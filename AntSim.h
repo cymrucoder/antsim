@@ -59,6 +59,10 @@ public:
     static void push_run(Fl_Widget *w, void *v);
     static void push_runIteration(Fl_Widget *w, void *v);
 
+    static void push_updateMoveBehaviour(Fl_Widget *w, void *v);
+    static void push_updatePheromoneBehaviour(Fl_Widget *w, void *v);
+    static void push_updateEnvironmentBehaviour(Fl_Widget *w, void *v);
+
     SDL_Window* windowGraphics;
     SDL_GLContext context;
 
