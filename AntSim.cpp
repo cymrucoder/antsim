@@ -30,7 +30,7 @@ void AntSim::updateParams()
     controller->updateParams(data);
 }
 
-void AntSim::push_updateMap(Fl_Widget *w, void* v)
+void AntSim::push_generateMap(Fl_Widget *w, void* v)
 {
     if (w)
     {
@@ -38,19 +38,47 @@ void AntSim::push_updateMap(Fl_Widget *w, void* v)
 
         int noOfNodes = atoi(caller->inputNoOfNodes->value());
 
-        bool type = 0;
+        //bool type = 0;
 
         if (caller->buttonTSP->value() == 1)
         {
-            type = MAPTYPE_TSP;
+            //type = MAPTYPE_TSP;
+            caller->controller->regenerateMap(noOfNodes, MAPTYPE_TSP, MAP_GENERATE);
         }
         else if (caller->buttonMaze->value() == 1)
         {
-            type = MAPTYPE_MAZE;
+            //type = MAPTYPE_MAZE;
+            caller->controller->regenerateMap(noOfNodes, MAPTYPE_MAZE, MAP_GENERATE);
         }
 
-        bool load = *(bool*)(w->user_data());
-        caller->controller->regenerateMap(noOfNodes, type, load);
+        //bool load = *(bool*)(w->user_data());
+        //caller->controller->regenerateMap(noOfNodes, type, load);
+    }
+}
+
+void AntSim::push_loadMap(Fl_Widget *w, void* v)
+{
+    if (w)
+    {
+        AntSim* caller = (AntSim*)v;
+
+        //int noOfNodes = atoi(caller->inputNoOfNodes->value());
+
+        //bool type = 0;
+
+        if (caller->buttonTSP->value() == 1)
+        {
+            //type = MAPTYPE_TSP;
+            caller->controller->regenerateMap(0, MAPTYPE_TSP, MAP_LOAD);
+        }
+        else if (caller->buttonMaze->value() == 1)
+        {
+            //type = MAPTYPE_MAZE;
+            caller->controller->regenerateMap(0, MAPTYPE_MAZE, MAP_LOAD);
+        }
+
+        //bool load = *(bool*)(w->user_data());
+        //caller->controller->regenerateMap(noOfNodes, type, load);
     }
 }
 
@@ -70,29 +98,29 @@ void AntSim::push_runIteration(Fl_Widget *w, void *v)
 
 void AntSim::push_updateMoveBehaviour(Fl_Widget *w, void *v)
 {
-    //int choice = *(int*)(w->user_data());
-    ((AntSim*)v)->controller->updateMoveBehaviour(((AntSim*)v)->menuAntMoveBeh->value());
-    ((AntSim*)v)->updateParams();
+    if (w)
+    {
+        ((AntSim*)v)->controller->updateMoveBehaviour(((AntSim*)v)->menuAntMoveBeh->value());
+        ((AntSim*)v)->updateParams();
+    }
 }
 
 void AntSim::push_updatePheromoneBehaviour(Fl_Widget *w, void *v)
 {
     if (w)
     {
-        //int choice = *(int*)(w->user_data());
-        AntSim* caller = (AntSim*)v;
-        Fl_Choice* choice = caller->menuAntPheroBeh;
-        int value = choice->value();
-        ((AntSim*)v)->controller->updatePheromoneBehaviour(value);
+        ((AntSim*)v)->controller->updatePheromoneBehaviour(((AntSim*)v)->menuAntPheroBeh->value());
         ((AntSim*)v)->updateParams();
     }
 }
 
 void AntSim::push_updateEnvironmentBehaviour(Fl_Widget *w, void *v)
 {
-    //int choice = *(int*)(w->user_data());
-    ((AntSim*)v)->controller->updateEnvironmentBehaviour(((AntSim*)v)->menuEnviroBeh->value());
-    ((AntSim*)v)->updateParams();
+    if (w)
+    {
+        ((AntSim*)v)->controller->updateEnvironmentBehaviour(((AntSim*)v)->menuEnviroBeh->value());
+        ((AntSim*)v)->updateParams();
+    }
 }
 
 bool AntSim::init()
@@ -188,11 +216,11 @@ bool AntSim::init()
     inputAlpha = new Fl_Input(INPUTFIELD_X, 20, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone importance");//50, 605, 50, 20
     inputAlpha->value("1.0");
     inputBeta = new Fl_Input(INPUTFIELD_X, 50, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Distance importance");
-    inputBeta->value("1.0");
+    inputBeta->value("5.0");
     inputEvapRate = new Fl_Input(INPUTFIELD_X, 80, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Evaporation rate");
     inputEvapRate->value("0.5");
     inputPheroNumerator = new Fl_Input(INPUTFIELD_X, 110, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone numerator");
-    inputPheroNumerator->value("1.0");
+    inputPheroNumerator->value("100.0");
     inputElitistAnts = new Fl_Input(INPUTFIELD_X, 150, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. elitist ants");
     inputElitistAnts->value("0");
     inputRankedAnts = new Fl_Input(INPUTFIELD_X, 180, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. ranked ants");
@@ -227,22 +255,22 @@ bool AntSim::init()
     mapUserData = MAP_LOAD;
     buttonLoadMap->user_data(&mapUserData);*/
 
-    bool *mapUserDataGen, *mapUserDataLoad;// Unsure if this needs to be done.  Delete them late if needed.
+    /*bool *mapUserDataGen, *mapUserDataLoad;// Unsure if this needs to be done.  Delete them late if needed.
 
     mapUserDataGen = new bool;
-    mapUserDataLoad = new bool;
+    mapUserDataLoad = new bool;*/
 
     buttonGenerateMap = new Fl_Button(INPUTFIELD_X - 70, 400, 120, 30, "Generate map");
-    *mapUserDataGen = MAP_GENERATE;
-    buttonGenerateMap->user_data(mapUserDataGen);
+    /*mapUserDataGen = MAP_GENERATE;
+    buttonGenerateMap->user_data(mapUserDataGen);*/
 
-    buttonGenerateMap->callback((Fl_Callback *) push_updateMap, this);
+    buttonGenerateMap->callback((Fl_Callback *) push_generateMap, this);
 
     buttonLoadMap = new Fl_Button(INPUTFIELD_X - 70, 440, 120, 30, "Load map");
-    *mapUserDataLoad = MAP_LOAD;
-    buttonLoadMap->user_data(mapUserDataLoad);
+    /**mapUserDataLoad = MAP_LOAD;
+    buttonLoadMap->user_data(mapUserDataLoad);*/
 
-    buttonLoadMap->callback((Fl_Callback *) push_updateMap, this);
+    buttonLoadMap->callback((Fl_Callback *) push_loadMap, this);
 
     inputIterations = new Fl_Input(INPUTFIELD_X, 490, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. iterations");
     inputIterations->value("1000");

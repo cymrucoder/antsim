@@ -54,7 +54,8 @@ public:
     static void push_updateParams(Fl_Widget *w, void *v);
     void updateParams();
 
-    static void push_updateMap(Fl_Widget *w, void *v);
+    static void push_generateMap(Fl_Widget *w, void *v);
+    static void push_loadMap(Fl_Widget *w, void *v);
 
     static void push_run(Fl_Widget *w, void *v);
     static void push_runIteration(Fl_Widget *w, void *v);

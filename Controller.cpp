@@ -28,7 +28,8 @@ void Controller::run(int maxIterations)
     iteration = 0;
     totalTime = 0;
     shortestKnownPath = INFINITY;
-    for (int i = 0; i < maxIterations; i++)
+
+    while(iteration < maxIterations)
     {
         runIteration();
     }
@@ -87,9 +88,9 @@ void Controller::runIteration()
 
             for (unsigned int j = 0; j < map->ants.at(i)->nodesVisited.size(); j++)
             {
-                //std::cout << " " << map->ants.at(i)->nodesVisited.at(j);
+                std::cout << " " << map->ants.at(i)->nodesVisited.at(j);
             }
-            //std::cout << std::endl;
+            std::cout << std::endl;
         }
         map->ants.at(i)->reset();
     }
@@ -134,6 +135,19 @@ void Controller::regenerateMap(int noOfNodes, bool type, bool load)
     if (map != NULL)
     {
         delete map;
+    }
+
+    if (load == MAP_LOAD)// Random seed optional (make type non optional or overload or something)
+    {
+        std::ifstream fileMap;
+        fileMap.open("map.txt", std::ios::in);// try/catch?
+        if (fileMap.is_open() == true)
+        {
+            std::string line;
+            getline(fileMap, line);// Badly formatted files could break this
+            noOfNodes = atoi(line.c_str());
+        }
+        fileMap.close();
     }
 
     map = generateMap(noOfNodes, type, load);
