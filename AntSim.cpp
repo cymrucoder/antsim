@@ -218,7 +218,7 @@ bool AntSim::init()
     inputBeta = new Fl_Input(INPUTFIELD_X, 50, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Distance importance");
     inputBeta->value("5.0");
     inputEvapRate = new Fl_Input(INPUTFIELD_X, 80, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Evaporation rate");
-    inputEvapRate->value("0.5");
+    inputEvapRate->value("0.01");
     inputPheroNumerator = new Fl_Input(INPUTFIELD_X, 110, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone numerator");
     inputPheroNumerator->value("100.0");
     inputElitistAnts = new Fl_Input(INPUTFIELD_X, 150, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. elitist ants");
