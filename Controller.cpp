@@ -75,29 +75,26 @@ void Controller::runIteration()
 
     for (unsigned int i = 0; i < map->ants.size(); i++)
     {
-        float firstbit = map->ants.at(i)->getLengthOfPath();
-        float secondbit = (map->edges->getLength(map->ants.at(i)->nodesVisited.at(0), map->ants.at(i)->nodesVisited.back()));
-
-        //float actualLengthA = map->ants.at(i)->getLengthOfPath() + (map->edges->getLength(map->ants.at(i)->nodesVisited.at(0), map->ants.at(i)->nodesVisited.back()));// Move from final node to start node not accounted for ATM,
-
-        float actualLengthA = firstbit + secondbit;
+        float actualLengthA = map->ants.at(i)->getLengthOfPath() + (map->edges->getLength(map->ants.at(i)->nodesVisited.at(0), map->ants.at(i)->nodesVisited.back()));// Move from final node to start node not accounted for ATM,
 
         if (actualLengthA < shortestKnownPath)
         {
             shortestKnownPath = actualLengthA;
 
-            std::cout << "New shortest path found at " << (totalTime / 1.0e6) << "ms (length: " << shortestKnownPath << "), iteration " << iteration << std::endl;
+            std::ofstream fileOutput;
+            fileOutput.open("output.txt", std::ios::out | std::ios::app);
+            char outstring[30];
+            sprintf(outstring, "%f,%d,%f\n", shortestKnownPath, iteration, (totalTime / 1.0e6));
+            fileOutput << outstring;
+            fileOutput.close();
 
-            //std::ifstream fileOutput;
-            //fileOutput.open("map.txt", std::ios::in);
-
-            //std::cout << "New shortest path, length: " << shortestKnownPath << " (iteration: " << iter << "):";
+            /*std::cout << "New shortest path found at " << (totalTime / 1.0e6) << "ms (length: " << shortestKnownPath << "), iteration " << iteration << std::endl;
 
             for (unsigned int j = 0; j < map->ants.at(i)->nodesVisited.size(); j++)
             {
                 std::cout << " " << map->ants.at(i)->nodesVisited.at(j);
             }
-            std::cout << std::endl;
+            std::cout << std::endl;*/
         }
         map->ants.at(i)->reset();
     }
