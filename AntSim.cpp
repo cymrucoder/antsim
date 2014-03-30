@@ -222,13 +222,13 @@ bool AntSim::init()
     inputPheroNumerator = new Fl_Input(INPUTFIELD_X, 110, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone numerator");
     inputPheroNumerator->value("100.0");
     inputElitistAnts = new Fl_Input(INPUTFIELD_X, 150, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. elitist ants");
-    inputElitistAnts->value("0");
+    inputElitistAnts->value("7");
     inputRankedAnts = new Fl_Input(INPUTFIELD_X, 180, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. ranked ants");
-    inputRankedAnts->value("0");
+    inputRankedAnts->value("5");
     inputMaxPheromone = new Fl_Input(INPUTFIELD_X, 210, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. pheromone");
-    inputMaxPheromone->value("0.0");
+    inputMaxPheromone->value("20.0");
     inputMinPhermone = new Fl_Input(INPUTFIELD_X, 240, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Min. pheromone");
-    inputMinPhermone->value("0.0");
+    inputMinPhermone->value("0.005");
     buttonUpdateParams = new Fl_Button(INPUTFIELD_X - 70, 270, 120, 30, "Update");
 
     buttonUpdateParams->callback((Fl_Callback *) push_updateParams, this);
