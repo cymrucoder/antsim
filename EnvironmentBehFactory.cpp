@@ -7,7 +7,6 @@ EnvironmentBehFactory::EnvironmentBehFactory()
 
 EnvironmentBehaviour* EnvironmentBehFactory::makeEnvironmentBehaviour(int environmentBehaviourType, EdgeArray *edges)
 {
-    // Should probably make these switches
     if (environmentBehaviourType == ENVIRONMENT_BEH_TYPE_AS)
     {
         return new EnvironmentAntSystem(edges, 0.7f);

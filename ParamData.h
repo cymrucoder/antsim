@@ -1,6 +1,8 @@
 #ifndef _PARAMDATA_H_
 #define _PARAMDATA_H_
 
+// Structure used to pass data around for updates
+
 struct paramData
 {
     float importancePhero;

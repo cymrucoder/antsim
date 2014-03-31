@@ -21,8 +21,6 @@
 #define MAPTYPE_TSP 0
 #define MAPTYPE_MAZE 1
 
-// Maybe move above defs to Controller.h
-
 class Map
 {
 public:
@@ -38,8 +36,8 @@ public:
 
 	void render();
 
-	std::vector<Ant*> ants;// May move ants, edges and enviroBeh and nodes into private and rework access later or make Controller friend
-    std::vector<Ant*> processedAnts;// Move this to Controller?
+	std::vector<Ant*> ants;
+    std::vector<Ant*> processedAnts;
     std::vector<Node*> nodes;
 	EdgeArray *edges;
 

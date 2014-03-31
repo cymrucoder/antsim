@@ -23,16 +23,6 @@ EdgeArray::EdgeArray(int noOfNodes, float initialPheromoneLevel)
 
 EdgeArray::~EdgeArray()
 {
-    /*for (int i = 0; i < noOfNodes; i++)
-	{
-	    for (int j = 0; j < noOfNodes; j++)
-	    {
-	        delete edgeLengths[i][j];
-	        delete edgePheromones[i][j];
-	    }
-	    delete edgeLengths[i];
-	    delete edgePheromones[i];
-	}*/
 	for (int i = 0; i < noOfNodes; i++)
 	{
 	    delete edgeLengths[i];
@@ -42,7 +32,7 @@ EdgeArray::~EdgeArray()
 	delete edgePheromones;
 }
 
-bool EdgeArray::addEdge(int nodeA, int nodeB, float distance)//, float pheromoneLevel)
+bool EdgeArray::addEdge(int nodeA, int nodeB, float distance)
 {
     if (edgeLengths[nodeA][nodeB] < 0.0f && distance >= 0.0f)// Check if nodeA and nodeB are within the array limits (and not the same node)? (and don't already have an edge)
     {
@@ -71,7 +61,7 @@ float EdgeArray::getPheromone(int nodeA, int nodeB)
     return edgePheromones[nodeA][nodeB];
 }
 
-void EdgeArray::evaporate(float evaporationRate, float pheroMin)
+void EdgeArray::evaporate(float evaporationRate, float pheroMin)// Remove fraction of pheromone from each edge
 {
     if (evaporationRate > 0.0f && evaporationRate <= 1.0f)
     {
@@ -109,7 +99,7 @@ void EdgeArray::incrementPheromone(int nodeA, int nodeB, float pheromoneIncrease
     }
 }
 
-void EdgeArray::incrementPheromone(int nodeA, int nodeB, float pheromoneIncrease, float pheroMax)
+void EdgeArray::incrementPheromone(int nodeA, int nodeB, float pheromoneIncrease, float pheroMax)// For max-min ant system algorithm
 {
     if (pheromoneIncrease > 0.0f)
     {

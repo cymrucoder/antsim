@@ -14,10 +14,9 @@ class Controller
 {
 public:
 
-	Controller(int noOfNodes, bool type = MAPTYPE_TSP, bool load = MAP_GENERATE);
+	Controller(int noOfNodes, bool type = MAPTYPE_TSP, bool load = MAP_GENERATE, int sourceNode = 0, int destinationNode = 0);
 
-	void run(int maxIterations);
-	void runIteration();
+	void runIteration(bool maptype = MAPTYPE_TSP);
 
     void updateMoveBehaviour(int moveBehaviourType);
     void updatePheromoneBehaviour(int pheromoneBehaviourType);
@@ -29,23 +28,23 @@ public:
 
 	void render();
 
-private:
+    int iteration;
+    int maxIterations;
+
+	float shortestKnownPath;
+
+	struct timespec spec, specend;
+    unsigned long long int totalTime;
 
     Map *map;
 
-    //int noOfNodes;
-    int maxIterations;
-
-    float shortestKnownPath;
-
-    struct timespec spec, specend;
-    unsigned long long int totalTime;
-
-    int iteration;
+private:
 
     MoveBehFactory moveBehFactory;
     PheromoneBehFactory pheromoneBehFactory;
     EnvironmentBehFactory environmentBehFactory;
+
+    int sourceNode, destinationNode;
 };
 
 #endif // _CONTROLLER_H_

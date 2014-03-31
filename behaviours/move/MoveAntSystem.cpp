@@ -9,8 +9,6 @@ MoveAntSystem::MoveAntSystem(EdgeArray *edges, float importancePhero, float impo
     mt = std::mt19937(rd());
 }
 
-// Comment the actual equation in here for clarity?
-
 int MoveAntSystem::generateMove(std::vector<int> *nodesVisited)
 {
     float totalProbability = 0.0f;
@@ -23,6 +21,17 @@ int MoveAntSystem::generateMove(std::vector<int> *nodesVisited)
         if (edges->getLength(currentNode, i) >= 0.0f && std::find(nodesVisited->begin(), nodesVisited->end(), i) == nodesVisited->end())// Length < 0 => no connecting edge
         {
             validNodes.push_back(i);
+        }
+    }
+
+    if (validNodes.size() == 0)// If all neighbouring nodes have been visited, allow movement to any neighbouring node
+    {
+        for (int i = 0; i < edges->getNoOfNodes(); i++)
+        {
+            if (edges->getLength(currentNode, i) >= 0.0f)// Length < 0 => no connecting edge
+            {
+                validNodes.push_back(i);
+            }
         }
     }
 

@@ -1,6 +1,8 @@
 #ifndef _VECTOR4_H_
 #define _VECTOR4_H_
 
+// Structure used for graphics data
+
 struct Vector4 {
 
     float x, y, z, w;

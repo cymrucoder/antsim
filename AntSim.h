@@ -36,20 +36,13 @@ public:
 	AntSim();
 
 	bool init();
-    void handleKeys(unsigned char key, int x, int y);
-    void update();
     void render();
-    void close();
 
     int run();
-    void showMap();
 
     GLuint shaderLoadFromFile(std::string path, GLenum shaderType);
-    void printProgramLog(GLuint program);// Once the shader definitely works can probably get rid of the two printing bits
+    void printProgramLog(GLuint program);
     void printShaderLog(GLuint shader);
-
-    //void handle_menu2(Fl_Widget *w, void *v);
-    //void push_cb(Fl_Widget *w, void* v);
 
     static void push_updateParams(Fl_Widget *w, void *v);
     void updateParams();
@@ -68,16 +61,6 @@ public:
     SDL_GLContext context;
 
     Fl_Window *windowUI;
-    //Fl_Box *box;
-    /*Fl_Float_Input *inputAlpha;
-    Fl_Float_Input *inputBeta;
-    Fl_Float_Input *inputEvapRate;
-    Fl_Float_Input *inputPheroNumerator;
-
-    Fl_Int_Input *inputElitistAnts;
-    Fl_Int_Input *inputRankedAnts;
-    Fl_Float_Input *inputMaxPheromone;
-    Fl_Float_Input *inputMinPhermone;*/
 
     Fl_Input *inputAlpha;
     Fl_Input *inputBeta;
@@ -91,7 +74,6 @@ public:
 
     Fl_Button *buttonUpdateParams;
 
-    //Fl_Int_Input *inputNoOfNodes;
     Fl_Input *inputNoOfNodes;
 
     Fl_Round_Button *buttonTSP;
@@ -99,7 +81,6 @@ public:
     Fl_Button *buttonGenerateMap;
     Fl_Button *buttonLoadMap;
 
-    //Fl_Int_Input *inputIterations;
     Fl_Input *inputIterations;
 
     Fl_Button *buttonRunIteration;

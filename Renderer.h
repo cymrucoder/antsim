@@ -15,12 +15,6 @@ public:
 
 	void drawElements();
 
-protected:
-
-    //virtual void render() = 0;
-
-
-
 private:
 
     GLuint VAO;
@@ -28,9 +22,6 @@ private:
     GLuint IBO;
     GLuint noOfVertices;
     GLuint noOfIndices;
-
-    // Need colour data somewhere (dynamic?)
-
 };
 
 #endif // _RENDERER_H_

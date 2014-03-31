@@ -11,8 +11,6 @@ public:
 
     void render();
 
-protected:
-
 private:
 
     Renderer *renderer;

@@ -13,7 +13,6 @@ class Node
 public:
 
 	Node(float x, float y, float z);
-	//~Node();
 
 	float getCoord(int coord);
 

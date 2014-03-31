@@ -18,8 +18,8 @@ public:
     void move();
     void updatePheromone();
 
-    int nodeCurrent;// Should be in private but here for debug purposes
-    std::vector<int> nodesVisited;// Same
+    int nodeCurrent;
+    std::vector<int> nodesVisited;
 
     float getLengthOfPath();
     std::vector<int> getNodesVisited();

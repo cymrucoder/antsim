@@ -18,7 +18,7 @@ void EnvironmentRankBasedAS::updatePheromone()
 
 void EnvironmentRankBasedAS::processAntList(std::vector<Ant*> *ants, std::vector<Ant*> *processedAnts)
 {
-    // Would it be better to just fill up the processedAnts[] with (nOATU) ants, then add new elements if shorter path (and remove longer ones)?  Would have to sort in some way anyway though
+    // Generates list of best n ants
 
     Ant *antTemp;
 
@@ -35,29 +35,20 @@ void EnvironmentRankBasedAS::processAntList(std::vector<Ant*> *ants, std::vector
         }
     }
 
-    //*processedAnts = std::vector<Ant*>(ants->begin(), ants->begin() + numberOfAntsThatUpdate);// This should work but want to be more specific for now
-
-    for (int i = 0; i < numberOfAntsThatUpdate; i++)// Need to make sure nOATU < ants.size() somewhere
+    for (int i = 0; i < numberOfAntsThatUpdate; i++)
     {
         processedAnts->push_back(ants->at(i));// Add best (numbersOfAntsThatUpdate) ants
     }
 
-    /*for (int i = 0; i < numberOfElitistAnts; i++)
-    {
-        processedAnts->push_back(ants->at(0));// Add (numberOfElitistAnts) elitist ants (ants that follow the best path so far)// CURRENTLY THIS IS JUST THE BEST OF THE ITERATION NEED TO FIX
-    }*/
-
-    // This should work too and saves creating and storing a new Ant here (would that be simpler?  I'm not sure)
-
-    if (ants->at(0)->getLengthOfPath() < lengthOfBestPathSoFar)
+    if (ants->at(0)->getLengthOfPath() < lengthOfBestPathSoFar)// Keep track of best path for elitism
     {
         lengthOfBestPathSoFar = ants->at(0)->getLengthOfPath();
         nodesOfBestPathSoFar = ants->at(0)->getNodesVisited();
     }
 
-    for (unsigned int i = 0; i < nodesOfBestPathSoFar.size() - 1; i++)
+    for (unsigned int i = 0; i < nodesOfBestPathSoFar.size() - 1; i++)// Elitism
     {
-        edges->incrementPheromone(nodesOfBestPathSoFar.at(i), nodesOfBestPathSoFar.at(i + 1), 1.0f / lengthOfBestPathSoFar);// Should the numerator be 1 or changable?  Need to double check paper
+        edges->incrementPheromone(nodesOfBestPathSoFar.at(i), nodesOfBestPathSoFar.at(i + 1), 1.0f / lengthOfBestPathSoFar);
     }
 }
 

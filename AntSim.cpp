@@ -38,21 +38,14 @@ void AntSim::push_generateMap(Fl_Widget *w, void* v)
 
         int noOfNodes = atoi(caller->inputNoOfNodes->value());
 
-        //bool type = 0;
-
         if (caller->buttonTSP->value() == 1)
         {
-            //type = MAPTYPE_TSP;
             caller->controller->regenerateMap(noOfNodes, MAPTYPE_TSP, MAP_GENERATE);
         }
         else if (caller->buttonMaze->value() == 1)
         {
-            //type = MAPTYPE_MAZE;
             caller->controller->regenerateMap(noOfNodes, MAPTYPE_MAZE, MAP_GENERATE);
         }
-
-        //bool load = *(bool*)(w->user_data());
-        //caller->controller->regenerateMap(noOfNodes, type, load);
     }
 }
 
@@ -62,38 +55,62 @@ void AntSim::push_loadMap(Fl_Widget *w, void* v)
     {
         AntSim* caller = (AntSim*)v;
 
-        //int noOfNodes = atoi(caller->inputNoOfNodes->value());
-
-        //bool type = 0;
-
         if (caller->buttonTSP->value() == 1)
         {
-            //type = MAPTYPE_TSP;
             caller->controller->regenerateMap(0, MAPTYPE_TSP, MAP_LOAD);
         }
         else if (caller->buttonMaze->value() == 1)
         {
-            //type = MAPTYPE_MAZE;
             caller->controller->regenerateMap(0, MAPTYPE_MAZE, MAP_LOAD);
         }
-
-        //bool load = *(bool*)(w->user_data());
-        //caller->controller->regenerateMap(noOfNodes, type, load);
     }
 }
 
-void AntSim::push_run(Fl_Widget *w, void *v)
+void AntSim::push_run(Fl_Widget *w, void *v)// Shows the graphical representation and runs through maxIteration iterations of the algorithm
 {
-    SDL_ShowWindow(((AntSim*)v)->windowGraphics);
-    ((AntSim*)v)->controller->run(atoi(((AntSim*)v)->inputIterations->value()));
-    ((AntSim*)v)->showMap();
+    AntSim *caller = (AntSim*)v;
+
+    SDL_ShowWindow(caller->windowGraphics);
+
+    Controller *controller = (caller->controller);
+
+    controller->iteration = 0;
+    controller->totalTime = 0;
+    controller->shortestKnownPath = INFINITY;
+
+    controller->maxIterations = atoi(caller->inputIterations->value());
+
+    bool maptype = MAPTYPE_TSP;
+
+    if (caller->buttonMaze->value() == 1)
+    {
+        maptype = MAPTYPE_MAZE;
+    }
+
+    while(controller->iteration < controller->maxIterations)
+    {
+        controller->runIteration(maptype);
+        caller->render();
+        SDL_GL_SwapWindow(caller->windowGraphics);
+    }
+
+    controller->map->edges->reset();
+
+    SDL_HideWindow(caller->windowGraphics);
 }
 
 void AntSim::push_runIteration(Fl_Widget *w, void *v)
 {
-    SDL_ShowWindow(((AntSim*)v)->windowGraphics);
-    ((AntSim*)v)->controller->runIteration();
-    ((AntSim*)v)->showMap();
+    bool maptype = MAPTYPE_TSP;
+
+    if (((AntSim*)v)->buttonMaze->value() == 1)
+    {
+        maptype = MAPTYPE_MAZE;
+    }
+
+    //SDL_ShowWindow(((AntSim*)v)->windowGraphics);
+    ((AntSim*)v)->controller->runIteration(maptype);
+    //((AntSim*)v)->showMap();
 }
 
 void AntSim::push_updateMoveBehaviour(Fl_Widget *w, void *v)
@@ -123,7 +140,7 @@ void AntSim::push_updateEnvironmentBehaviour(Fl_Widget *w, void *v)
     }
 }
 
-bool AntSim::init()
+bool AntSim::init()// Set up window and graphics
 {
     if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 
@@ -159,60 +176,6 @@ bool AntSim::init()
     #define INPUTFIELD_WIDTH 50
     #define INPUTFIELD_X (SCREEN_WIDTH - INPUTFIELD_WIDTH - 20)
 
-    /*inputAlpha = new Fl_Float_Input(INPUTFIELD_X, 30, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone importance");//50, 605, 50, 20
-    inputAlpha->value("1.0");
-    inputBeta = new Fl_Float_Input(INPUTFIELD_X, 60, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Distance importance");
-    inputBeta->value("1.0");
-    inputEvapRate = new Fl_Float_Input(INPUTFIELD_X, 90, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Evaporation rate");
-    inputEvapRate->value("0.5");
-    inputPheroNumerator = new Fl_Float_Input(INPUTFIELD_X, 120, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone numerator");
-    inputPheroNumerator->value("1.0");
-    inputElitistAnts = new Fl_Int_Input(INPUTFIELD_X, 180, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. elitist ants");
-    inputElitistAnts->value("0");
-    inputRankedAnts = new Fl_Int_Input(INPUTFIELD_X, 210, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. ranked ants");
-    inputRankedAnts->value("0");
-    inputMaxPheromone = new Fl_Float_Input(INPUTFIELD_X, 240, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. pheromone");
-    inputMaxPheromone->value("0.0");
-    inputMinPhermone = new Fl_Float_Input(INPUTFIELD_X, 270, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Min. pheromone");
-    inputMinPhermone->value("0.0");
-    buttonUpdateParams = new Fl_Button(INPUTFIELD_X - 70, 300, 120, 30, "Update");
-
-    buttonUpdateParams->callback((Fl_Callback *) push_updateParams, this);
-
-    box = new Fl_Box(250, 0, 800, 600, "Where OpenGL will go");
-    box->box(FL_UP_BOX);
-    inputNoOfNodes = new Fl_Int_Input(INPUTFIELD_X, 340, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. nodes");
-    inputNoOfNodes->value("20");
-    buttonMaze = new Fl_Round_Button(INPUTFIELD_X - 70, 405, INPUTFIELD_WIDTH, 10, "Maze type map");
-    buttonMaze->type(FL_RADIO_BUTTON);
-    buttonTSP = new Fl_Round_Button(INPUTFIELD_X - 70, 380, INPUTFIELD_WIDTH, 10, "TSP type map");
-    buttonTSP->type(FL_RADIO_BUTTON);
-    buttonTSP->setonly();
-
-    bool mapUserData;
-
-    buttonGenerateMap = new Fl_Button(INPUTFIELD_X - 70, 430, 120, 30, "Generate map");
-    mapUserData = MAP_GENERATE;
-    buttonGenerateMap->user_data(&mapUserData);
-
-    buttonGenerateMap->callback((Fl_Callback *) push_updateMap, this);
-
-    buttonLoadMap = new Fl_Button(INPUTFIELD_X - 70, 470, 120, 30, "Load map");
-    mapUserData = MAP_LOAD;
-    buttonLoadMap->user_data(&mapUserData);
-
-    buttonLoadMap->callback((Fl_Callback *) push_updateMap, this);
-
-    inputIterations = new Fl_Int_Input(INPUTFIELD_X, 525, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Max. iterations");
-    inputIterations->value("1000");
-    buttonRunIteration = new Fl_Button(INPUTFIELD_X - 70, 560, 120, 30, "Run iteration");
-
-    buttonRunIteration->callback((Fl_Callback *) push_runIteration, this);
-
-    buttonRun = new Fl_Button(INPUTFIELD_X - 70, 600, 120, 30, "Run");
-
-    buttonRun->callback((Fl_Callback *) push_run, this);*/
-
     inputAlpha = new Fl_Input(INPUTFIELD_X, 20, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Pheromone importance");//50, 605, 50, 20
     inputAlpha->value("1.0");
     inputBeta = new Fl_Input(INPUTFIELD_X, 50, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "Distance importance");
@@ -233,8 +196,6 @@ bool AntSim::init()
 
     buttonUpdateParams->callback((Fl_Callback *) push_updateParams, this);
 
-    /*box = new Fl_Box(250, 0, 800, 600, "Where OpenGL will go");
-    box->box(FL_UP_BOX);*/
     inputNoOfNodes = new Fl_Input(INPUTFIELD_X, 310, INPUTFIELD_WIDTH, INPUTFIELD_HEIGHT, "No. nodes");
     inputNoOfNodes->value("20");
     buttonTSP = new Fl_Round_Button(INPUTFIELD_X - 70, 350, INPUTFIELD_WIDTH, 10, "TSP type map");
@@ -258,13 +219,9 @@ bool AntSim::init()
     buttonRun = new Fl_Button(INPUTFIELD_X - 70, 565, 120, 30, "Run");
     buttonRun->callback((Fl_Callback *) push_run, this);
 
-    // Current iteration count somewhere?  Along buttom with other results?
     menuAntMoveBeh = new Fl_Choice(90, 30, 120, 30, "Move beh");
     menuAntMoveBeh->callback((Fl_Callback *) push_updateMoveBehaviour, this);
-    /*moveBehAS = new Fl_Menu_Item[1];
-    moveBehAS[0] =
-    {"AS", 0, 0, 0}
-    ;*/
+
     menuAntMoveBeh->add("Ant System", 0, 0);
     menuAntMoveBeh->value(0);
 
@@ -280,7 +237,6 @@ bool AntSim::init()
     menuEnviroBeh->add("Max-min AS", 0, 0);
     menuEnviroBeh->add("Rank Based AS", 0, 0);
     menuEnviroBeh->value(0);
-    // Fl_File_Browser for loading files
 
     windowUI->end();
     windowUI->show();
@@ -297,12 +253,6 @@ bool AntSim::init()
 
         std::cout << "Unable to set vsync, error: " << SDL_GetError() << std::endl;
     }
-
-    /*glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
-    glFrontFace(GL_CCW);
-    glCullFace(GL_BACK);*/
 
     programID = glCreateProgram();
 
@@ -349,12 +299,11 @@ bool AntSim::init()
     if (error != GL_NO_ERROR) {
 
         std::cout << "Failed to initialise OpenGL, error - " << gluErrorString(error);
-    }*///NOPE
+    }*///Doesn't work, don't know why
 
     projectionMatrix = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
     viewMatrix = glm::lookAt(glm::vec3(0.0f, 20.0f, 0.1f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0, 1, 0));// Look from, look to
     //(for some reason looking at straight down means nothing renders and looking from 0 to 0.1f makes everything backwards)
-    //modelMatrix = glm::translate<GLfloat>(SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f, 0.0f);
     modelMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
 
     mvpMatrix = projectionMatrix * viewMatrix * modelMatrix;
@@ -366,54 +315,19 @@ bool AntSim::init()
         return false;
     }
 
-    //glEnable(GL_TEXTURE_2D);
-    //glEnable(GL_BLEND);
-    //glDisable(GL_DEPTH_TEST);
-    //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
     glUseProgram(programID);
 
     glUniformMatrix4fv(uniformMatrix, 1, GL_FALSE, glm::value_ptr(mvpMatrix));
 
     glUseProgram(0);
 
-    controller = new Controller(3, MAPTYPE_MAZE, MAP_GENERATE);
+    controller = new Controller(3, 0, 30, MAPTYPE_MAZE, MAP_GENERATE);
 
     return true;
 }
 
-void AntSim::handleKeys(unsigned char key, int x, int y)
-{
-    if (key == 'q')
-    {
-        //
-    }
-    if (key == 'm')
-    {
-        //
-    }
-}
-
-void AntSim::update()
-{
-
-}
-
 void AntSim::render()
 {
-    /*glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    glBindBuffer(GL_UNIFORM_BUFFER, uniformDataUBO);
-    glUseProgram(programID);
-
-    glBindVertexArray(VAO);
-
-    glDrawElements(GL_TRIANGLES, NO_OF_DRAWING_INDICES, GL_UNSIGNED_INT, (const GLvoid*)0);
-
-    glBindVertexArray(0);
-    glUseProgram(0);*/
-
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -424,59 +338,17 @@ void AntSim::render()
     glUseProgram(0);
 }
 
-void AntSim::close()
-{
-    /*glDeleteProgram(programID);*/
-
-    /*SDL_DestroyWindow(window);
-    window = NULL;
-
-    SDL_Quit();*/
-    SDL_HideWindow(windowGraphics);
-}
-
 int AntSim::run()
 {
     if (init() == false)
     {
         std::cout << "Initialisation failed" << std::endl;
-        close();
         return 1;
     }
 
     Fl::run();
 
     return 0;
-}
-
-void AntSim::showMap()
-{
-    bool running = true;
-
-    SDL_Event e;
-    //SDL_StartTextInput();
-
-    while (running)
-    {
-        while (SDL_PollEvent(&e) != 0)
-        {
-            if (e.type == SDL_QUIT)
-            {
-                running = false;
-            }
-            /*else if (e.type == SDL_TEXTINPUT)
-            {
-                int x = 0, y = 0;
-                SDL_GetMouseState(&x, &y);
-                handleKeys(e.text.text[0], x, y);
-            }*/
-        }
-        render();
-        SDL_GL_SwapWindow(windowGraphics);
-    }
-
-    //SDL_StopTextInput();
-    close();
 }
 
 GLuint AntSim::shaderLoadFromFile(std::string path, GLenum shaderType)

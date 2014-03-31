@@ -7,14 +7,11 @@
 
 class MoveBehFactory
 {
-	public:
-		MoveBehFactory();
-		//~MoveBehFactory();
+public:
 
-		MoveBehaviour* makeMoveBehaviour(int moveBehaviourType, EdgeArray* edges);
+    MoveBehFactory();
 
-	private:
-
+    MoveBehaviour* makeMoveBehaviour(int moveBehaviourType, EdgeArray* edges);
 };
 
 #endif // _MOVEBEHFACTORY_H_

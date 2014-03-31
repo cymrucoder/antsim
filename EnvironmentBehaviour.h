@@ -18,16 +18,9 @@ public:
 
 	virtual void updatePheromone() = 0;
 
-    //int getHowManyAntsUpdate();
-
     virtual void processAntList(std::vector<Ant*> *ants, std::vector<Ant*> *processedAnts);
 
     virtual void updateParams(struct paramData *data) = 0;
-
-//protected:
-
-    //int howManyAntsUpdate;
-
 };
 
 #endif // _ENVIRONMENTBEHAVIOUR_H_

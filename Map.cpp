@@ -7,7 +7,7 @@ Map::Map(int noOfNodes, EdgeArray *edges, EnvironmentBehaviour *enviroBeh, bool 
     this->type = type;
 }
 
-Map::~Map()
+Map::~Map()// Cleanly delete components of Map before deleting Map
 {
     for (unsigned int i = 0; i < nodes.size(); i++)
     {
@@ -39,7 +39,7 @@ void Map::createEdge(int nodeA, int nodeB)
                             pow((nodes.at(nodeA)->getCoord(COORD_Y) - nodes.at(nodeB)->getCoord(COORD_Y)), 2.0f) +
                             pow((nodes.at(nodeA)->getCoord(COORD_Z) - nodes.at(nodeB)->getCoord(COORD_Z)), 2.0f));
 
-    if (edges->addEdge(nodeA, nodeB, distance) == true)
+    if (edges->addEdge(nodeA, nodeB, distance) == true)// Returns true if edge is created, false if an edge already exists there
     {
         // If the edge is added, create an RenderableEdge to store its graphical data
 
@@ -49,7 +49,7 @@ void Map::createEdge(int nodeA, int nodeB)
 
         if (abs(nodes.at(nodeB)->getCoord(COORD_X) - nodes.at(nodeA)->getCoord(COORD_X)) >=  abs(nodes.at(nodeB)->getCoord(COORD_Z) - nodes.at(nodeA)->getCoord(COORD_Z)))// L and R take points on the line between directions
         {
-            // The eV[n] = Vec... bit could be shortened, there's a pattern.  Works for now though
+            // The eV[n] = Vec... bit could be shortened, there's a pattern.  This works though.
             if ((nodes.at(nodeB)->getCoord(COORD_X) - nodes.at(nodeA)->getCoord(COORD_X)) >= 0.0f)// R, on line between L and R => R
             {
                 //sideA = 0;
@@ -136,8 +136,7 @@ void Map::createEdge(int nodeA, int nodeB)
 
 void Map::createAnt(int node, MoveBehaviour *moveBeh, PheromoneBehaviour *pheroBeh)
 {
-    //ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneAntSystem(edges, 100.0f)));
-    ants.push_back(new Ant(node, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneMaxMinAS(edges, 4.0f)));
+    ants.push_back(new Ant(node, edges, moveBeh, pheroBeh));
 }
 
 void Map::setEnvironmentBehaviour(EnvironmentBehaviour *enviroBeh)

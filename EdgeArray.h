@@ -8,7 +8,7 @@ public:
 	EdgeArray(int noOfNodes, float initialPheromoneLevel);
 	~EdgeArray();
 
-	bool addEdge(int nodeA, int nodeB, float distance);//, float pheromoneLevel);
+	bool addEdge(int nodeA, int nodeB, float distance);
 
 	int getNoOfNodes();
 
@@ -17,7 +17,7 @@ public:
 
 	void evaporate(float evaporationRate, float pheroMin = 0.0f);
 	void incrementPheromone(int nodeA, int nodeB, float pheromoneIncrease);
-	void incrementPheromone(int nodeA, int nodeB, float pheromoneIncrease, float pheroMax);// Should I do these as one function with = INFINITY?  Means an extra if in the shorter function if I do that
+	void incrementPheromone(int nodeA, int nodeB, float pheromoneIncrease, float pheroMax);
 
     void reset();
 

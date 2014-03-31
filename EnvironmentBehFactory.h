@@ -11,16 +11,11 @@
 
 class EnvironmentBehFactory
 {
-	public:
-		EnvironmentBehFactory();
-		//~EnvironmentBehFactory();
+public:
 
-        EnvironmentBehaviour* makeEnvironmentBehaviour(int environmentBehaviourType, EdgeArray *edges);
+    EnvironmentBehFactory();
 
-	private:
-
+    EnvironmentBehaviour* makeEnvironmentBehaviour(int environmentBehaviourType, EdgeArray *edges);
 };
 
-
 #endif // _ENVIRONMENTBEHFACTORY_H_
-

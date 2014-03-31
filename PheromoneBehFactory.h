@@ -9,14 +9,11 @@
 
 class PheromoneBehFactory
 {
-	public:
-		PheromoneBehFactory();
-		//~PheromoneBehFactory();
+public:
 
-        PheromoneBehaviour* makePheromoneBehaviour(int pheromoneBehType, EdgeArray* edges);
+    PheromoneBehFactory();
 
-	private:
-
+    PheromoneBehaviour* makePheromoneBehaviour(int pheromoneBehType, EdgeArray* edges);
 };
 
 #endif // _PHEROMONEBEHFACTORY_H_

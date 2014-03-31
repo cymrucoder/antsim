@@ -1,5 +1,7 @@
 #include "Ant.h"
 
+// Ants aren't actually rendered so the graphics setup code is useless.  Kept for possible future work though.
+
 Ant::Ant(int nodeCurrent, EdgeArray *edges, MoveBehaviour *moveBeh, PheromoneBehaviour *pheroBeh)
 {
     this->nodeCurrent = nodeCurrent;
@@ -11,7 +13,6 @@ Ant::Ant(int nodeCurrent, EdgeArray *edges, MoveBehaviour *moveBeh, PheromoneBeh
 
     lengthOfPath = 0.0f;
 
-    // Copied from Node just to have something to run
     int noOfVertices = 4;
     int noOfElements = 2 * 3;//GL_TRIANGLES (2 triangles with 3 verts each)
 
@@ -43,7 +44,7 @@ void Ant::move()
 
 void Ant::updatePheromone()
 {
-    pheroBeh->updatePheromone(&nodesVisited, lengthOfPath);// Don't like passing arguments here as there's it's not easy to have different args for different behaviours
+    pheroBeh->updatePheromone(&nodesVisited, lengthOfPath);
 }
 
 float Ant::getLengthOfPath()

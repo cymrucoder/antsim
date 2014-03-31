@@ -1,11 +1,14 @@
 #include "Controller.h"
 
-Controller::Controller(int noOfNodes, bool type, bool load)
+Controller::Controller(int noOfNodes, bool type, bool load, int sourceNode, int destinationNode)
 {
-    if (load == MAP_LOAD)// Random seed optional (make type non optional or overload or something)
+    this->sourceNode = sourceNode;
+    this->destinationNode = destinationNode;
+
+    if (load == MAP_LOAD)
     {
         std::ifstream fileMap;
-        fileMap.open("map.txt", std::ios::in);// try/catch?
+        fileMap.open("map.txt", std::ios::in);
         if (fileMap.is_open() == true)
         {
             std::string line;
@@ -14,91 +17,162 @@ Controller::Controller(int noOfNodes, bool type, bool load)
         }
         fileMap.close();
     }
-    //EdgeArray *edges = new EdgeArray(noOfNodes);// This is messy which I why I liked the old way.  Will decide which to use later
+
     map = generateMap(noOfNodes, type);
-    //map = new Map(noOfNodes, edges, new EnvironmentMaxMinAS(0.5f, edges));
-    //generateMap(noOfNodes, edges, type);
 
     shortestKnownPath = INFINITY;
     iteration = 0;
 }
 
-void Controller::run(int maxIterations)
+void Controller::runIteration(bool maptype)
 {
-    iteration = 0;
-    totalTime = 0;
-    shortestKnownPath = INFINITY;
-
-    while(iteration < maxIterations)
+    if (maptype == MAPTYPE_TSP)
     {
-        runIteration();
-    }
+        clock_gettime(CLOCK_REALTIME, &spec);// Start timing
 
-    map->edges->reset();
-}
-
-void Controller::runIteration()
-{
-    clock_gettime(CLOCK_REALTIME, &spec);// Start timing
-
-    for (unsigned int i = 0; i < map->ants.size(); i++)
-    {
-        for (unsigned int j = 0; j < map->nodes.size() - 1; j++)
+        for (unsigned int i = 0; i < map->ants.size(); i++)
         {
-            map->ants.at(i)->move();
+            for (unsigned int j = 0; j < map->nodes.size() - 1; j++)
+            {
+                map->ants.at(i)->move();
+            }
         }
+
+        map->enviroBeh->updatePheromone();
+
+        map->enviroBeh->processAntList(&map->ants, &map->processedAnts);// enviroBeh generates new list of ants that are able to update
+
+        for (unsigned int i = 0; i < map->processedAnts.size(); i++)
+        {
+            map->processedAnts.at(i)->updatePheromone();
+        }
+
+        map->processedAnts.clear();
+
+        // Stop timer here as rest of code isn't part of the algorithm, just my processing of the results
+
+        clock_gettime(CLOCK_REALTIME, &specend);// Stop timing and add nanoseconds taken to total time count
+
+        if (spec.tv_sec != specend.tv_sec)// tv_nsec gives nanoseconds since current second started, have to account for a new second starting between timings
+        {
+            totalTime += ((specend.tv_sec - spec.tv_sec) * 1.0e9) + (specend.tv_nsec - spec.tv_nsec);
+        }
+        else
+        {
+            totalTime += (specend.tv_nsec - spec.tv_nsec);
+        }
+
+        for (unsigned int i = 0; i < map->ants.size(); i++)// Loop through all paths found.  If a new best path is found, print it.
+        {
+            float actualLengthA = map->ants.at(i)->getLengthOfPath() + (map->edges->getLength(map->ants.at(i)->nodesVisited.at(0), map->ants.at(i)->nodesVisited.back()));// Move from final node to start node not accounted for ATM,
+
+            if (actualLengthA < shortestKnownPath)
+            {
+                shortestKnownPath = actualLengthA;
+
+                std::ofstream fileOutput;
+                fileOutput.open("output.txt", std::ios::out | std::ios::app);
+                char outstring[30];
+                sprintf(outstring, "%f,%d,%f\n", shortestKnownPath, iteration, (totalTime / 1.0e6));
+                fileOutput << outstring;
+                fileOutput.close();
+
+
+                // Uncomment block below to print new best paths to terminal
+                /*std::cout << "New shortest path found at " << (totalTime / 1.0e6) << "ms (length: " << shortestKnownPath << "), iteration " << iteration << std::endl;
+
+                for (unsigned int j = 0; j < map->ants.at(i)->nodesVisited.size(); j++)
+                {
+                    std::cout << " " << map->ants.at(i)->nodesVisited.at(j);
+                }
+                std::cout << std::endl;*/
+            }
+            map->ants.at(i)->reset();
+        }
+        iteration++;
     }
 
-    map->enviroBeh->updatePheromone();
-
-    map->enviroBeh->processAntList(&map->ants, &map->processedAnts);// enviroBeh generates new list of ants that are able to update
-
-    for (unsigned int i = 0; i < map->processedAnts.size(); i++)
-    {
-        map->processedAnts.at(i)->updatePheromone();
-    }
-
-    map->processedAnts.clear();
-
-    // Unsure if I should stop timing here or if a result is found (this isn't technically part of the algorithms so I think here)
-
-    clock_gettime(CLOCK_REALTIME, &specend);// Stop timing and add nanoseconds taken to total time count
-
-    if (spec.tv_sec != specend.tv_sec)// tv_nsec gives nanoseconds since current second started, have to account for a new second starting between timings
-    {
-        totalTime += ((specend.tv_sec - spec.tv_sec) * 1.0e9) + (specend.tv_nsec - spec.tv_nsec);
-    }
     else
     {
-        totalTime += (specend.tv_nsec - spec.tv_nsec);
-    }
+        clock_gettime(CLOCK_REALTIME, &spec);// Start timing
 
-    for (unsigned int i = 0; i < map->ants.size(); i++)
-    {
-        float actualLengthA = map->ants.at(i)->getLengthOfPath() + (map->edges->getLength(map->ants.at(i)->nodesVisited.at(0), map->ants.at(i)->nodesVisited.back()));// Move from final node to start node not accounted for ATM,
+        std::vector<Ant*> finishedAnts;
 
-        if (actualLengthA < shortestKnownPath)
+        int maxMoves = 200;
+
+        for (unsigned int i = 0; i < map->ants.size(); i++)// Each Ant attempts to find a solution
         {
-            shortestKnownPath = actualLengthA;
-
-            std::ofstream fileOutput;
-            fileOutput.open("output.txt", std::ios::out | std::ios::app);
-            char outstring[30];
-            sprintf(outstring, "%f,%d,%f\n", shortestKnownPath, iteration, (totalTime / 1.0e6));
-            fileOutput << outstring;
-            fileOutput.close();
-
-            /*std::cout << "New shortest path found at " << (totalTime / 1.0e6) << "ms (length: " << shortestKnownPath << "), iteration " << iteration << std::endl;
-
-            for (unsigned int j = 0; j < map->ants.at(i)->nodesVisited.size(); j++)
+            for (int moveCount = 0; moveCount < maxMoves; moveCount++)
             {
-                std::cout << " " << map->ants.at(i)->nodesVisited.at(j);
+                map->ants.at(i)->move();
+                if (map->ants.at(i)->nodeCurrent == destinationNode)
+                {
+                    finishedAnts.push_back(map->ants.at(i));// If it find a solution, add the Ant to the list
+                    break;
+                }
             }
-            std::cout << std::endl;*/
         }
-        map->ants.at(i)->reset();
+
+        map->enviroBeh->updatePheromone();
+
+        map->enviroBeh->processAntList(&finishedAnts, &map->processedAnts);// enviroBeh generates new list of ants that are able to update
+
+        for (unsigned int i = 0; i < map->processedAnts.size(); i++)
+        {
+            map->processedAnts.at(i)->updatePheromone();
+        }
+
+        map->processedAnts.clear();
+
+        // Stop timer here as rest of code isn't part of the algorithm, just my processing of the results
+
+        clock_gettime(CLOCK_REALTIME, &specend);// Stop timing and add nanoseconds taken to total time count
+
+        if (spec.tv_sec != specend.tv_sec)// tv_nsec gives nanoseconds since current second started, have to account for a new second starting between timings
+        {
+            totalTime += ((specend.tv_sec - spec.tv_sec) * 1.0e9) + (specend.tv_nsec - spec.tv_nsec);
+        }
+        else
+        {
+            totalTime += (specend.tv_nsec - spec.tv_nsec);
+        }
+
+        for (unsigned int i = 0; i < finishedAnts.size(); i++)
+        {
+            float actualLengthA = finishedAnts.at(i)->getLengthOfPath();
+
+            if (actualLengthA < shortestKnownPath)
+            {
+                shortestKnownPath = actualLengthA;
+
+                std::ofstream fileOutput;
+                fileOutput.open("output.txt", std::ios::out | std::ios::app);
+                char outstring[30];
+                sprintf(outstring, "%f,%d,%f\n", shortestKnownPath, iteration, (totalTime / 1.0e6));
+                fileOutput << outstring;
+                fileOutput.close();
+
+
+                // Uncomment block below to print new best paths to terminal
+                /*std::cout << "New shortest path found at " << (totalTime / 1.0e6) << "ms (length: " << shortestKnownPath << "), iteration " << iteration << std::endl;
+
+                for (unsigned int j = 0; j < map->ants.at(i)->nodesVisited.size(); j++)
+                {
+                    std::cout << " " << map->ants.at(i)->nodesVisited.at(j);
+                }
+                std::cout << std::endl;*/
+            }
+        }
+
+        for (unsigned int i = 0; i < map->ants.size(); i++)
+        {
+            map->ants.at(i)->reset();
+        }
+
+        iteration++;
+
+        finishedAnts.clear();
     }
-    iteration++;
 }
 
 void Controller::updateMoveBehaviour(int moveBehaviourType)
@@ -132,19 +206,17 @@ void Controller::updateParams(struct paramData *data)
     }
 }
 
-void Controller::regenerateMap(int noOfNodes, bool type, bool load)
+void Controller::regenerateMap(int noOfNodes, bool type, bool load)// Loads new map into program and cleanly deletes the old one
 {
-    // Node and Edge are fine
-    // Ant has new(bla) stuff (behaviours)
     if (map != NULL)
     {
         delete map;
     }
 
-    if (load == MAP_LOAD)// Random seed optional (make type non optional or overload or something)
+    if (load == MAP_LOAD)
     {
         std::ifstream fileMap;
-        fileMap.open("map.txt", std::ios::in);// try/catch?
+        fileMap.open("map.txt", std::ios::in);
         if (fileMap.is_open() == true)
         {
             std::string line;
@@ -164,8 +236,7 @@ Map* Controller::generateMap(int noOfNodes, bool type, bool load)
 {
     EdgeArray *tempEdges = new EdgeArray(noOfNodes, 10.0f);// Would prefer to create this inside Map but if it's here than the behaviours can use it easier
 
-    //Map *mapTemp = new Map(noOfNodes, tempEdges, new EnvironmentAntSystem(tempEdges, 0.7f), MAPTYPE_TSP);
-    Map *mapTemp = new Map(noOfNodes, tempEdges, environmentBehFactory.makeEnvironmentBehaviour(ENVIRONMENT_BEH_TYPE_AS, tempEdges), MAPTYPE_TSP);
+    Map *mapTemp = new Map(noOfNodes, tempEdges, environmentBehFactory.makeEnvironmentBehaviour(ENVIRONMENT_BEH_TYPE_AS, tempEdges), type);
     if (type == MAPTYPE_TSP)// Map for TSP type problem
     {
         if (load == MAP_GENERATE)// Generate randomly
@@ -444,13 +515,20 @@ Map* Controller::generateMap(int noOfNodes, bool type, bool load)
         }
     }
 
-    for (int i = 0; i < noOfNodes; i++)// For now, ant on every node.  May change later.
+    if (type == MAPTYPE_MAZE)// For map type maps, all ants start at the source node
     {
-        //ants.push_back(new Ant(i, edges, new MoveAntSystem(edges, 1.0f, 5.0f), new PheromoneAntSystem(edges, 100.0f)));
-        //mapTemp->createAnt(i, new MoveAntSystem(tempEdges, 1.0f, 5.0f), new PheromoneAntSystem(tempEdges, 1.0f));
-        mapTemp->createAnt(i, moveBehFactory.makeMoveBehaviour(MOVE_BEH_TYPE_AS, tempEdges), pheromoneBehFactory.makePheromoneBehaviour(PHEROMONE_BEH_TYPE_AS, tempEdges));
+        for (int i = 0; i < noOfNodes; i++)// Ant on every node
+        {
+            mapTemp->createAnt(sourceNode, moveBehFactory.makeMoveBehaviour(MOVE_BEH_TYPE_AS, tempEdges), pheromoneBehFactory.makePheromoneBehaviour(PHEROMONE_BEH_TYPE_AS, tempEdges));
+        }
     }
-
+    else// For TSP type maps, ants are distributed
+    {
+        for (int i = 0; i < noOfNodes; i++)// Ant on every node
+        {
+            mapTemp->createAnt(i, moveBehFactory.makeMoveBehaviour(MOVE_BEH_TYPE_AS, tempEdges), pheromoneBehFactory.makePheromoneBehaviour(PHEROMONE_BEH_TYPE_AS, tempEdges));
+        }
+    }
     return mapTemp;
 }
 

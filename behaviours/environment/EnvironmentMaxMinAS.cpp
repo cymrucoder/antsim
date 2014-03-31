@@ -15,12 +15,10 @@ void EnvironmentMaxMinAS::updatePheromone()
 
 void EnvironmentMaxMinAS::processAntList(std::vector<Ant*> *ants, std::vector<Ant*> *processedAnts)
 {
-    //Ant *antWithShortestPath = ants->at(0);
-
     int indexOfBestAnt = 0;
     float lengthOfBestPathThisIter = INFINITY;
 
-    for (unsigned int i = 0; i < ants->size(); i++)
+    for (unsigned int i = 0; i < ants->size(); i++)// Only best ant updates, so find best ant and return it
     {
         if (ants->at(i)->getLengthOfPath() < lengthOfBestPathThisIter)
         {
