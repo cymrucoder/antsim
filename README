@@ -1,2 +1,16 @@
 Simulation program utilising ant colony optimisation algorithms.
 Final year university project.
+
+To use:
+
+Optional: Create map.txt containing map data (layout in Controller.cpp)
+Start program
+Select TSP or maze
+Click load map or generate map (latter does not require map.txt), loading a TSP map when maze is selected of vice versa may break things
+Pick behaviours
+Set values of parameters
+Click update (may need to click this after selecting new map/behaviours even if values didn't change, possible bug)
+Click run
+See output.txt for results in form
+
+lengthofpath,iteration,time
